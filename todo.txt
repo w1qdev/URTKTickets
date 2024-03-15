@@ -1,1 +1,5 @@
+<Client>
+AdministaratorTicketsPage - Линия слева снизу отображается поверх всех элементов
+
+<Server>
 [server] /docs не обновляется, решить проблему!!!

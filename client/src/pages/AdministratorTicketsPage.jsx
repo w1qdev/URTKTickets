@@ -26,9 +26,9 @@ const AdministratorTicketsPage = () => {
                     <TicketsContainer />
                 </div>
 
-                <div className="line">
+                {/* <div className="line">
                     <img src={BlueLine} />
-                </div>
+                </div> */}
 
             </div>
         </>

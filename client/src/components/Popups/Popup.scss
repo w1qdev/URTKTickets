@@ -3,4 +3,39 @@
     height: 100vh;
     z-index: 1000;
     backdrop-filter: blur(4px);
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(84, 84, 84, 0.2352941176);
+
+    &__container {
+        width: 724px;
+        height: 300px; // text
+        background-color: #fff;
+        padding: 15px 20px;
+        border-radius: 8px;
+
+        &__header {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .header__title {
+                &-text {
+                    font-weight: 800;
+                    font-size: 18px;
+                    color: #343434;
+                }
+            }
+
+            .header__close {
+                cursor: pointer;
+            }
+        }
+    }
 }
