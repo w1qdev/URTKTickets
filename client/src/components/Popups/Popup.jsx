@@ -3,7 +3,11 @@ import { motion } from 'framer-motion'
 import './Popup.scss'
 
 
-const Popup = ({ title="Просмотр заявки", popupStatus, chuldren, popupHandler }) => {
+
+const Popup = ({ title, popupStatus, children, popupHandler }) => {
+
+    const currentPopupStatusTextColor = popupStatus === "Отправка на проверку" ? "#99D16F" : "#1f7cffbe";
+    
     return (
         <motion.div 
             className="popup"
@@ -23,7 +27,14 @@ const Popup = ({ title="Просмотр заявки", popupStatus, chuldren, p
                 <div className="popup__container__header">
                     <div className="header__title">
                         <div className="header__title-text">{title}</div>
-                        <div className="header__title-popup-status">{popupStatus}</div>
+                        
+                        {popupStatus ? (
+                            <div 
+                                className="header__title-popup-status"
+                                style={{ backgroundColor: `${currentPopupStatusTextColor}` }}
+                            >{popupStatus}</div>
+                        ) : null}
+                        
                     </div>
                     <div 
                         className="header__close"
@@ -34,7 +45,7 @@ const Popup = ({ title="Просмотр заявки", popupStatus, chuldren, p
                 </div>
 
                 <div className="popup__container__body">
-                    {chuldren}
+                    {children}
                 </div>
             </motion.div>
         </motion.div>

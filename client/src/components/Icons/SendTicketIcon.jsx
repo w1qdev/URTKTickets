@@ -3,7 +3,7 @@
 
 const SendTicketIcon = (props) => {
 
-    const { className } = props
+    const { className, fill } = props
 
     return (
         <svg className={className} width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,7 +12,7 @@ const SendTicketIcon = (props) => {
             </g>
             <defs>
                 <clipPath id="clip0_6_879">
-                    <rect width="17" height="17" fill="white"/>
+                    <rect width="17" height="17" fill={fill}/>
                 </clipPath>
             </defs>
         </svg>

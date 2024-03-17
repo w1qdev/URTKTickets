@@ -1,10 +1,8 @@
 .administrator-tickets-page {
     width: 100%;
-    height: 100vh;
 
     display: flex;
     justify-content: center;
-    
     flex-direction: column;
 
     .line {
@@ -15,7 +13,7 @@
     }
 
     &__header {
-        margin-top: 120px;
+        margin-top: 50px;
         margin-bottom: 5px;
         display: flex;
         justify-content: space-between;
@@ -28,14 +26,45 @@
         }
 
         &-other {
-
-
             .current-time {
                 font-size: 15px;
                 border: 1px solid #D3D3D3;
                 text-align: center;
                 border-radius: 4px;
                 padding: 2px 0px;
+            }
+
+            .create-ticket__button {
+                width: 170px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 20px;
+                border-radius: 6px;
+                background-color: transparent;
+                border: 1px solid #7075F1;
+                cursor: pointer;
+                transition: background-color linear 0.2s;
+
+                &:hover {
+                    background-color: #7075F1;
+                    
+                    .button__text {
+                        color: #fff;
+                    }
+
+                    svg {
+                        path {
+                            fill: #fff;
+                        }
+                    }
+                }
+
+                .button__text {
+                    color: #7075F1;
+                    transition: color linear 0.2s;
+                }
+
             }
         }
     }

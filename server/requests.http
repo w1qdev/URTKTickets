@@ -12,11 +12,13 @@ POST http://localhost:5000/api/ticket/create HTTP/1.1
 content-type: application/json
 
 {
-    "audience": 41,
-    "tasks": [
-        { "id": 1, "pc_num": "№4", "badges": [ { "id": 1, "title": "ПК не включается" } ] }
-    ],
-    "customer": "Елена Бушмелева"
+    "submission_date": "2024-09-18",
+    "customer_name": "Елена Бушмелева",
+    "room_number": "№41",
+    "problem_title": "Устранение технических неполадок",
+    "problems": [
+        { "pc_name": "ПК №4", "tasks": [ { "text": "Ремонт ПК" }, { "text": "Чистка ПК" }, { "text": "Установка ПО" } ], "description": "some description" }
+    ]
 }
 
 ### Remove some ticket

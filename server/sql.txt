@@ -1,0 +1,28 @@
+CREATE TABLE Teachers (
+    teacher_id INT PRIMARY KEY,
+    teacher_name VARCHAR(100),
+    department VARCHAR(100)
+);
+
+CREATE TABLE TicketStates (
+    state_id INT PRIMARY KEY,
+    state_name VARCHAR(50)
+);
+
+CREATE TABLE Tickets (
+    ticket_id INT PRIMARY KEY,
+    submission_date DATE,
+    customer_name VARCHAR(100),
+    room_number VARCHAR(20),
+    problem_title VARCHAR(255),
+    state_id INT,
+    FOREIGN KEY (state_id) REFERENCES TicketStates(state_id)
+);
+
+CREATE TABLE Tasks (
+    task_id INT PRIMARY KEY,
+    ticket_id INT,
+    pc_name VARCHAR(50),
+    task_description TEXT,
+    FOREIGN KEY (ticket_id) REFERENCES Tickets(ticket_id)
+);

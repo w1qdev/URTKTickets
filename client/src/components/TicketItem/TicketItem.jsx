@@ -2,21 +2,20 @@ import { useState } from 'react'
 import CircleStatusIcon from '../Icons/CircleStatusIcon'
 import { AnimatePresence } from 'framer-motion'
 import AcceptTicketPopup from '../Popups/AcceptTicketPopup'
-import Popup from '../Popups/Popup'
+import ConfirmTicketPopup from '../Popups/ConfirmTicketPopup'
 import './TicketItem.scss'
+import ViewTicketPopup from '../Popups/ViewTicketPopup'
 
 
 const PopupBody = ({ status, popupHandler }) => {
 
     const popupContainers = {
-        'Awaiting Review': <AcceptTicketPopup />
+        'Awaiting Review': <AcceptTicketPopup popupHandler={popupHandler} title="Рассмотрение заявки" popupStatus="Подтверждение заявки" />,
+        'Awaiting Confirmation': <ConfirmTicketPopup popupHandler={popupHandler} title="Подтверждение выполненных задач" popupStatus="Отправка на проверку" />,
+        'Confirmed': <ViewTicketPopup popupHandler={popupHandler} title="Заявка системному администратору" popupStatus="Просмотр заявки" />,
     }
     
-    return (
-        <Popup popupHandler={popupHandler}>
-            {popupContainers[status]}
-        </Popup>
-    )
+    return popupContainers[status]
 }
 
 
@@ -49,29 +48,28 @@ const TicketItemStatus = ({ status }) => {
 
 const TicketItem = (props) => {
 
-    const { id, title, description, location, user, date, status } = props
+    const { id, title, description, location, user, date, fullData, status } = props
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
-
-    const popupHandler = () => setIsPopupOpen(prev => !prev)
+    const handlePopup = () => setIsPopupOpen(prev => !prev)
 
     return (
         <>
             <AnimatePresence>
-                {isPopupOpen ? <PopupBody popupHandler={popupHandler} /> : null}
+                {isPopupOpen ? <PopupBody status={status} popupHandler={handlePopup} /> : null}
             </AnimatePresence>
             <div 
                 className='ticket-item'
-                onClick={popupHandler}
+                onClick={handlePopup}
             >
-                <div className="ticket-item__number">1</div>
+                <div className="ticket-item__number">{id}</div>
                 <div className="ticket-item__problem">
-                    <div className="problem__title">Устранение технических неполадок</div>
-                    <div className="problem__description">проблема 1, проблема 2, проблема 3....</div>
+                    <div className="problem__title">{title}</div>
+                    <div className="problem__description">{description}</div>
                 </div>
-                <div className="ticket-item__location">аудитория <strong>№41</strong></div>
-                <div className="ticket-item__user">Елена Бушмелева</div>
-                <div className="ticket-item__date">14.02.2024</div>
+                <div className="ticket-item__location">Аудитория <strong>{location}</strong></div>
+                <div className="ticket-item__user">{user}</div>
+                <div className="ticket-item__date">{date}</div>
                 <div className="ticket-item__status">
                     <TicketItemStatus status={status} />
                 </div>
