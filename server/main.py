@@ -1,8 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db.managers.ticket_manager import TicketsManager
 from db import SessionLocal
 from db.models import Base
 from db.managers.teachers_manager import TeachersManager
