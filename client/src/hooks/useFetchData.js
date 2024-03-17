@@ -1,36 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
-
-const useFetchData = (serverUrl) => {
+const useDataApi = (url) => {
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(serverUrl);
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-
-    // Очистка данных при размонтировании компонента
-    return () => setData(null);
-  }, [serverUrl]);
-
-  const updateData = async () => {
+  const fetchData = async (requestData) => {
     try {
-      const response = await axios.get(serverUrl);
+      setIsLoading(true);
+      const response = await axios.post(url, requestData);
+
+      if (!response.data) {
+        throw new Error('Ошибка: Нет данных в ответе сервера');
+      }
+
       setData(response.data);
     } catch (error) {
-      console.error('Error updating data:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return [data, updateData];
+  return { data, isLoading, error, fetchData };
 };
 
-export default useFetchData;
+export default useDataApi;

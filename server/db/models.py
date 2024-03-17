@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-class Teacher(Base):
+class Teachers(Base):
     __tablename__ = 'Teachers'
 
     teacher_id = Column(Integer, primary_key=True)
@@ -13,14 +13,14 @@ class Teacher(Base):
     department = Column(String(100))
 
 
-class TicketState(Base):
+class TicketStates(Base):
     __tablename__ = 'TicketStates'
 
     state_id = Column(Integer, primary_key=True)
     state_name = Column(String(50))
 
 
-class Ticket(Base):
+class Tickets(Base):
     __tablename__ = 'Tickets'
 
     ticket_id = Column(Integer, primary_key=True)
@@ -29,21 +29,15 @@ class Ticket(Base):
     room_number = Column(String(20))
     problem_title = Column(String(255))
     state_id = Column(Integer, ForeignKey('TicketStates.state_id'))
-    state = relationship("TicketState")
+    state = relationship("TicketStates")
 
 
-class Task(Base):
+class Tasks(Base):
     __tablename__ = 'Tasks'
 
     task_id = Column(Integer, primary_key=True)
     ticket_id = Column(Integer, ForeignKey('Tickets.ticket_id'))
     pc_name = Column(String(50))
     task_description = Column(Text)
-    ticket = relationship("Ticket")
-
-
-
-
-
-
+    ticket = relationship("Tickets")
 

@@ -17,3 +17,8 @@ class TicketModel(BaseModel):
     room_number: str
     problem_title: str
     problems: List[ProblemModel]
+
+class TeacherModel(BaseModel):
+    teacher_name: str
+    department: str
+

@@ -1,14 +1,14 @@
 
 ### get current ticket
-GET http://localhost:5000/api/ticket/1 HTTP/1.1
+GET http://localhost:8000/api/ticket/1 HTTP/1.1
 content-type: application/json
 
 ### Get all tickets
-GET http://localhost:5000/api/ticket/all HTTP/1.1
+GET http://localhost:8000/api/ticket/all HTTP/1.1
 content-type: application/json
 
 ### Create a ticket
-POST http://localhost:5000/api/ticket/create HTTP/1.1
+POST http://localhost:8000/api/ticket/create HTTP/1.1
 content-type: application/json
 
 {
@@ -22,5 +22,5 @@ content-type: application/json
 }
 
 ### Remove some ticket
-DELETE http://localhost:5000/api/ticket/3 HTTP/1.1
+DELETE http://localhost:8000/api/ticket/3 HTTP/1.1
 content-type: application/json
