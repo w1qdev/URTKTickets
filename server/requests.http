@@ -4,8 +4,17 @@ GET http://localhost:8000/api/ticket/1 HTTP/1.1
 content-type: application/json
 
 ### Get all tickets
-GET http://localhost:8000/api/ticket/all HTTP/1.1
+GET http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
+
+GET http://localhost:8001/api/tickets/ HTTP/1.1
+content-type: application/json
+
+GET http://localhost:8001/api/ticket_states/ HTTP/1.1
+content-type: application/json
+
+
+
 
 ### Create a ticket
 POST http://localhost:8000/api/ticket/create HTTP/1.1

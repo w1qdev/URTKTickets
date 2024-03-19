@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db import SessionLocal
 from db.models import Base
 from db.managers.teachers_manager import TeachersManager
 from db.managers.ticket_state_manager import TicketStatesManager
 from db.managers.ticket_manager import TicketsManager
+from db.managers.task_manager import TasksManager
 
 
 # Настройка документации OpenAPI
@@ -33,6 +33,7 @@ Base.metadata.create_all(bind=engine)
 teachers_manager = TeachersManager(SessionLocal)
 ticket_states_manager = TicketStatesManager(SessionLocal)
 tickets_manager = TicketsManager(SessionLocal)
+tasks_manager = TasksManager(SessionLocal)
 
 app = FastAPI()
 app.openapi = custom_openapi()
@@ -82,16 +83,41 @@ async def create_ticket(ticket_data: dict):
     new_ticket = tickets_manager.create_ticket(ticket_data)
     return new_ticket
 
-@app.get("/api/tickets/")
-async def get_all_tickets():
-    return tickets_manager.get_all_tickets()
-
 @app.delete("/api/tickets/{ticket_id}")
 async def delete_ticket(ticket_id: int):
     deleted = tickets_manager.delete_ticket(ticket_id)
     if not deleted:
         return {"message": "Тикет не найден"}
     return {"message": "Тикет успешно удалён"}
+
+@app.get("/api/tickets/")
+async def get_all_tickets():
+    return tickets_manager.get_all_tickets()
+
+
+# TASKS API
+@app.post("/api/tasks/")
+async def create_task(task_data: dict):
+    task = tasks_manager.create_task(task_data)
+    return task
+
+# API эндпоинт для получения задач по ID тикета
+@app.get("/api/tasks/{ticket_id}")
+async def get_tasks_by_ticket_id(ticket_id: int):
+    tasks = tasks_manager.get_tasks_by_ticket_id(ticket_id)
+    return tasks
+
+# API эндпоинт для удаления задачи по ID
+@app.delete("/api/tasks/{task_id}")
+async def delete_task(task_id: int):
+    result = tasks_manager.delete_task(task_id)
+    return {"success": result}
+
+@app.get("/api/tasks/")
+async def get_all_tasks():
+    all_tasks = tasks_manager.get_all_tasks()
+    return all_tasks
+
 
 
 if __name__ == "__main__":
