@@ -57,6 +57,14 @@ async def delete_teacher(teacher_id: int):
 async def get_all_teachers():
     return teachers_manager.get_all_teachers()
 
+@app.get("/api/teachers/{teacher_id}")
+async def get_teacher_by_id(teacher_id: int):
+    teacher = teachers_manager.get_teacher_by_id(teacher_id)
+
+    if not teacher:
+        return {"message": "Учитель не найден"}
+    return teacher
+
 
 # TICKET STATES API
 @app.post("/api/ticket_states/")

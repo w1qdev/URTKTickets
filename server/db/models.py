@@ -11,6 +11,7 @@ class Teachers(Base):
     teacher_id = Column(Integer, primary_key=True)
     teacher_name = Column(String(100))
     department = Column(String(100))
+    role = Column(String(50))
 
 
 class TicketStates(Base):

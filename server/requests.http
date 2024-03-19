@@ -17,7 +17,7 @@ content-type: application/json
 
 
 ### Create a ticket
-POST http://localhost:8000/api/ticket/create HTTP/1.1
+POST http://localhost:8001/api/ticket/create HTTP/1.1
 content-type: application/json
 
 {
@@ -30,6 +30,32 @@ content-type: application/json
     ]
 }
 
+
+### Create a teacher
+POST http://localhost:8001/api/teachers/ HTTP/1.1
+content-type: application/json
+
+{
+    "teacher_name": "Елена Бушмелева",
+    "department": "Информатика",
+    "role": "teacher"
+}
+
+### get all teachers
+GET http://localhost:8001/api/teachers/ HTTP/1.1
+content-type: application/json
+
+### get teacher by id
+GET http://localhost:8001/api/teachers/2 HTTP/1.1
+content-type: application/json
+
+
+### remove teacher by id
+DELETE http://localhost:8001/api/teachers/1 HTTP/1.1
+content-type: application/json
+
+
+
 ### Remove some ticket
-DELETE http://localhost:8000/api/ticket/3 HTTP/1.1
+DELETE http://localhost:8001/api/ticket/3 HTTP/1.1
 content-type: application/json
