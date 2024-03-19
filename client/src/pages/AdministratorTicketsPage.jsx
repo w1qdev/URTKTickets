@@ -2,17 +2,18 @@ import './AdministratorTicketsPage.scss'
 import CreateTicketButton from '../components/Buttons/CreateTicketButton';
 import URTKLogo from '../assets/logo/urtkLogo.png'
 import PlusIcon from '../components/Icons/PlusIcon'
-import BlueLine from '../assets/other/blue-line.png'
+// import BlueLine from '../assets/other/blue-line.png'
 import { AnimatePresence } from 'framer-motion'
 import TicketsContainer from '../components/TicketsContainer/TicketsContainer';
 import { getCurrentDate } from '../helpers/utils';
 import { useState } from 'react';
 import CreateTicketPopup from '../components/Popups/CreateTicketPopup';
 
+
 const AdministratorTicketsPage = () => {
 
     const currentDate = getCurrentDate()
-    const userRole = localStorage.getItem('role')
+    const userRole = localStorage.getItem('role') || ""
     const [isPopupOpen, setIsPopupOpen] = useState(false)
     
     const handleOpenPopup = () => setIsPopupOpen(prev => !prev)

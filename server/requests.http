@@ -4,7 +4,7 @@ GET http://localhost:8001/api/tickets/ HTTP/1.1
 content-type: application/json
 
 {
-    "role": "administrator",
+    "role": "teacher",
     "user_id": 1
 }
 
@@ -12,20 +12,18 @@ content-type: application/json
 GET http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
-
-###
-GET http://localhost:8001/api/tickets/ HTTP/1.1
-content-type: application/json
-
 ###
 GET http://localhost:8001/api/ticket_states/ HTTP/1.1
 content-type: application/json
 
+###
+GET http://localhost:8001/api/tasks/ HTTP/1.1
+content-type: application/json
 
 
 
 ### Create a ticket
-POST http://localhost:8001/api/ticket/create HTTP/1.1
+POST http://localhost:8001/api/tickets/ HTTP/1.1
 content-type: application/json
 
 {
@@ -34,7 +32,7 @@ content-type: application/json
     "room_number": "101",
     "problem_title": "Internet Connection Issue",
     "state_id": 1,
-    "teacher_id": 2,
+    "teacher_id": 1,
     "tasks": [
         {
             "pc_name": "PC1",
@@ -68,9 +66,9 @@ POST http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 {
-    "teacher_name": "Ларионов Андрей",
+    "teacher_name": "Бушмелева Елена",
     "department": "Информатика",
-    "role": "administrator"
+    "role": "teacher"
 }
 
 ### get all teachers

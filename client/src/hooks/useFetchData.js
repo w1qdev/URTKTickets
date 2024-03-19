@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const useDataApi = (url) => {
+const useFetchData = (url) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,4 +26,4 @@ const useDataApi = (url) => {
   return { data, isLoading, error, fetchData };
 };
 
-export default useDataApi;
+export default useFetchData;

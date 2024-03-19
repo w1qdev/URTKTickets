@@ -1,10 +1,19 @@
 import './TicketsContainer.scss'
 import TicketItem from '../TicketItem/TicketItem.jsx';
 import NoTicketsImage from '../../assets/other/no-tickets-img.png'
+import useGetData from '../../hooks/useGetData';
+import { endpoints } from '../../helpers/api';
 import { useState } from 'react';
 
 
 const TicketsContainer = () => {
+
+    const [ticketsData, setTicketsData] = useGetData(`${endpoints.getAllTickets}`, {
+        role: localStorage.getItem('role'),
+        user_id: localStorage.getItem('user_id'),
+    })
+
+    console.log(ticketsData)
 
     const [tickets, setTickets] = useState([
         {id: 1, status: "Awaiting Review", title: "Устранение технических неполадок", description: "Проблема №1, Проблема №2, Проблема №3", location: "№41", user: "Елена Бушмелёва", date: "17.03.2024", fullData: {} },

@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -37,8 +38,18 @@ tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
 works_manager = WorksManager(SessionLocal)
 
+
 app = FastAPI()
 app.openapi = custom_openapi()
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[ "*" ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
 
 # TEACHERS API
@@ -69,7 +80,6 @@ async def get_teacher_by_id(teacher_id: int):
 
 
 # TICKET STATES API
-
 @app.post("/api/ticket_states/")
 async def create_ticket_state(state_data: dict):
     # Создание состояний для тикетов
@@ -118,10 +128,8 @@ async def delete_ticket(ticket_id: int):
     return {"message": "Тикет успешно удалён"}
 
 @app.get("/api/tickets/")
-async def get_tickets(data: dict):
-    role = data.get("role")
-    user_id = int(data.get("user_id"))
-
+async def get_tickets(role: str = Query(...), user_id: int = Query(...)):
+    
     if role == "administrator":
         tickets = tickets_manager.get_all_tickets()
         return {"tickets": tickets}
@@ -130,7 +138,7 @@ async def get_tickets(data: dict):
         # Проверяем, существует ли проподавателем с указанным user_id
         teacher = teachers_manager.get_teacher_by_id(user_id)
         if not teacher:
-            return {"message": "Учителя с таким id не существует"}
+            return {"message": "Преподователь с таким id не существует"}
         
         # Получаем все тикеты, созданные указанным проподавателем
         teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)

@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const useFetchData = (serverUrl) => {
+const useGetData = (serverUrl, params) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(serverUrl);
+        const response = await axios.get(serverUrl, { params });
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -19,11 +19,11 @@ const useFetchData = (serverUrl) => {
 
     // Очистка данных при размонтировании компонента
     return () => setData(null);
-  }, [serverUrl]);
+  }, [serverUrl, params]);
 
   const updateData = async () => {
     try {
-      const response = await axios.get(serverUrl);
+      const response = await axios.get(serverUrl, { params });
       setData(response.data);
     } catch (error) {
       console.error('Error updating data:', error);
@@ -33,4 +33,4 @@ const useFetchData = (serverUrl) => {
   return [data, updateData];
 };
 
-export default useFetchData;
+export default useGetData;
