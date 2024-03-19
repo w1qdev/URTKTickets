@@ -98,20 +98,26 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
 
                     {!isCreatingTask ? (
-                        <button 
-                            className="create__task-button"
-                            onClick={handleCreatingTask}
-                        >
-                            <div className="button__text">Добавить задачу</div>
-                            <PlusIcon width="20" height="20" fill="#5383FF" />
-                        </button>
+                        <AnimatePresence>
+                            <motion.button 
+                                className="create__task-button"
+                                onClick={handleCreatingTask}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0, transition: 0.2 }}
+                            >
+                                <div className="button__text">Добавить задачу</div>
+                                <PlusIcon width="20" height="20" fill="#5383FF" />
+                            </motion.button>
+                        </AnimatePresence>
                     ) : (
                         <AnimatePresence>
                             <motion.div 
                                 className="new-item"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0, transition: 0.2 }}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 , transition: 0.3}}
+                                exit={{ scale: 0.95, opacity: 0, transition: 0.2 }}
+                                transition={{ duration: 0.4 }}
                             >
                                 <div className="new-item__general">
                                     <input className="new-item__general-pc" type="text" placeholder="ПК №1" />

@@ -45,7 +45,7 @@ app.openapi = custom_openapi()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[ "*" ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
@@ -136,13 +136,13 @@ async def get_tickets(role: str = Query(...), user_id: int = Query(...)):
     
     elif role == "teacher":
         # Проверяем, существует ли проподавателем с указанным user_id
-        teacher = teachers_manager.get_teacher_by_id(user_id)
+        teacher = teachers_manager.get_teacher_by_id(teacher_id=user_id)
         if not teacher:
             return {"message": "Преподователь с таким id не существует"}
         
         # Получаем все тикеты, созданные указанным проподавателем
         teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)
-        return {"teacher_tickets": teacher_tickets}
+        return {"tickets": teacher_tickets}
     else:
         return {"message": "Роль не верная"}
 

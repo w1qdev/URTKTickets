@@ -13,3 +13,12 @@ export const getCurrentDate = () => {
     
     return currentDate
 }
+
+
+export const getTicketStateNameById = (ticket_id) => {
+    switch (ticket_id) {
+        case 1: return "Awaiting Review";
+        case 2: return "Awaiting Confirmation";
+        case 3: return "Confirmed";
+    }
+} 

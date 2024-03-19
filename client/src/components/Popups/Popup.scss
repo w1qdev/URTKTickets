@@ -207,6 +207,7 @@
                                     border-radius: 4px;
                                     margin-top: 4px;
                                     
+                                    
                                     &.type-fix {
                                         background-color: #FFA9A9;
                                         color: #a83f3f;
@@ -330,7 +331,7 @@
                                 transition: border-color linear 0.2s;
 
                                 &:hover, &:focus {
-                                    border-color: #343434;
+                                    border-color: #5383FF;
                                 }
 
                                 &::placeholder {

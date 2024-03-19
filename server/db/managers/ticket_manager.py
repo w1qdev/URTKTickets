@@ -1,5 +1,4 @@
-from db.models import Tickets, Tasks, Works
-from sqlalchemy.orm import joinedload
+from db.models import Tickets, TicketStates, Tasks, Works
 
 
 class TicketsManager():
@@ -10,6 +9,7 @@ class TicketsManager():
         # Получение всех тикетов
         try: 
             tickets = self.session.query(Tickets).all()
+
             return tickets
         finally:
             self.session.close()

@@ -1,5 +1,4 @@
-<Client>
-AdministaratorTicketsPage - Линия слева снизу отображается поверх всех элементов
+[Client]
+ - AdministaratorTicketsPage - Линия слева снизу отображается поверх всех элементов
+ - CORS Privacy....
 
-<Server>
-[server] /docs не обновляется, решить проблему!!!

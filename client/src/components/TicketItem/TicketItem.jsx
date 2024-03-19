@@ -5,6 +5,7 @@ import AcceptTicketPopup from '../Popups/AcceptTicketPopup'
 import ConfirmTicketPopup from '../Popups/ConfirmTicketPopup'
 import './TicketItem.scss'
 import ViewTicketPopup from '../Popups/ViewTicketPopup'
+import { getTicketStateNameById } from '../../helpers/utils'
 
 
 const PopupBody = ({ status, popupHandler }) => {
@@ -48,7 +49,8 @@ const TicketItemStatus = ({ status }) => {
 
 const TicketItem = (props) => {
 
-    const { id, title, description, location, user, date, fullData, status } = props
+    const { ticket_id, problem_title, description, room_number, customer_name, submission_date, fullData, state_id } = props
+    const ticket_status = getTicketStateNameById(state_id)
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     const handlePopup = () => setIsPopupOpen(prev => !prev)
@@ -56,22 +58,22 @@ const TicketItem = (props) => {
     return (
         <>
             <AnimatePresence>
-                {isPopupOpen ? <PopupBody status={status} popupHandler={handlePopup} /> : null}
+                {isPopupOpen ? <PopupBody status={ticket_status} popupHandler={handlePopup} /> : null}
             </AnimatePresence>
             <div 
                 className='ticket-item'
                 onClick={handlePopup}
             >
-                <div className="ticket-item__number">{id}</div>
+                <div className="ticket-item__number">{ticket_id}</div>
                 <div className="ticket-item__problem">
-                    <div className="problem__title">{title}</div>
+                    <div className="problem__title">{problem_title}</div>
                     <div className="problem__description">{description}</div>
                 </div>
-                <div className="ticket-item__location">Аудитория <strong>{location}</strong></div>
-                <div className="ticket-item__user">{user}</div>
-                <div className="ticket-item__date">{date}</div>
+                <div className="ticket-item__location">Аудитория <strong>№{room_number}</strong></div>
+                <div className="ticket-item__user">{customer_name}</div>
+                <div className="ticket-item__date">{submission_date}</div>
                 <div className="ticket-item__status">
-                    <TicketItemStatus status={status} />
+                    <TicketItemStatus status={ticket_status} />
                 </div>
             </div>
         </>
