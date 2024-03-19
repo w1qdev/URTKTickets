@@ -25,12 +25,15 @@ class Tickets(Base):
     __tablename__ = 'Tickets'
 
     ticket_id = Column(Integer, primary_key=True)
-    submission_date = Column(Date)
+    submission_date = Column(String)
     customer_name = Column(String(100))
     room_number = Column(String(20))
     problem_title = Column(String(255))
     state_id = Column(Integer, ForeignKey('TicketStates.state_id'))
+    teacher_id = Column(Integer, ForeignKey("Teachers.teacher_id"))
+    teacher = relationship("Teachers")
     state = relationship("TicketStates")
+    
 
 
 class Tasks(Base):
@@ -42,3 +45,11 @@ class Tasks(Base):
     task_description = Column(Text)
     ticket = relationship("Tickets")
 
+
+class Works(Base):
+    __tablename__ = 'Works'
+
+    work_id = Column(Integer, primary_key=True)
+    task_id = Column(Integer, ForeignKey('Tasks.task_id'))
+    task_description = Column(Text)
+    task = relationship("Tasks")

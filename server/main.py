@@ -7,6 +7,7 @@ from db.managers.teachers_manager import TeachersManager
 from db.managers.ticket_state_manager import TicketStatesManager
 from db.managers.ticket_manager import TicketsManager
 from db.managers.task_manager import TasksManager
+from db.managers.work_manager import WorksManager
 
 
 # Настройка документации OpenAPI
@@ -34,6 +35,7 @@ teachers_manager = TeachersManager(SessionLocal)
 ticket_states_manager = TicketStatesManager(SessionLocal)
 tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
+works_manager = WorksManager(SessionLocal)
 
 app = FastAPI()
 app.openapi = custom_openapi()
@@ -67,13 +69,18 @@ async def get_teacher_by_id(teacher_id: int):
 
 
 # TICKET STATES API
+
 @app.post("/api/ticket_states/")
-async def create_ticket_state(state_name: str):
-    new_state = ticket_states_manager.add_ticket_state(state_name)
+async def create_ticket_state(state_data: dict):
+    # Создание состояний для тикетов
+
+    new_state = ticket_states_manager.add_ticket_state(state_data)
     return new_state
 
 @app.delete("/api/ticket_states/{state_id}")
 async def delete_ticket_state(state_id: int):
+    # Удаление состояний для тикетов
+
     state = ticket_states_manager.get_ticket_state_by_id(state_id)
     if not state:
         return {"message": "Состояние тикета не найдено"}
@@ -82,7 +89,19 @@ async def delete_ticket_state(state_id: int):
 
 @app.get("/api/ticket_states/")
 async def get_all_ticket_states():
+    # Отправка свех состояний для тикетов
+
     return ticket_states_manager.get_all_ticket_states()
+
+@app.get("/api/ticket_states/{state_id}")
+async def get_ticket_state_by_id(state_id: int):
+    # получение данных о состоянии тикета по id
+
+    teacher = ticket_states_manager.get_ticket_state_by_id(state_id)
+
+    if not teacher:
+        return {"message": "Состояние тикета не найдено"}
+    return teacher
 
 
 # TICKETS API
@@ -99,8 +118,25 @@ async def delete_ticket(ticket_id: int):
     return {"message": "Тикет успешно удалён"}
 
 @app.get("/api/tickets/")
-async def get_all_tickets():
-    return tickets_manager.get_all_tickets()
+async def get_tickets(data: dict):
+    role = data.get("role")
+    user_id = int(data.get("user_id"))
+
+    if role == "administrator":
+        tickets = tickets_manager.get_all_tickets()
+        return {"tickets": tickets}
+    
+    elif role == "teacher":
+        # Проверяем, существует ли проподавателем с указанным user_id
+        teacher = teachers_manager.get_teacher_by_id(user_id)
+        if not teacher:
+            return {"message": "Учителя с таким id не существует"}
+        
+        # Получаем все тикеты, созданные указанным проподавателем
+        teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)
+        return {"teacher_tickets": teacher_tickets}
+    else:
+        return {"message": "Роль не верная"}
 
 
 # TASKS API

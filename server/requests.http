@@ -1,15 +1,23 @@
 
 ### get current ticket
-GET http://localhost:8000/api/ticket/1 HTTP/1.1
-content-type: application/json
-
-### Get all tickets
-GET http://localhost:8001/api/teachers/ HTTP/1.1
-content-type: application/json
-
 GET http://localhost:8001/api/tickets/ HTTP/1.1
 content-type: application/json
 
+{
+    "role": "administrator",
+    "user_id": 1
+}
+
+### Get all teachers
+GET http://localhost:8001/api/teachers/ HTTP/1.1
+content-type: application/json
+
+
+###
+GET http://localhost:8001/api/tickets/ HTTP/1.1
+content-type: application/json
+
+###
 GET http://localhost:8001/api/ticket_states/ HTTP/1.1
 content-type: application/json
 
@@ -21,24 +29,48 @@ POST http://localhost:8001/api/ticket/create HTTP/1.1
 content-type: application/json
 
 {
-    "submission_date": "2024-09-18",
+    "submission_date": "2024-03-20",
     "customer_name": "Елена Бушмелева",
-    "room_number": "№41",
-    "problem_title": "Устранение технических неполадок",
-    "problems": [
-        { "pc_name": "ПК №4", "tasks": [ { "text": "Ремонт ПК" }, { "text": "Чистка ПК" }, { "text": "Установка ПО" } ], "description": "some description" }
+    "room_number": "101",
+    "problem_title": "Internet Connection Issue",
+    "state_id": 1,
+    "teacher_id": 2,
+    "tasks": [
+        {
+            "pc_name": "PC1",
+            "works": [
+                {
+                    "task_description": "Check network cables"
+                },
+                {
+                    "task_description": "Reboot the router"
+                }
+            ]
+        },
+        {
+            "pc_name": "PC2",
+            "works": [
+                {
+                    "task_description": "Check router settings"
+                },
+                {
+                    "task_description": "Contact ISP"
+                }
+            ]
+        }
     ]
 }
 
 
+############ Teachers #################
 ### Create a teacher
 POST http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 {
-    "teacher_name": "Елена Бушмелева",
+    "teacher_name": "Ларионов Андрей",
     "department": "Информатика",
-    "role": "teacher"
+    "role": "administrator"
 }
 
 ### get all teachers
@@ -54,6 +86,48 @@ content-type: application/json
 DELETE http://localhost:8001/api/teachers/1 HTTP/1.1
 content-type: application/json
 
+
+
+############ Ticket states #################
+### Create a ticket state
+POST http://localhost:8001/api/ticket_states/ HTTP/1.1
+content-type: application/json
+
+{
+    "state_name": "Awaiting Review"
+}
+
+### Create a ticket state
+POST http://localhost:8001/api/ticket_states/ HTTP/1.1
+content-type: application/json
+
+{
+    "state_name": "Awaiting Confirmation"
+}
+
+
+### Create a ticket state
+POST http://localhost:8001/api/ticket_states/ HTTP/1.1
+content-type: application/json
+
+{
+    "state_name": "Confirmed"
+}
+
+
+
+### get all ticket state
+GET http://localhost:8001/api/ticket_states/ HTTP/1.1
+content-type: application/json
+
+### get ticket state by id
+GET http://localhost:8001/api/ticket_states/1 HTTP/1.1
+content-type: application/json
+
+
+### remove ticket state by id
+DELETE http://localhost:8001/api/ticket_states/1 HTTP/1.1
+content-type: application/json
 
 
 ### Remove some ticket

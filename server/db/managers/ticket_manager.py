@@ -50,4 +50,7 @@ class TicketsManager():
             return True
         return False
     
+    def get_tickets_by_teacher_id(self, teacher_id: int):
+        return self.session.query(Tickets).filter(Tickets.teacher_id == teacher_id).all()
+    
     
