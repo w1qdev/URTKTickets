@@ -1,6 +1,6 @@
 
 ### get current ticket
-GET http://localhost:8001/api/tickets/?role=teacher&user_id=1 HTTP/1.1
+GET http://localhost:8001/api/tickets/?role=teacher&user_id=3 HTTP/1.1
 content-type: application/json
 
 
@@ -28,7 +28,7 @@ content-type: application/json
     "room_number": "45",
     "problem_title": "Сломалась мышка",
     "state_id": 2,
-    "teacher_id": 1,
+    "teacher_id": 3,
     "tasks": [
         {
             "pc_name": "PC1",
@@ -62,7 +62,7 @@ POST http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 {
-    "teacher_name": "Бушмелева Елена",
+    "teacher_name": "Виктор Викторович",
     "department": "Информатика",
     "role": "teacher"
 }

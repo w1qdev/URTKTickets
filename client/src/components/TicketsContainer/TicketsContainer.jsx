@@ -1,8 +1,8 @@
 import './TicketsContainer.scss'
-import TicketItem from '../TicketItem/TicketItem.jsx';
-import NoTicketsImage from '../../assets/other/no-tickets-img.png'
 import axios from 'axios'
 import { useState, useEffect, useMemo } from 'react';
+import TicketsList from '../TicketsList/TicketsList.jsx';
+
 
 
 const TicketsContainer = () => {
@@ -38,7 +38,7 @@ const TicketsContainer = () => {
 
     const sortedTickets = useMemo(() => {
         return tickets.slice().sort((a, b) => a.state_id - b.state_id);
-      }, [tickets]);
+    }, [tickets]);
 
     return (
         <div className="tickets-container">
@@ -57,14 +57,7 @@ const TicketsContainer = () => {
             </div>
 
             <div className="tickets-container__problems-list">
-                {sortedTickets.length ? sortedTickets.map(ticket => (
-                    <TicketItem key={ticket.ticket_id} {...ticket} />
-                )) : (
-                    <div className='no-tickets'>
-                        <img className='no-tickets__img' src={NoTicketsImage} alt="Нет новых тикетов" />
-                        <div className="no-tickets__description">Ой.... У вас нет новых тикетов</div>
-                    </div>
-                )}    
+                <TicketsList ticketsData={sortedTickets} /> 
             </div>
         </div>
     )
