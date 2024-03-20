@@ -205,8 +205,7 @@
                                     font-size: 12px;
                                     padding: 6px 12px;
                                     border-radius: 4px;
-                                    margin-top: 4px;
-                                    
+                                    margin-bottom: 3px;
                                     
                                     &.type-fix {
                                         background-color: #FFA9A9;
@@ -226,6 +225,26 @@
                                     &.type-not-working {
                                         background-color: #9890FC;
                                         color: #4e499a;
+                                    }
+
+                                    &.type-upgrade {
+                                        background-color: #4E7FFF;
+                                        color: #2b4c89;
+                                    }
+
+                                    &.type-network {
+                                        background-color: #48BB78;
+                                        color: #286241;
+                                    }
+
+                                    &.type-hardware {
+                                        background-color: #F6AD55;
+                                        color: #955e2b;
+                                    }
+
+                                    &.type-software {
+                                        background-color: #9F7AEA;
+                                        color: #583ba8
                                     }
                                 }
                             }
@@ -251,7 +270,7 @@
                     .create__task-button {
                         width: 170px;
                         height: 35px;
-                        margin-top: 10px;
+                        margin-top: 5px;
                         background-color: transparent;
                         border: 1px dashed #5383FF;
                         border-radius: 6px;
@@ -283,16 +302,20 @@
 
                     .new-item {
                         width: 100%;
+                        max-width: 100%;
                         height: auto;
                         display: flex;
                         flex-direction: row;
                         align-items: center;
+                        flex-wrap: wrap;
                         margin-top: 3px;
                         
                         &__general {
+                            width: 100%;
                             display: flex;
                             justify-content: start;
                             align-items: center;
+                            flex-wrap: wrap;
 
                             *:not(:first-child) {
                                 margin-left: 6px;
@@ -352,6 +375,7 @@
                 padding: 0px 5px;
 
                 .button__text {
+                    font-size: 14px;
                     color: #fff;
                 }
 
@@ -372,7 +396,6 @@
     justify-content: start;
     align-items: center;
     margin-left: 4px;
-    display: none;
 
     .actions__save, 
     .actions__remove,

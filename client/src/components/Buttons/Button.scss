@@ -1,6 +1,6 @@
 .button {
-    width: 178px;
-    height: 36px;
+    width: 178px !important;
+    height: 36px !important;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -10,6 +10,10 @@
     cursor: pointer;
     transition: opacity linear 0.2s;
     font-weight: 600;
+
+    &__text {
+        font-size: 14px;
+    }
 
     &:hover {
         opacity: 0.8;
