@@ -11,6 +11,7 @@ import AngleIcon from "../Icons/AngleIcon";
 import WorksList from "../WorksList/WorksList";
 import SendTicketIcon from '../Icons/SendTicketIcon'
 import TasksList from "../TasksList/TasksList";
+import EditIcon from "../Icons/EditIcon";
 import Popup from "./Popup";
 import {
     Menu,
@@ -22,7 +23,7 @@ import {
     Button as ChakraButton
   } from '@chakra-ui/react' 
 import { ChevronDownIcon } from '@chakra-ui/icons'
-import { useState } from "react";
+import { useRef, useState } from "react";
 import WorkItem from "../WorkItem/WorkItem";
 
 
@@ -30,7 +31,9 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
     const currentDate = getCurrentDate()
 
+    const inputRef = useRef(null)
     const [room, setRoom] = useState(null)
+    const [taskTitle, setTaskTitle] = useState("Устранение технических неполадок")
     const [tasks, setTasks] = useState([])
     const [currentTask, setCurrentTask] = useState({
         pc_name: '',
@@ -115,12 +118,41 @@ const CreateTicketPopup = ({ popupHandler }) => {
         }
     }
 
+    const handleEditButtonClick = () => {
+        inputRef.current.focus();
+    }
+
     return (
         <Popup
             title="Заявка системному администратору" 
             popupStatus="Создание заявки"
             popupHandler={popupHandler}
         >
+            <div className="body__title">
+                <div className="body__title-label">Название проблемы: </div>
+                <input 
+                    className="body__title-text" 
+                    value={taskTitle} 
+                    onChange={(e) => setTaskTitle(e.target.value)} 
+                    placeholder="Устранение технических неполадок...."
+                    ref={inputRef}
+                />
+                <Tooltip 
+                    hasArrow 
+                    label='Редактировать название проблемы' 
+                    placement="top" 
+                    bg='gray.600'
+                    openDelay={200}
+                >
+                    <div 
+                        className="body__title-icon"
+                        onClick={handleEditButtonClick}
+                    >
+                        <EditIcon className="icon" />
+                    </div>
+                </Tooltip>
+            </div>
+
             <div className="body__location body__section">
                 <div className="body__location__room">
                     <div className="title">Аудитория</div>

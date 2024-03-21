@@ -11,17 +11,19 @@
     box-shadow: 0 0 7px 0 rgba(90, 90, 90, 0.15);
     background: #fff;
 
+    border: 1px solid transparent;
     border-radius: 6px;
     text-align: center;
-
+    
     font-weight: 300;
 
     cursor: pointer;
 
-    transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear, border-color linear 0.2s;
 
     &:hover {
-        background-color: #7ea9e90c;
+        // background-color: #7ea9e90c;
+        border-color: #86a7d8;
     }
 
     &__number {
