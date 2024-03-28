@@ -3,6 +3,7 @@ import NoTicketsImage from '../../assets/other/no-tickets-img.png'
 
 
 const TicketsList = ({ ticketsData }) => {
+
     return (
         <>
             {ticketsData.length ? ticketsData.map(ticket => (

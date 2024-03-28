@@ -8,12 +8,12 @@ import ViewTicketPopup from '../Popups/ViewTicketPopup'
 import { getTicketStateNameById } from '../../helpers/utils'
 
 
-const PopupBody = ({ status, popupHandler }) => {
+const PopupBody = ({ status, popupHandler, ticketData }) => {
 
     const popupContainers = {
-        'Awaiting Review': <AcceptTicketPopup popupHandler={popupHandler} title="Рассмотрение заявки" popupStatus="Подтверждение заявки" />,
-        'Awaiting Confirmation': <ConfirmTicketPopup popupHandler={popupHandler} title="Подтверждение выполненных задач" popupStatus="Отправка на проверку" />,
-        'Confirmed': <ViewTicketPopup popupHandler={popupHandler} title="Заявка системному администратору" popupStatus="Просмотр заявки" />,
+        'Awaiting Review': <AcceptTicketPopup ticketData={ticketData} popupHandler={popupHandler} title="Рассмотрение заявки" popupStatus="Подтверждение заявки" />,
+        'Awaiting Confirmation': <ConfirmTicketPopup ticketData={ticketData} popupHandler={popupHandler} title="Подтверждение выполненных задач" popupStatus="Отправка на проверку" />,
+        'Confirmed': <ViewTicketPopup ticketData={ticketData} popupHandler={popupHandler} title="Заявка системному администратору" popupStatus="Просмотр заявки" />,
     }
     
     return popupContainers[status]
@@ -21,7 +21,7 @@ const PopupBody = ({ status, popupHandler }) => {
 
 const TicketItem = (props) => {
 
-    const { ticket_id, problem_title, description, room_number, customer_name, submission_date, fullData, state_id } = props
+    const { ticket_id, problem_title, task_description, room_number, customer_name, submission_date, tasks, state_id } = props
     const ticket_status = getTicketStateNameById(state_id)
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
@@ -30,7 +30,7 @@ const TicketItem = (props) => {
     return (
         <>
             <AnimatePresence>
-                {isPopupOpen ? <PopupBody status={ticket_status} popupHandler={handlePopup} /> : null}
+                {isPopupOpen ? <PopupBody ticketData={props} status={ticket_status} popupHandler={handlePopup} /> : null}
             </AnimatePresence>
             <div 
                 className='ticket-item'
@@ -39,7 +39,7 @@ const TicketItem = (props) => {
                 <div className="ticket-item__number">{ticket_id}</div>
                 <div className="ticket-item__problem">
                     <div className="problem__title">{problem_title}</div>
-                    <div className="problem__description">{description}</div>
+                    <div className="problem__description">{task_description}</div>
                 </div>
                 <div className="ticket-item__location">Аудитория <strong>№{room_number}</strong></div>
                 <div className="ticket-item__user">{customer_name}</div>

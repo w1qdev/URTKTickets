@@ -8,8 +8,10 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: opacity linear 0.2s;
     font-weight: 600;
+    transition: opacity linear 0.2s, 
+                background-color linear 0.2s;
+    
 
     &__text {
         font-size: 14px;

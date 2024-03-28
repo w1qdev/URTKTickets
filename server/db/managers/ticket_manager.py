@@ -1,4 +1,4 @@
-from db.models import Tickets, TicketStates, Tasks, Works
+from db.models import Tickets, Tasks
 
 
 class TicketsManager():
@@ -26,8 +26,8 @@ class TicketsManager():
                 state_id=ticket_data.get('state_id'),
                 teacher_id=ticket_data.get('teacher_id')
             )
-
-            # Создание задач и добавление их в тикет
+            
+            # Добавление задач к тикету
             tasks_data = ticket_data.get('tasks', [])
             for task_data in tasks_data:
                 task = Tasks(
@@ -35,16 +35,6 @@ class TicketsManager():
                     pc_name=task_data.get('pc_name'),
                     task_description=task_data.get('task_description')
                 )
-
-                # Создание работ и добавление их к задаче
-                works_data = task_data.get('works', [])
-                for work_data in works_data:
-                    work = Works(
-                        task=task,
-                        task_description=work_data.get('task_description')
-                    )
-                    self.session.add(work)
-
                 self.session.add(task)
 
             self.session.add(ticket)
@@ -54,10 +44,28 @@ class TicketsManager():
         finally: 
             self.session.close()
 
+    def change_ticket_status(self, ticket_id: int, new_status_id: int):
+        # Обновление статуса тикета по его идентификатору
+        try:
+            ticket = self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
+
+            if not ticket:
+                return False  # Тикет не найден
+
+            ticket.state_id = new_status_id
+            self.session.commit()
+            return True  # Статус успешно обновлен
+        
+        except Exception as e:
+            print(f"An error occurred while changing ticket status: {e}")
+            self.session.rollback()
+
+            return False  # Произошла ошибка, статус не обновлен
     
     def remove_ticket(self, ticket_id: int):
         # Удаление тикета по id
         ticket = self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
+
         if ticket:
             self.session.delete(ticket)
             self.session.commit()
@@ -68,4 +76,15 @@ class TicketsManager():
         # Получение определённого тикета по id
         return self.session.query(Tickets).filter(Tickets.teacher_id == teacher_id).all()
     
+    def remove_all_tickets(self):
+        # Удаление всех тикетов
+        try:
+            self.session.query(Tickets).delete()
+            self.session.commit()
+            return True
+        
+        except Exception as e:
+            print(f"An error occurred while removing all tickets: {e}")
+            self.session.rollback()
+            return False
     

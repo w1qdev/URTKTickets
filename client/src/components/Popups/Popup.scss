@@ -88,7 +88,7 @@
                 }
 
                 &-text {
-                    width: 45%;
+                    width: auto;
                     padding: 5px 10px;
                     outline: none;
                     background-color: #f3f8ff;
@@ -257,6 +257,7 @@
                             }
 
                             &-pc {
+                                width: 11%;
                                 font-size: 14px;
                                 box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
                                 background: #fff;
@@ -265,7 +266,7 @@
                             }
 
                             &__tasks {
-                                width: 85%;
+                                width: 84%;
                                 display: flex;
                                 flex-direction: row;
                                 justify-content: start;
@@ -327,6 +328,7 @@
                         }
 
                         &__description {
+                            max-width: 70%;
                             margin-top: 8px;
                             padding: 10px;
                             border-radius: 6px;
@@ -343,7 +345,7 @@
                         height: 35px;
                         margin-top: 5px;
                         background-color: transparent;
-                        border: 1px dashed #5383FF;
+                        border: 1px dashed #56ea4e;
                         border-radius: 6px;
                         display: flex;
                         justify-content: space-evenly;
@@ -352,7 +354,7 @@
                         transition: linear 0.2s;
 
                         &:hover {
-                            background-color: #5383FF;
+                            background-color: #56ea4e;
 
                             .button__text {
                                 color: #fff;
@@ -366,7 +368,7 @@
                         }
 
                         .button__text {
-                            color: #5383FF;
+                            color: #56ea4e;
                             transition: color linear 0.2s;
                         }
                     }
@@ -393,6 +395,7 @@
                             }
 
                             &-pc {
+                                
                                 border: 1px solid transparent;
                                 outline: none;
                                 font-size: 14px;
@@ -414,15 +417,17 @@
                             }
 
                             &-task {
-                                width: 100px;
+                                width: 80%;
+                                min-height: 100px;
                                 padding: 6px 12px;
                                 border-radius: 4px;
                                 outline: none;
                                 border: 1px solid #cecece;
-                                font-size: 12px;
+                                font-size: 14px;
                                 box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
                                 background: #fff;
                                 transition: border-color linear 0.2s;
+                                resize: none;
 
                                 &:hover, &:focus {
                                     border-color: #5383FF;

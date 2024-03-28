@@ -22,3 +22,35 @@ export const getTicketStateNameById = (ticket_id) => {
         case 3: return "Confirmed";
     }
 } 
+
+
+export const dateFormatter = (date) => {
+    
+    const months = [
+        "января", "февраля", "марта", "апреля", "мая", "июня",
+        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+    ];
+
+    // Проверяем формат даты
+    if (date.includes('.')) {
+        // Если формат даты "день.месяц.год"
+        const [day, month, year] = date.split('.');
+        return `${day} ${months[parseInt(month) - 1]} ${year}`;
+    } else {
+        // Если формат даты "год-месяц-день"
+        // Создание объекта Date из строки
+        const dateObj = new Date(date);
+
+        
+        const monthIndex = dateObj.getMonth();
+        const month = months[monthIndex];
+
+        // Получение дня и года
+        const day = dateObj.getDate();
+        const year = dateObj.getFullYear();
+
+        // Формирование отформатированной строки
+        return `${day} ${month} ${year}`;
+    }
+}
+

@@ -62,7 +62,8 @@
         padding: 5px;
         margin-top: 5px;
         max-height: 598px;
-        overflow: auto;
+        height: 598px;
+        overflow: scroll !important;
 
 
         &::-webkit-scrollbar {

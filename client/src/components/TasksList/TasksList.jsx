@@ -1,9 +1,7 @@
-import WorksList from "../WorksList/WorksList"
 import AngleIcon from "../Icons/AngleIcon"
 
-const TasksList = ({ tasksData }) => {
-    console.log(tasksData)
 
+const TasksList = ({ tasksData }) => {
     return (
         <>
             {tasksData.length ? tasksData.map(task => (
@@ -11,7 +9,7 @@ const TasksList = ({ tasksData }) => {
                     <div className="item__general">
                         <div className="item__general-pc">{task.pc_name}</div>
                         <AngleIcon className="item__general-angle" />
-                        <WorksList works={task.works} />
+                        <div className="item__description">{task.task_description}</div>
                     </div>
                 </div>
             )) : null}

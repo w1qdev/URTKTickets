@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Date, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -35,7 +35,6 @@ class Tickets(Base):
     state = relationship("TicketStates")
     
 
-
 class Tasks(Base):
     __tablename__ = 'Tasks'
 
@@ -44,12 +43,3 @@ class Tasks(Base):
     pc_name = Column(String(50))
     task_description = Column(Text)
     ticket = relationship("Tickets")
-
-
-class Works(Base):
-    __tablename__ = 'Works'
-
-    work_id = Column(Integer, primary_key=True)
-    task_id = Column(Integer, ForeignKey('Tasks.task_id'))
-    task_description = Column(Text)
-    task = relationship("Tasks")

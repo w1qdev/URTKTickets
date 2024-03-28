@@ -1,10 +1,10 @@
 import './Button.scss'
 
 
-const Button = ({ children, bgColor, clickHandler }) => {
+const Button = ({ children, bgColor, onClick }) => {
     return (
         <button
-            onClick={clickHandler}
+            onClick={onClick}
             className='button'
             style={{ 
                 backgroundColor: `${bgColor}`,

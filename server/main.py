@@ -8,7 +8,6 @@ from db.managers.teachers_manager import TeachersManager
 from db.managers.ticket_state_manager import TicketStatesManager
 from db.managers.ticket_manager import TicketsManager
 from db.managers.task_manager import TasksManager
-from db.managers.work_manager import WorksManager
 
 
 # Настройка документации OpenAPI
@@ -37,7 +36,6 @@ teachers_manager = TeachersManager(SessionLocal)
 ticket_states_manager = TicketStatesManager(SessionLocal)
 tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
-works_manager = WorksManager(SessionLocal)
 
 
 app = FastAPI()
@@ -118,12 +116,15 @@ async def get_ticket_state_by_id(state_id: int):
 # TICKETS API
 @app.post("/api/tickets/")
 async def create_ticket(ticket_data: dict):
-    new_ticket = tickets_manager.create_ticket(ticket_data)
-    return new_ticket
+    tickets_manager.create_ticket(ticket_data)
+    return { 
+        'message': "Новый тикет успешно создан",
+        'status': 'OK'
+    }
 
 @app.delete("/api/tickets/{ticket_id}")
 async def delete_ticket(ticket_id: int):
-    deleted = tickets_manager.delete_ticket(ticket_id)
+    deleted = tickets_manager.remove_ticket(ticket_id)
     if not deleted:
         return {"message": "Тикет не найден"}
     return {"message": "Тикет успешно удалён"}
@@ -133,19 +134,47 @@ async def get_tickets(role: str = Query(...), user_id: int = Query(...)):
     
     if role == "administrator":
         tickets = tickets_manager.get_all_tickets()
-        return {"tickets": tickets}
+        tickets_with_tasks = []
+
+        for ticket in tickets:
+            ticket_data = ticket.__dict__
+            tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+            ticket_data["tasks"] = [task.__dict__ for task in tasks]
+            tickets_with_tasks.append(ticket_data)
+
+        return {"tickets": tickets_with_tasks}
     
     elif role == "teacher":
-        # Проверяем, существует ли проподавателем с указанным user_id
+        # Проверяем, существует ли преподаватель с указанным user_id
         teacher = teachers_manager.get_teacher_by_id(teacher_id=user_id)
         if not teacher:
-            return {"message": "Преподователь с таким id не существует"}
+            return {"message": "Преподаватель с таким id не существует"}
         
-        # Получаем все тикеты, созданные указанным проподавателем
+        # Получаем все тикеты, созданные указанным преподавателем
         teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)
-        return {"tickets": teacher_tickets}
+        tickets_with_tasks = []
+
+        for ticket in teacher_tickets:
+            ticket_data = ticket.__dict__
+            tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+            ticket_data["tasks"] = [task.__dict__ for task in tasks]
+            tickets_with_tasks.append(ticket_data)
+
+        return {"tickets": tickets_with_tasks}
     else:
-        return {"message": "Роль не верная"}
+        return {"message": "Роль неверна"}
+
+@app.put("/api/tickets/{ticket_id}/change_status/")
+async def change_ticket_status(ticket_id: int, status_data: dict):
+    changed_ticket = tickets_manager.change_ticket_status(ticket_id, status_data['new_status_id'])
+
+    if changed_ticket:
+        return {
+            "message": "Статус тикета успешно изменен",
+            "status": "OK"
+        }
+    else:
+        return {"message": "Ошибка при изменении статуса тикета"}
 
 
 # TASKS API
@@ -171,6 +200,9 @@ async def get_all_tasks():
     all_tasks = tasks_manager.get_all_tasks()
     return all_tasks
 
+# debug
+tickets_manager.remove_all_tickets()
+tasks_manager.delete_all_tasks()
 
 
 if __name__ == "__main__":

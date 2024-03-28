@@ -32,3 +32,15 @@ class TasksManager:
             return True
         return False
     
+    def delete_all_tasks(self):
+        # Удаление всех тасков
+        try:
+            self.session.query(Tasks).delete()
+            self.session.commit()
+            return True
+        
+        except Exception as e:
+            print(f"An error occurred while removing all tasks: {e}")
+            self.session.rollback()
+            return False
+    
