@@ -1,6 +1,6 @@
 .tickets-container {
     width: 1180px;
-    height: 80vh;
+    max-height: 80vh;
     border: 1px solid #D3D3D3;
     border-radius: 8px;
     overflow: hidden;
@@ -63,7 +63,7 @@
         margin-top: 5px;
         max-height: 598px;
         height: 598px;
-        overflow: scroll !important;
+        overflow: auto !important;
 
 
         &::-webkit-scrollbar {

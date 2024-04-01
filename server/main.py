@@ -200,10 +200,6 @@ async def get_all_tasks():
     all_tasks = tasks_manager.get_all_tasks()
     return all_tasks
 
-# debug
-tickets_manager.remove_all_tickets()
-tasks_manager.delete_all_tasks()
-
 
 if __name__ == "__main__":
     import uvicorn

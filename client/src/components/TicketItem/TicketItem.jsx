@@ -36,7 +36,7 @@ const TicketItem = (props) => {
                 className='ticket-item'
                 onClick={handlePopup}
             >
-                <div className="ticket-item__number">{ticket_id}</div>
+                <div className="ticket-item__number">№{ticket_id}</div>
                 <div className="ticket-item__problem">
                     <div className="problem__title">{problem_title}</div>
                     <div className="problem__description">{task_description}</div>

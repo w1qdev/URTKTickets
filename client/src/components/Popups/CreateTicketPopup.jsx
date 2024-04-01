@@ -65,7 +65,6 @@ const CreateTicketPopup = ({ popupHandler }) => {
     
         // Обновляем состояние tasks, объединяя новую задачу с текущим списком задач
         setTasks(prevTasks => prevTasks.concat(newTask));
-
         
         // Очищаем текущую задачу, чтобы подготовиться к следующей
         setCurrentTask({ pc_name: '', task_description: '' });
@@ -92,12 +91,9 @@ const CreateTicketPopup = ({ popupHandler }) => {
                 tasks: tasks,
                 teacher_id: localStorage.getItem('user_id'),
             };
-            
-            console.log(ticket)
 
             await axios.post('http://127.0.0.1:8001/api/tickets/', ticket)
             .then(res => {
-                console.log(res.data)
                 if (res.data.status === 'OK') {
                     window.location.pathname = '/tickets'
                 }
@@ -108,12 +104,12 @@ const CreateTicketPopup = ({ popupHandler }) => {
     }
 
     useEffect(() => {
-        if (tasks.length && room) {
+        if (tasks.length && room && ticketTitle) {
             setIsButtonDisabled(false)
         } else {
             setIsButtonDisabled(true)
         }
-    }, [tasks, room])
+    }, [tasks, room, ticketTitle])
 
     return (
         <Popup
