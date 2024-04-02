@@ -3,7 +3,6 @@ import { dateFormatter } from "../../helpers/utils"
 import Popup from "./Popup"
 
 
-
 const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
 
     const { customer_name, problem_title, room_number, submission_date, tasks } = ticketData

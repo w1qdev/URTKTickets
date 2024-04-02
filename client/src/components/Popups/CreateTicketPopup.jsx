@@ -11,16 +11,7 @@ import TasksList from "../TasksList/TasksList";
 import EditIcon from "../Icons/EditIcon";
 import axios from 'axios'
 import Popup from "./Popup";
-import {
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuOptionGroup,
-    MenuDivider,
-    Button as ChakraButton
-  } from '@chakra-ui/react' 
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import MenuGroup from "../Menu/MenuGroup";
 import { useEffect, useRef, useState } from "react";
 
 
@@ -37,6 +28,12 @@ const CreateTicketPopup = ({ popupHandler }) => {
         pc_name: '',
         task_description: ''
     })
+    const [menuRoomsList, setMenuRoomsList] = useState([
+        { id: 1, menuOptionGroupTitle: 'этаж 4', items: [{ id: 1, title: "41" }, { id: 2, title: "42" }, { id: 3, title: "43" }, { id: 4, title: "44" }, { id: 5, title: "45" }] },
+        { id: 1, menuOptionGroupTitle: 'этаж 3', items: [{ id: 1, title: "31" }, { id: 2, title: "32" }, { id: 3, title: "33" }, { id: 4, title: "34" }, { id: 5, title: "35" }] },
+        { id: 1, menuOptionGroupTitle: 'этаж 2', items: [{ id: 1, title: "21" }, { id: 2, title: "22" }, { id: 3, title: "23" }, { id: 4, title: "24" }, { id: 5, title: "25" }] },
+    ])
+
 
     const [isCreatingTask, setIsCreatingTask] = useState(false)
 
@@ -145,43 +142,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
         <div className="body__location body__section">
             <div className="body__location__room">
                 <div className="title">Аудитория</div>
-                <Menu>
-                    <MenuButton className="room" as={ChakraButton} rightIcon={<ChevronDownIcon />}>
-                        {room ? (
-                            <>№ {room}</>
-                        ) : 'Аудитория не выбрана'}
-                    </MenuButton>
-                    <MenuList minWidth='240px' maxHeight='200px' overflow="auto">
-                        <MenuOptionGroup title='4 Этаж'>
-                            <MenuItem onClick={handleRoom}>40</MenuItem>
-                            <MenuItem onClick={handleRoom}>41</MenuItem>
-                            <MenuItem onClick={handleRoom}>42</MenuItem>
-                            <MenuItem onClick={handleRoom}>43</MenuItem>
-                            <MenuItem onClick={handleRoom}>44</MenuItem>
-                            <MenuItem onClick={handleRoom}>45</MenuItem>
-                        </MenuOptionGroup>
-                        <MenuDivider />
-                        <MenuOptionGroup title='3 Этаж'>
-                            <MenuItem onClick={handleRoom}>30</MenuItem>
-                            <MenuItem onClick={handleRoom}>31</MenuItem>
-                            <MenuItem onClick={handleRoom}>32</MenuItem>
-                            <MenuItem onClick={handleRoom}>33</MenuItem>
-                            <MenuItem onClick={handleRoom}>34</MenuItem>
-                            <MenuItem onClick={handleRoom}>35</MenuItem>
-                        </MenuOptionGroup>
-                        <MenuDivider />
-                        <MenuOptionGroup title='2 Этаж'>
-                            <MenuItem onClick={handleRoom}>20</MenuItem>
-                            <MenuItem onClick={handleRoom}>21</MenuItem>
-                            <MenuItem onClick={handleRoom}>22</MenuItem>
-                            <MenuItem onClick={handleRoom}>23</MenuItem>
-                            <MenuItem onClick={handleRoom}>24</MenuItem>
-                            <MenuItem onClick={handleRoom}>25</MenuItem>
-                        </MenuOptionGroup>
-                    </MenuList>
-                </Menu>
-
-            </div>
+                <MenuGroup 
+                    menuItems={menuRoomsList}
+                    defaultMenuTitle="Аудитория не выбрана"
+                    handleClick={handleRoom}
+                    menuSelectedItem={room}
+                />
+                </div>
             <div className="body__location__ticket-register-date">
                 <div className="date-text">Дата регистрации заявки</div>
                 <div className="date">{currentDate}</div>

@@ -21,7 +21,32 @@ export const getTicketStateNameById = (ticket_id) => {
         case 2: return "Awaiting Confirmation";
         case 3: return "Confirmed";
     }
-} 
+}
+
+export const mapTicketsDataAndChangeState = (data) => {
+    const mappedData = data.map(item => {
+        let newState;
+        switch (item.title) {
+            case '1':
+                newState = "Ждет рассмотрения";
+                break;
+            case '2':
+                newState = "Ждет подтверждения";
+                break;
+            case '3':
+                newState = "Подтвержден";
+                break;
+            default:
+                newState = "Unknown State"; // Обработка для неизвестных значений state_id
+                break;
+        }
+        return {
+            ...item,
+            title: newState
+        };
+    });
+    return mappedData;
+}
 
 
 export const dateFormatter = (date) => {
@@ -54,3 +79,21 @@ export const dateFormatter = (date) => {
     }
 }
 
+
+export const getMenuItemsByValue = (data, value) => {
+    const result = [];
+    const uniqueValues = new Set();
+
+    data.forEach(item => {
+        const itemValue = String(item[value]);
+        if (!uniqueValues.has(itemValue)) {
+            result.push({
+                id: result.length + 1,
+                title: itemValue
+            });
+            uniqueValues.add(itemValue);
+        }
+    });
+
+    return result;
+};
