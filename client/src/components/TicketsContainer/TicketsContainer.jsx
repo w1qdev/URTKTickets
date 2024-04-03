@@ -3,11 +3,15 @@ import axios from 'axios'
 import { useState, useEffect, useMemo } from 'react';
 import TicketsList from '../TicketsList/TicketsList.jsx';
 import Menu from '../Menu/Menu.jsx';
-import MenuFilter from '../Menu/MenuFilter.jsx';
-import { getMenuItemsByValue, mapTicketsDataAndChangeState } from '../../helpers/utils.js';
+import MenuFilterButton from '../Menu/MenuFilterButton.jsx';
+import { 
+    getMenuItemsByValue, 
+    mapTicketsDataAndChangeState,
+    getTicketIdByStateName 
+} from '../../helpers/utils.js';
 
 
-const TicketsContainer = () => {
+const TicketsContainer = ({ handleUsingFilters, isUsingFilters, setIsFilterClear, isFilterClear }) => {
 
     const [tickets, setTickets] = useState([]);
     const [filteredTickets, setFilteredTickets] = useState(tickets)
@@ -25,6 +29,8 @@ const TicketsContainer = () => {
     const handleClickMenuStatus = (e) => setMenuStatus(prev => ({ ...prev, currentTitle: e.target.textContent }))
     const handleClickMenuCustomer = (e) => setMenuCustomer(prev => ({ ...prev, currentTitle: e.target.textContent }))
     const handleClickMenuID = () => setMenuID(prev => ({ ...prev, isIncreasing: !prev.isIncreasing }))
+    const [activeFiltersCount, setActiveFiltersCount] = useState(0);
+    const handleFilters = (value) => handleUsingFilters(value)
 
 
     useEffect(() => {
@@ -33,11 +39,11 @@ const TicketsContainer = () => {
                 await axios.get('http://localhost:8001/api/tickets/', {
                     params: {
                         role: localStorage.getItem('role') || 'teacher', // Роль пользователя
-                        user_id: localStorage.getItem('user_id')  // ID пользователя
+                        user_id: localStorage.getItem('user_id'),  // ID пользователя
+                        username: localStorage.getItem('username')
                     },
                 })
                 .then(res => {
-                    console.log(res.data)
                     if (res.data.tickets?.length){
                         setMenuID(prev => ({ ...prev, data: getMenuItemsByValue(res.data.tickets, 'ticket_id') }));
                         setMenuDate(prev => ({ ...prev, data: getMenuItemsByValue(res.data.tickets, 'submission_date') }));
@@ -61,7 +67,6 @@ const TicketsContainer = () => {
         fetchData();
     }, []);
 
-
     useEffect(() => {
         const newSortedTickets = tickets.slice(); // Создаем копию исходных данных
     
@@ -78,18 +83,19 @@ const TicketsContainer = () => {
         }
     
         const newFilteredTickets = newSortedTickets.filter(ticket => {
+            const currentTicketsStateId = getTicketIdByStateName(menuStatus.currentTitle)
+
             // Проверка на соответствие значений из меню и значения проблемы
-            // const isMenuIDMatch = menuID.currentTitle ? ticket.ticket_id === parseInt(menuID.currentTitle) : true;
             const isMenuDateMatch = menuDate.currentTitle ? ticket.submission_date === menuDate.currentTitle : true;
             const isMenuLocationMatch = menuLocation.currentTitle ? ticket.room_number === menuLocation.currentTitle : true;
-            const isMenuStatusMatch = menuStatus.currentTitle ? ticket.state_id === parseInt(menuStatus.currentTitle) : true;
+            const isMenuStatusMatch = menuStatus.currentTitle ? ticket.state_id === currentTicketsStateId : true;
             const isMenuCustomerMatch = menuCustomer.currentTitle ? ticket.customer_name === menuCustomer.currentTitle : true;
             const isProblemMatch = problemValue ? ticket.problem_title.toLowerCase().includes(problemValue.toLowerCase()) : true;
     
             // Возвращаем результат фильтрации по всем критериям
             return isMenuDateMatch && isMenuLocationMatch && isMenuStatusMatch && isMenuCustomerMatch && isProblemMatch;
         });
-    
+        
         // Обновляем состояние отфильтрованных данных
         setFilteredTickets(newFilteredTickets);
     }, [
@@ -103,7 +109,50 @@ const TicketsContainer = () => {
         tickets
     ]);
 
+    useEffect(() => {
+        const activeFilters = [
+            menuID.currentTitle,
+            menuDate.currentTitle,
+            menuLocation.currentTitle,
+            menuStatus.currentTitle,
+            menuCustomer.currentTitle,
+            problemValue
+        ];
 
+        const count = activeFilters.filter(filter => filter && filter !== '').length;
+        setActiveFiltersCount(count);
+    }, [
+        menuID.currentTitle,
+        menuDate.currentTitle,
+        menuLocation.currentTitle,
+        menuStatus.currentTitle,
+        menuCustomer.currentTitle,
+        problemValue
+    ]);
+
+    useEffect(() => {
+        // Проверяем, есть ли хотя бы один активный фильтр
+        if (activeFiltersCount > 0) {
+            handleFilters(true);
+        } else {
+            handleFilters(false)
+        }
+        
+    }, [activeFiltersCount]);
+
+
+    useEffect(() => {
+        if (isFilterClear) {
+            setMenuDate(prev => ({ ...prev, currentTitle: "" }))
+            setMenuLocation(prev => ({ ...prev, currentTitle: "" }))
+            setMenuStatus(prev => ({ ...prev, currentTitle: "" }))
+            setMenuCustomer(prev => ({ ...prev, currentTitle: "" }))
+            setMenuCustomer(prev => ({ ...prev, currentTitle: "" }))
+            setProblemValue("")
+            handleFilters(false)
+            setIsFilterClear(false)
+        }
+    }, [isFilterClear])
 
     const sortedTickets = useMemo(() => {
         return filteredTickets.slice().sort((a, b) => a.state_id - b.state_id);
@@ -113,7 +162,7 @@ const TicketsContainer = () => {
         <div className="tickets-container">
             <div className="tickets-container__header">
                 <div className="tickets-container__header-item number">
-                    <MenuFilter 
+                    <MenuFilterButton 
                         title="Номер"
                         isIncreasing={menuID.isIncreasing}
                         handleClick={handleClickMenuID}

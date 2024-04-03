@@ -22,7 +22,7 @@ const PopupBody = ({ status, popupHandler, ticketData }) => {
 const TicketItem = (props) => {
 
     const { ticket_id, problem_title, task_description, room_number, customer_name, submission_date, tasks, state_id } = props
-    const ticket_status = getTicketStateNameById(state_id)
+    const ticketStatus = getTicketStateNameById(state_id)
     const [isPopupOpen, setIsPopupOpen] = useState(false)
 
     const handlePopup = () => setIsPopupOpen(prev => !prev)
@@ -30,7 +30,7 @@ const TicketItem = (props) => {
     return (
         <>
             <AnimatePresence>
-                {isPopupOpen ? <PopupBody ticketData={props} status={ticket_status} popupHandler={handlePopup} /> : null}
+                {isPopupOpen ? <PopupBody ticketData={props} status={ticketStatus} popupHandler={handlePopup} /> : null}
             </AnimatePresence>
             <div 
                 className='ticket-item'
@@ -45,7 +45,7 @@ const TicketItem = (props) => {
                 <div className="ticket-item__user">{customer_name}</div>
                 <div className="ticket-item__date">{submission_date}</div>
                 <div className="ticket-item__status">
-                    <TicketItemStatusBadge status={ticket_status} />
+                    <TicketItemStatusBadge status={ticketStatus} />
                 </div>
             </div>
         </>

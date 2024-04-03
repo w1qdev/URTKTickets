@@ -1,4 +1,5 @@
 import TasksList from "../TasksList/TasksList"
+import Notification from "../Notification/Notification"
 import { dateFormatter } from "../../helpers/utils"
 import Popup from "./Popup"
 
@@ -33,7 +34,9 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
             </div>
 
             <div className="body__actions body__section">
-                <div className="body__actions-user"><b>Исполнитель:</b> Андрей Ларионов</div>
+                <div className="body__actions-user"><b>Заказчик:</b> {customer_name}</div>
+
+                <Notification type="success" text="Задачи выполнены системным администратором и утверждены заказчиком" />
             </div>
         </Popup>
     )

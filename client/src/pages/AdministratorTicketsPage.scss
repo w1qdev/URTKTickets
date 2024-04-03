@@ -26,12 +26,17 @@
         }
 
         &-other {
+            .logo {
+                display: flex;
+                justify-content: end;
+            }
+
             .current-time {
                 font-size: 15px;
                 border: 1px solid #D3D3D3;
                 text-align: center;
                 border-radius: 4px;
-                padding: 2px 0px;
+                padding: 3px 10px;
             }
 
             .create-ticket__button {

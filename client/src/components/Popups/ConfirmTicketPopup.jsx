@@ -2,7 +2,9 @@ import { dateFormatter } from "../../helpers/utils";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import TasksList from "../TasksList/TasksList";
 import axios from 'axios'
+import { Tooltip } from '@chakra-ui/react'
 import Button from "../Buttons/Button";
+import Notification from "../Notification/Notification";
 import Popup from "./Popup";
 
 
@@ -50,17 +52,21 @@ const ConfirmTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) =>
             </div>
 
             <div className="body__actions body__section">
-                <div className="body__actions-user"><b>Исполнитель:</b> Андрей Ларионов</div>
+                <div className="body__actions-user"><b>Заказчик:</b> {customer_name}</div>
 
                 { !isAdministrator ? (
                     <Button
                         onClick={handleConfirmTicket}
                         bgColor="#99D16F"
                     >
-                        <div className="button__text">Задачи выполнены</div>
+                        <Tooltip marginBottom="10px" marginLeft="20px" hasArrow label='Вы подтверждаете, что все задачи были выполнены по заданным вами требованиям' placement='top'>
+                            <div className="button__text">Задачи выполнены</div>
+                        </Tooltip>
                         <CheckmarkIcon fill="#fff" />
                     </Button>
-                ) : null}
+                ) : (
+                    <Notification type="warning" text="Заявка на подтверждении у заказчика" />
+                )}
             </div>
         </Popup>
     )

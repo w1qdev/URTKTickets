@@ -23,6 +23,14 @@ export const getTicketStateNameById = (ticket_id) => {
     }
 }
 
+export const getTicketIdByStateName = (ticket_name) => {
+    switch (ticket_name) {
+        case "Ждет рассмотрения": return 1;
+        case "Ждет подтверждения": return 2;
+        case "Подтвержден": return 3;
+    }
+}
+
 export const mapTicketsDataAndChangeState = (data) => {
     const mappedData = data.map(item => {
         let newState;
@@ -60,7 +68,7 @@ export const dateFormatter = (date) => {
     if (date.includes('.')) {
         // Если формат даты "день.месяц.год"
         const [day, month, year] = date.split('.');
-        return `${day} ${months[parseInt(month) - 1]} ${year}`;
+        return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
     } else {
         // Если формат даты "год-месяц-день"
         // Создание объекта Date из строки

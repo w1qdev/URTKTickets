@@ -32,7 +32,9 @@ const Popup = ({ title, popupStatus, children, popupHandler }) => {
                             <div 
                                 className="header__title-popup-status"
                                 style={{ backgroundColor: `${currentPopupStatusTextColor}` }}
-                            >{popupStatus}</div>
+                            >
+                                {popupStatus}
+                            </div>
                         ) : null}
                         
                     </div>
