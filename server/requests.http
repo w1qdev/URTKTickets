@@ -61,9 +61,9 @@ POST http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 {
-    "teacher_name": "Виктор Викторович",
+    "teacher_name": "Валерий Викторович",
     "department": "Информатика",
-    "role": "teacher"
+    "role": "administrator"
 }
 
 ### get all teachers
