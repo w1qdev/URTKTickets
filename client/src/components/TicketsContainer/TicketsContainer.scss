@@ -1,7 +1,7 @@
 .tickets-container {
     width: 1180px;
     max-height: 80vh;
-    border: 1px solid #D3D3D3;
+    border: 1px solid #d3d3d3;
     border-radius: 8px;
     overflow: hidden;
     z-index: 100;
@@ -20,14 +20,13 @@
         &-item {
             font-weight: 300;
             font-size: 15px;
-            
+
             &.number {
                 width: 7%;
             }
-    
+
             &.problem {
                 width: 33%;
-                
             }
 
             &.location {
@@ -46,25 +45,25 @@
                 width: 17%;
             }
 
-
             &__separator {
                 display: block;
                 width: 2px;
                 height: 42px;
                 border-radius: 4px;
-                background-color: #D9D9D9;
+                background-color: #d9d9d9;
             }
 
             .problem__search {
                 width: 76%;
                 height: 40px;
                 padding: 5px 20px;
-                background-color: #EDF2F7;
+                background-color: #edf2f7;
                 border-radius: 4px;
                 border: 2px solid transparent;
                 transition: border-color linear 0.2s;
 
-                &:focus, &:hover {
+                &:focus,
+                &:hover {
                     outline: none;
                     border-color: #1f7cffbe;
                 }
@@ -75,8 +74,6 @@
                 height: 10px;
             }
         }
-
-        
     }
 
     &__problems-list {
@@ -86,21 +83,6 @@
         max-height: 598px;
         height: 598px;
         overflow: auto !important;
-
-
-        &::-webkit-scrollbar {
-            width: 5px;
-        }
-          
-        &::-webkit-scrollbar-track {
-            background: #c5c5c5;
-        }
-        
-        
-        &::-webkit-scrollbar-thumb {
-            background: #dbdbdb;
-            border-radius: 5px;
-        }
     }
 
     .no-tickets {
