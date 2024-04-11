@@ -25,7 +25,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
 
             .header__title {
                 display: flex;
@@ -468,6 +468,10 @@
                         padding: 0px 7px;
                         outline: none;
                     }
+
+                    .difference {
+                        margin-left: 10px;
+                    }
                 }
             }
 
@@ -500,16 +504,20 @@
 
                     .levels {
                         margin-left: 10px;
-                        background-color: #efefef;
+                        box-shadow: 0px 0px 10px #eaeaea;
                         padding: 5px;
                         border-radius: 6px;
 
                         .level__button {
                             font-size: 13px;
                             padding: 5px 10px;
-                            background-color: #efefef;
+
                             border-radius: 6px;
                             transition: background-color ease-in-out 0.2s;
+
+                            &:hover {
+                                background-color: #ededed4f;
+                            }
 
                             &.selected {
                                 &.mid {

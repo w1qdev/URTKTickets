@@ -1,47 +1,50 @@
-
-
 export const getCurrentDate = () => {
     let date = new Date().toJSON().slice(0, 10);
-    let currentDateValues = date.split('-')
+    let currentDateValues = date.split("-");
 
-    let temp = currentDateValues[currentDateValues.length - 1] // 23
+    let temp = currentDateValues[currentDateValues.length - 1]; // 23
 
-    currentDateValues[currentDateValues.length - 1] = currentDateValues[0] // 23 -> 2024
-    currentDateValues[0] = temp
+    currentDateValues[currentDateValues.length - 1] = currentDateValues[0]; // 23 -> 2024
+    currentDateValues[0] = temp;
 
-    let currentDate = currentDateValues.join('.')
-    
-    return currentDate
-}
+    let currentDate = currentDateValues.join(".");
 
+    return currentDate;
+};
 
 export const getTicketStateNameById = (ticket_id) => {
     switch (ticket_id) {
-        case 1: return "Awaiting Review";
-        case 2: return "Awaiting Confirmation";
-        case 3: return "Confirmed";
+        case 1:
+            return "Awaiting Review";
+        case 2:
+            return "Awaiting Confirmation";
+        case 3:
+            return "Confirmed";
     }
-}
+};
 
 export const getTicketIdByStateName = (ticket_name) => {
     switch (ticket_name) {
-        case "Ждет рассмотрения": return 1;
-        case "Ждет подтверждения": return 2;
-        case "Подтвержден": return 3;
+        case "Ждет рассмотрения":
+            return 1;
+        case "Ждет подтверждения":
+            return 2;
+        case "Подтвержден":
+            return 3;
     }
-}
+};
 
 export const mapTicketsDataAndChangeState = (data) => {
-    const mappedData = data.map(item => {
+    const mappedData = data.map((item) => {
         let newState;
         switch (item.title) {
-            case '1':
+            case "1":
                 newState = "Ждет рассмотрения";
                 break;
-            case '2':
+            case "2":
                 newState = "Ждет подтверждения";
                 break;
-            case '3':
+            case "3":
                 newState = "Подтвержден";
                 break;
             default:
@@ -50,31 +53,38 @@ export const mapTicketsDataAndChangeState = (data) => {
         }
         return {
             ...item,
-            title: newState
+            title: newState,
         };
     });
     return mappedData;
-}
-
+};
 
 export const dateFormatter = (date) => {
-    
     const months = [
-        "января", "февраля", "марта", "апреля", "мая", "июня",
-        "июля", "августа", "сентября", "октября", "ноября", "декабря"
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря",
     ];
 
     // Проверяем формат даты
-    if (date.includes('.')) {
+    if (date.includes(".")) {
         // Если формат даты "день.месяц.год"
-        const [day, month, year] = date.split('.');
+        const [day, month, year] = date.split(".");
         return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
     } else {
         // Если формат даты "год-месяц-день"
         // Создание объекта Date из строки
         const dateObj = new Date(date);
 
-        
         const monthIndex = dateObj.getMonth();
         const month = months[monthIndex];
 
@@ -85,23 +95,54 @@ export const dateFormatter = (date) => {
         // Формирование отформатированной строки
         return `${day} ${month} ${year}`;
     }
-}
-
+};
 
 export const getMenuItemsByValue = (data, value) => {
     const result = [];
     const uniqueValues = new Set();
 
-    data.forEach(item => {
+    data.forEach((item) => {
         const itemValue = String(item[value]);
         if (!uniqueValues.has(itemValue)) {
             result.push({
                 id: result.length + 1,
-                title: itemValue
+                title: itemValue,
             });
             uniqueValues.add(itemValue);
         }
     });
 
     return result;
+};
+
+// Вспомогательная функция для добавления нуля перед числом, если оно меньше 10
+function padZero(num) {
+    return num < 10 ? "0" + num : num;
+}
+
+export const addDaysToCurrentDate = (days) => {
+    // if (typeof daysToAdd !== "number") {
+    //     throw new Error("Input should be a number");
+    // }
+
+    var currentDate = new Date();
+    var futureDate = new Date(currentDate.getTime());
+    futureDate.setDate(currentDate.getDate() + days);
+
+    var difference = Math.ceil(
+        (futureDate - currentDate) / (1000 * 60 * 60 * 24)
+    ); // Разница в днях
+
+    // Форматирование даты в виде "гггг-мм-дд"
+    var formattedDate =
+        futureDate.getFullYear() +
+        "-" +
+        padZero(futureDate.getMonth() + 1) +
+        "-" +
+        padZero(futureDate.getDate());
+
+    return {
+        date: formattedDate,
+        difference: difference,
+    };
 };

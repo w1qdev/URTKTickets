@@ -1,4 +1,4 @@
-import { getCurrentDate } from "../../helpers/utils";
+import { getCurrentDate, addDaysToCurrentDate } from "../../helpers/utils";
 import Button from "../Buttons/Button";
 import PlusIcon from "../Icons/PlusIcon";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
@@ -66,7 +66,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
     ]);
     const [selectedLevelOfImportance, setSelectedLevelOfImportant] =
         useState(1);
-    const [selectedDeadlineDate, setSelectedDeadlineDate] = useState();
+
+    const [selectedDeadlineDate, setSelectedDeadlineDate] = useState({
+        date: addDaysToCurrentDate(selectedLevelOfImportance * 3).date,
+        difference: addDaysToCurrentDate(selectedLevelOfImportance * 3)
+            .difference,
+    });
+
     const [isCreatingTask, setIsCreatingTask] = useState(false);
 
     const handleRoom = (e) => {
@@ -119,6 +125,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                 submission_date: currentDate,
                 tasks: tasks,
                 teacher_id: localStorage.getItem("user_id"),
+                priority_id: selectedLevelOfImportance,
             };
 
             await axios.post(endpoints.CREATE_TICKET, ticket).then((res) => {
@@ -130,6 +137,27 @@ const CreateTicketPopup = ({ popupHandler }) => {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+        let daysToAdd = 0;
+
+        switch (selectedLevelOfImportance) {
+            case 1:
+                daysToAdd = 14;
+                break;
+            case 2:
+                daysToAdd = 7;
+                break;
+            case 3:
+                daysToAdd = 3;
+                break;
+        }
+
+        setSelectedDeadlineDate((prev) => ({
+            date: addDaysToCurrentDate(daysToAdd).date,
+            difference: addDaysToCurrentDate(daysToAdd).difference,
+        }));
+    }, [selectedLevelOfImportance]);
 
     useEffect(() => {
         if (tasks.length && room && ticketTitle) {
@@ -188,7 +216,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
             <div className="body__deadline body__section">
                 <div className="body__deadline__date">
-                    <div className="title">Сроки выполнения задачи</div>
+                    <div className="title">Выполнить задачу до</div>
                     {/* <DatePicker className="date-picker" /> */}
                     <input
                         type="date"
@@ -196,8 +224,11 @@ const CreateTicketPopup = ({ popupHandler }) => {
                         onChange={(e) =>
                             setSelectedDeadlineDate(e.target.value)
                         }
-                        value={selectedDeadlineDate}
+                        value={selectedDeadlineDate.date}
                     />
+                    {/* <div className="difference">
+                        {selectedDeadlineDate.difference}
+                    </div> */}
                 </div>
             </div>
 
@@ -311,7 +342,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
             <div className="body__actions body__section">
                 <div className="body__actions-levels">
-                    <div className="levels__title">Уровень срочности</div>
+                    <div className="levels__title">Уровень приоритета</div>
                     <div className="levels">
                         <button
                             className={`level__button start ${
@@ -319,7 +350,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                             }`}
                             onClick={() => setSelectedLevelOfImportant(1)}
                         >
-                            Не срочно
+                            Низкий
                         </button>
                         <button
                             className={`level__button mid ${
@@ -327,7 +358,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                             }`}
                             onClick={() => setSelectedLevelOfImportant(2)}
                         >
-                            Срочно
+                            Средний
                         </button>
                         <button
                             className={`level__button end ${
@@ -335,7 +366,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                             }`}
                             onClick={() => setSelectedLevelOfImportant(3)}
                         >
-                            Очень срочно
+                            Высокий
                         </button>
                     </div>
                 </div>

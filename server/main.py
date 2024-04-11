@@ -8,6 +8,7 @@ from db.managers.teachers_manager import TeachersManager
 from db.managers.ticket_state_manager import TicketStatesManager
 from db.managers.ticket_manager import TicketsManager
 from db.managers.task_manager import TasksManager
+from db.managers.ticket_priority_manager import TicketPriorityManager
 
 
 # Настройка документации OpenAPI
@@ -36,6 +37,7 @@ teachers_manager = TeachersManager(SessionLocal)
 ticket_states_manager = TicketStatesManager(SessionLocal)
 tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
+ticket_priority_manager = TicketPriorityManager(SessionLocal)
 
 
 app = FastAPI()
@@ -206,6 +208,27 @@ async def delete_task(task_id: int):
 async def get_all_tasks():
     all_tasks = tasks_manager.get_all_tasks()
     return all_tasks
+
+
+# Ticket Priorities API
+# TODO: Проверить работу API
+@app.get("/api/ticket_prorities/")
+async def get_all_ticket_priorities():
+    all_ticket_priorities = ticket_priority_manager.get_all_ticket_priorities()
+    return all_ticket_priorities
+
+@app.post("/api/ticket_prorities/")
+async def create_ticket_priority(ticket_priority_data: dict):
+    new_ticket_priority = ticket_priority_manager.create_ticket_priority(ticket_priority_data)
+    return new_ticket_priority
+
+@app.delete("/api/ticket_prorities/{ticket_priority_id}")
+async def remove_ticket_priority_by_id(ticket_priority_id: int):
+    deleted_ticket_priority = ticket_priority_manager.remove_ticket_priority_by_id(ticket_priority_id)
+    if deleted_ticket_priority:
+        return {"message": "Ticket priority deleted successfully"}
+    else:
+        return {"message": "Ticket priority not found"}
 
 
 if __name__ == "__main__":

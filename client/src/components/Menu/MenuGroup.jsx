@@ -31,7 +31,7 @@ const MenuGroup = ({
                 {menuItems.length &&
                     menuItems.map((menuItem) => (
                         <MenuOptionGroup
-                            key={menuItem.id}
+                            key={menuItem.menuOptionGroupTitle}
                             title={menuItem.menuOptionGroupTitle}
                             handleClick={handleClick}
                             menuItemsList={menuItem.items}
