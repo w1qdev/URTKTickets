@@ -114,7 +114,6 @@ async def get_ticket_state_by_id(state_id: int):
         return {"message": "Состояние тикета не найдено"}
     return teacher
 
-
 # TICKETS API
 @app.post("/api/tickets/")
 async def create_ticket(ticket_data: dict):
@@ -204,6 +203,12 @@ async def get_tasks_by_ticket_id(ticket_id: int):
 async def delete_task(task_id: int):
     result = tasks_manager.delete_task(task_id)
     return {"success": result}
+
+# API эндпоинт для удаления всех задач
+@app.delete("/api/tasks/")
+async def delete_all_task():
+    tasks_manager.delete_all_tasks()
+    return {"message": "Все задачи удалены"}
 
 @app.get("/api/tasks/")
 async def get_all_tasks():

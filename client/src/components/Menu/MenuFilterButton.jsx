@@ -2,28 +2,34 @@
 //     Menu as ChakraMenu,
 //     MenuButton,
 //     Button as ChakraButton
-//   } from '@chakra-ui/react' 
+//   } from '@chakra-ui/react'
 
-  import { Button } from '@chakra-ui/react'
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
-
+import { Button } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 const MenuFilterButton = ({ title, isIncreasing, handleClick }) => {
     return (
-
-        <Button 
-            // colorScheme='whatsapp' 
-            variant='solid'
-            fontWeight={"400"} 
-            fontSize={13} 
+        <Button
+            // colorScheme='whatsapp'
+            variant="solid"
+            fontWeight={"400"}
+            // backgroundColor="#FBFBFB"
+            // boxShadow="0px 0px 9px #EBEBEB"
+            // border="1px solid #C4C4C4"
+            fontSize={13}
             className="room"
-            onClick={handleClick} 
-            rightIcon={isIncreasing ? <ChevronUpIcon color="white.500" /> : <ChevronDownIcon color="white.500" />}
+            onClick={handleClick}
+            rightIcon={
+                isIncreasing ? (
+                    <ChevronUpIcon color="white.500" />
+                ) : (
+                    <ChevronDownIcon color="white.500" />
+                )
+            }
         >
             {title}
         </Button>
-    )
-}
+    );
+};
 
-
-export default MenuFilterButton
+export default MenuFilterButton;

@@ -1,4 +1,4 @@
-import { dateFormatter } from "../../helpers/utils";
+import { dateFormatter, reverseDate } from "../../helpers/utils";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import Button from "../Buttons/Button";
 import TasksList from "../TasksList/TasksList";
@@ -19,12 +19,14 @@ const AcceptTicketPopup = ({
         problem_title,
         room_number,
         submission_date,
+        deadline_date,
         priority_id,
         tasks,
     } = ticketData;
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
     const date = dateFormatter(submission_date);
+    const deadlineDate = dateFormatter(reverseDate(deadline_date));
 
     const handlerAcceptTicket = async () => {
         await axios
@@ -63,6 +65,16 @@ const AcceptTicketPopup = ({
                 <div className="body__location__ticket-register-date">
                     <div className="date-text">Дата регистрации заявки</div>
                     <div className="date">{date}</div>
+                </div>
+            </div>
+
+            <div className="body__deadline body__section">
+                <div className="body__deadline__date">
+                    <div className="title">
+                        <b>Выполнить задачу до</b>
+                    </div>
+                    {/* <DatePicker className="date-picker" /> */}
+                    <div className="deadline__date">{deadlineDate} г.</div>
                 </div>
             </div>
 

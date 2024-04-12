@@ -5,8 +5,13 @@ import AcceptTicketPopup from "../Popups/AcceptTicketPopup";
 import ConfirmTicketPopup from "../Popups/ConfirmTicketPopup";
 import "./TicketItem.scss";
 import ViewTicketPopup from "../Popups/ViewTicketPopup";
-import { getTicketStateNameById, reverseDate } from "../../helpers/utils";
+import {
+    getTicketStateNameById,
+    reverseDate,
+    dateFormatter,
+} from "../../helpers/utils";
 import Bookmark from "../Icons/Bookmark";
+import { Tooltip } from "@chakra-ui/react";
 
 const PopupBody = ({ status, popupHandler, ticketData }) => {
     const popupContainers = {
@@ -49,10 +54,11 @@ const TicketItem = (props) => {
         submission_date,
         deadline_date,
         priority_id,
-        tasks,
         state_id,
     } = props;
     const ticketStatus = getTicketStateNameById(state_id);
+    const deadlineDate = dateFormatter(reverseDate(deadline_date));
+    const submissionDate = dateFormatter(submission_date);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
@@ -82,11 +88,17 @@ const TicketItem = (props) => {
                 </div>
                 <div className="ticket-item__user">{customer_name}</div>
                 <div className="ticket-item__date">
-                    <div className="date submission">с {submission_date}</div>
+                    <div className="date submission">от {submissionDate}</div>
                     {deadline_date && (
-                        <div className="date deadline">
-                            до {reverseDate(deadline_date)}
-                        </div>
+                        <Tooltip
+                            label={`Выполнить задачи до ${deadlineDate} года`}
+                            hasArrow
+                            placement="top"
+                        >
+                            <div className="date deadline">
+                                до {deadlineDate}
+                            </div>
+                        </Tooltip>
                     )}
                 </div>
                 <div className="ticket-item__status">

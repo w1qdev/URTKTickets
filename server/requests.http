@@ -23,6 +23,9 @@ content-type: application/json
 GET http://localhost:8001/api/tasks/ HTTP/1.1
 content-type: application/json
 
+### DELETE ALL TASKS
+DELETE http://localhost:8001/api/tasks/ HTTP/1.1
+content-type: application/json
 
 ### Create a ticket
 POST http://localhost:8001/api/tickets/ HTTP/1.1
@@ -158,5 +161,7 @@ content-type: application/json
 
 
 ### Remove some ticket
-DELETE http://localhost:8001/api/tickets/1 HTTP/1.1
+DELETE http://localhost:8001/api/tickets/2 HTTP/1.1
 content-type: application/json
+
+

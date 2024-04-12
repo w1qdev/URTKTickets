@@ -17,7 +17,6 @@ import { endpoints } from "../../api/index";
 
 const CreateTicketPopup = ({ popupHandler }) => {
     const currentDate = getCurrentDate();
-
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const inputRef = useRef(null);
     const [room, setRoom] = useState(null);
@@ -170,6 +169,10 @@ const CreateTicketPopup = ({ popupHandler }) => {
         }
     }, [tasks, room, ticketTitle]);
 
+    useEffect(() => {
+        console.log(selectedDeadlineDate.date);
+    }, [selectedDeadlineDate.date]);
+
     return (
         <Popup
             title="Заявка системному администратору"
@@ -224,9 +227,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
                     <input
                         type="date"
                         className="date"
-                        onChange={(e) =>
-                            setSelectedDeadlineDate(e.target.value)
-                        }
+                        onChange={(e) => {
+                            console.log(e.target.value);
+                            setSelectedDeadlineDate((prev) => ({
+                                ...prev,
+                                date: e.target.value,
+                            }));
+                        }}
                         value={selectedDeadlineDate.date}
                     />
                     {/* <div className="difference">

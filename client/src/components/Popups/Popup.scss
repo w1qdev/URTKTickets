@@ -463,6 +463,11 @@
                         border-radius: 6px;
                         padding: 0px 7px;
                         outline: none;
+                        cursor: pointer;
+
+                        &:hover {
+                            border-color: #4e7fff;
+                        }
                     }
 
                     .difference {
@@ -534,6 +539,15 @@
             }
         }
     }
+
+    .room,
+    .deadline__date {
+        margin-left: 15px;
+        padding: 8px 14px;
+        border-radius: 6px;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
+        background: #fff;
+    }
 }
 
 .actions {
@@ -585,13 +599,4 @@
         font-weight: 300;
         font-size: 16px;
     }
-}
-
-.room,
-.deadline__date {
-    margin-left: 15px;
-    padding: 8px 14px;
-    border-radius: 6px;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
-    background: #fff;
 }
