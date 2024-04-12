@@ -24,9 +24,11 @@ class TicketsManager():
                 room_number=ticket_data.get('room_number'),
                 problem_title=ticket_data.get('problem_title'),
                 state_id=ticket_data.get('state_id'),
-                teacher_id=ticket_data.get('teacher_id')
+                teacher_id=ticket_data.get('teacher_id'),
+                priority_id=ticket_data.get('priority_id'),
+                deadline_date=ticket_data.get('deadline_date')
             )
-            
+
             # Добавление задач к тикету
             tasks_data = ticket_data.get('tasks', [])
             for task_data in tasks_data:

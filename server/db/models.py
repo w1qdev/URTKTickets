@@ -33,6 +33,7 @@ class Tickets(Base):
 
     ticket_id = Column(Integer, primary_key=True)
     submission_date = Column(String)
+    deadline_date = Column(String)
     customer_name = Column(String(100))
     room_number = Column(String(20))
     problem_title = Column(String(255))
@@ -41,7 +42,7 @@ class Tickets(Base):
     priority_id = Column(Integer, ForeignKey("TicketPriorities.priority_id"))
     teacher = relationship("Teachers")
     state = relationship("TicketStates")
-    priority = relationship("TicketPriorities")
+    priority = relationship("TicketPriority")
     
 
 class Tasks(Base):

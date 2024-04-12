@@ -97,6 +97,26 @@ export const dateFormatter = (date) => {
     }
 };
 
+export const reverseDate = (date) => {
+    // Проверяем, является ли входная дата строкой
+    if (typeof date !== "string") {
+        throw new Error("Input should be a string");
+    }
+
+    // Разделяем строку по точке
+    const parts = date.split(".");
+
+    // Проверяем, что входная строка содержит три части (день, месяц, год)
+    if (parts.length !== 3) {
+        throw new Error('Input date should be in the format "dd.mm.yyyy"');
+    }
+
+    // Переставляем части местами и объединяем их в новую строку
+    const reversedDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
+
+    return reversedDate;
+};
+
 export const getMenuItemsByValue = (data, value) => {
     const result = [];
     const uniqueValues = new Set();
