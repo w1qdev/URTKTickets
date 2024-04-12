@@ -117,7 +117,6 @@ async def get_ticket_state_by_id(state_id: int):
 # TICKETS API
 @app.post("/api/tickets/")
 async def create_ticket(ticket_data: dict):
-    print(ticket_data)
     tickets_manager.create_ticket(ticket_data)
     return { 
         'message': "Новый тикет успешно создан",
