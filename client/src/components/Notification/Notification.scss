@@ -14,10 +14,10 @@
     &.success {
         background-color: #9dd16f;
     }
-    
+
     &__icon {
-        width: 40px;
-        height: 40px;
+        min-width: 30px;
+        min-height: 30px;
 
         path {
             fill: white;

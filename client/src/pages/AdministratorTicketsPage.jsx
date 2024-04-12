@@ -10,7 +10,6 @@ import { Button, Stack } from "@chakra-ui/react";
 import { RepeatIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import CreateTicketPopup from "../components/Popups/CreateTicketPopup";
-import TicketOptionMenu from "../components/Buttons/TicketsOptionMenu";
 
 const AdministratorTicketsPage = () => {
     const [isUsingFilters, setIsUsingFilters] = useState(false);
@@ -56,6 +55,7 @@ const AdministratorTicketsPage = () => {
                                                 colorScheme="red"
                                                 variant="ghost"
                                                 fontWeight={"400"}
+                                                height="35px"
                                                 fontSize={14}
                                                 className="room"
                                                 rightIcon={<RepeatIcon />}

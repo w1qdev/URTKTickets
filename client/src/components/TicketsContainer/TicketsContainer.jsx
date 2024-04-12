@@ -22,6 +22,7 @@ const TicketsContainer = ({
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: null });
     const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
+    const [isFetching, setIsFetching] = useState(false);
     const [menuLocation, setMenuLocation] = useState({
         currentTitle: "",
         data: [],
@@ -64,6 +65,7 @@ const TicketsContainer = ({
 
     useEffect(() => {
         const fetchData = async () => {
+            setIsFetching((prev) => true);
             try {
                 await axios
                     .get(endpoints.GET_ALL_TICKETS, {
@@ -111,6 +113,7 @@ const TicketsContainer = ({
                                 ),
                             }));
                             setTickets(res.data.tickets);
+                            setIsFetching((prev) => false);
                         } else {
                             setTickets([]);
                         }
@@ -299,7 +302,10 @@ const TicketsContainer = ({
             </div>
 
             <div className="tickets-container__problems-list">
-                <TicketsList ticketsData={sortedTickets} />
+                <TicketsList
+                    isFetching={isFetching}
+                    ticketsData={sortedTickets}
+                />
             </div>
         </div>
     );
