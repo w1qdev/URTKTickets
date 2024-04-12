@@ -1,5 +1,6 @@
 import TasksList from "../TasksList/TasksList";
 import Notification from "../Notification/Notification";
+import Bookmark from "../Icons/Bookmark";
 import { dateFormatter } from "../../helpers/utils";
 import Popup from "./Popup";
 
@@ -9,6 +10,7 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
         problem_title,
         room_number,
         submission_date,
+        priority_id,
         tasks,
     } = ticketData;
     const date = dateFormatter(submission_date);
@@ -18,6 +20,7 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
             title={title}
             popupStatus={popupStatus}
             popupHandler={popupHandler}
+            ticketPriority={priority_id}
         >
             <div className="body__title">
                 <div className="body__title-label">Заголовок проблемы: </div>

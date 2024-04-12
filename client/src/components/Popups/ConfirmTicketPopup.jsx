@@ -1,10 +1,11 @@
-import { dateFormatter } from "../../helpers/utils";
+import { dateFormatter, reverseDate } from "../../helpers/utils";
 import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import TasksList from "../TasksList/TasksList";
 import axios from "axios";
 import { Tooltip } from "@chakra-ui/react";
 import Button from "../Buttons/Button";
 import Notification from "../Notification/Notification";
+import Bookmark from "../Icons/Bookmark";
 import Popup from "./Popup";
 
 const ConfirmTicketPopup = ({
@@ -18,9 +19,12 @@ const ConfirmTicketPopup = ({
         problem_title,
         room_number,
         submission_date,
+        deadline_date,
+        priority_id,
         tasks,
     } = ticketData;
     const date = dateFormatter(submission_date);
+    const deadlineDate = dateFormatter(reverseDate(deadline_date));
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
 
@@ -47,6 +51,7 @@ const ConfirmTicketPopup = ({
             title={title}
             popupStatus={popupStatus}
             popupHandler={popupHandler}
+            ticketPriority={priority_id}
         >
             <div className="body__title">
                 <div className="body__title-label">Заголовок проблемы: </div>
@@ -61,6 +66,14 @@ const ConfirmTicketPopup = ({
                 <div className="body__location__ticket-register-date">
                     <div className="date-text">Дата регистрации заявки</div>
                     <div className="date">{date}</div>
+                </div>
+            </div>
+
+            <div className="body__deadline body__section">
+                <div className="body__deadline__date">
+                    <div className="title">Выполнить задачу до</div>
+                    {/* <DatePicker className="date-picker" /> */}
+                    <div className="deadline__date">{deadlineDate}</div>
                 </div>
             </div>
 
