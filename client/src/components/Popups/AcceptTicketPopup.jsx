@@ -55,7 +55,7 @@ const AcceptTicketPopup = ({
             ticketPriority={priority_id}
         >
             <div className="body__title">
-                <div className="body__title-label">Название проблемы: </div>
+                <div className="body__title-label">Название проблемы </div>
                 <div className="body__title-text">{problem_title}</div>
             </div>
             <div className="body__location body__section">

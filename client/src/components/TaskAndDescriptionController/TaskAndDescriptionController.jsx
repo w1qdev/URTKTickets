@@ -89,18 +89,7 @@ const TaskAndDescriptionController = (props) => {
                                 className="action"
                                 onClick={props.handlerRemoveTask}
                             >
-                                <Tooltip
-                                    hasArrow
-                                    label="Удалить задачу"
-                                    placement="top"
-                                    bg="gray.600"
-                                    openDelay={200}
-                                >
-                                    <div className="actions__remove">
-                                        Отмена
-                                        {/* <CloseIcon fill="#343434" /> */}
-                                    </div>
-                                </Tooltip>
+                                <div className="actions__remove">Отмена</div>
                             </div>
 
                             {props.currentTask.pc_name &&
@@ -119,7 +108,6 @@ const TaskAndDescriptionController = (props) => {
                                         >
                                             <div className="actions__save">
                                                 Добавить задачу
-                                                {/* <CheckmarkIcon fill="#343434" /> */}
                                             </div>
                                         </Tooltip>
                                     </div>

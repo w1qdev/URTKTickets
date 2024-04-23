@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import TicketsContainer from "../components/TicketsContainer/TicketsContainer";
 import { getCurrentDate, dateFormatter } from "../helpers/utils";
 import { Button, Stack } from "@chakra-ui/react";
-import { RepeatIcon } from "@chakra-ui/icons";
+import RepeatIcon from "../components/Icons/RepeatIcon";
 import { useState } from "react";
 import CreateTicketPopup from "../components/Popups/CreateTicketPopup";
 
@@ -58,7 +58,12 @@ const AdministratorTicketsPage = () => {
                                                 height="35px"
                                                 fontSize={14}
                                                 className="room"
-                                                rightIcon={<RepeatIcon />}
+                                                rightIcon={
+                                                    <RepeatIcon
+                                                        width="13px"
+                                                        height="13px"
+                                                    />
+                                                }
                                                 onClick={() =>
                                                     setIsFilterClear(
                                                         (prev) => true

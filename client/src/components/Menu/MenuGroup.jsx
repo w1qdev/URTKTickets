@@ -19,7 +19,7 @@ const MenuGroup = ({
                 className="room"
                 as={ChakraButton}
                 rightIcon={<ChevronDownIcon />}
-                fontWeight={500}
+                fontWeight={400}
             >
                 {menuSelectedItem ? (
                     <>№ {menuSelectedItem}</>
