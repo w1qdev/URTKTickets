@@ -74,7 +74,11 @@ const TicketItem = (props) => {
                     />
                 ) : null}
             </AnimatePresence>
-            <div className="ticket-item" onClick={handlePopup}>
+            <div
+                className="ticket-item"
+                onClick={handlePopup}
+                // style={{ opacity: `${state_id === 3 ? 0.8 : 1}` }}
+            >
                 <div className="ticket-item__number">№{ticket_id}</div>
                 <div className="ticket-item__problem">
                     <div className="problem__title">{problem_title}</div>
