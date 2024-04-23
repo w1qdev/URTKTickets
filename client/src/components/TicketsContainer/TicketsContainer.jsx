@@ -170,8 +170,7 @@ const TicketsContainer = ({
                   ticket.ticket_id.toString().includes(problemValue) ||
                   ticket.customer_name
                       .toLowerCase()
-                      .includes(problemValue.toLowerCase()) ||
-                  ticket.room_number.includes(problemValue)
+                      .includes(problemValue.toLowerCase())
                 : true;
 
             // Возвращаем результат фильтрации по всем критериям
