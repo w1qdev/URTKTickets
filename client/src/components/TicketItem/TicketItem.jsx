@@ -50,6 +50,7 @@ const TicketItem = (props) => {
         problem_title,
         room_number,
         customer_name,
+        problem_description,
         submission_date,
         deadline_date,
         priority_id,
@@ -77,11 +78,13 @@ const TicketItem = (props) => {
                 <div className="ticket-item__number">№{ticket_id}</div>
                 <div className="ticket-item__problem">
                     <div className="problem__title">{problem_title}</div>
-                    {/* <div className="problem__description">
-                        {task_description}
-                    </div> */}
-                    <Bookmark className="bookmark" priority={priority_id} />
+
+                    <div className="problem__description">
+                        {problem_description}
+                    </div>
                 </div>
+
+                <Bookmark className="bookmark" priority={priority_id} />
                 <div className="ticket-item__location">
                     Аудитория <strong>№{room_number}</strong>
                 </div>
