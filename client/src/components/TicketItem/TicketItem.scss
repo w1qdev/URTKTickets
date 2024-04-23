@@ -2,6 +2,7 @@
     width: 100%;
     height: 60px;
 
+    padding-left: 5px;
     margin-bottom: 5px;
 
     display: flex;
@@ -29,6 +30,11 @@
 
     &__number {
         width: 7%;
+        font-size: 0.9em;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__problem {
@@ -80,12 +86,20 @@
         width: 18%;
         font-size: 15px;
         font-weight: 500;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__date {
         width: 10%;
         font-size: 13px;
         font-weight: 500;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__status {

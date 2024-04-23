@@ -166,7 +166,12 @@ const TicketsContainer = ({
             const isProblemMatch = problemValue
                 ? ticket.problem_title
                       .toLowerCase()
-                      .includes(problemValue.toLowerCase())
+                      .includes(problemValue.toLowerCase()) ||
+                  ticket.ticket_id.toString().includes(problemValue) ||
+                  ticket.customer_name
+                      .toLowerCase()
+                      .includes(problemValue.toLowerCase()) ||
+                  ticket.room_number.includes(problemValue)
                 : true;
 
             // Возвращаем результат фильтрации по всем критериям
