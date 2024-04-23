@@ -26,7 +26,8 @@ class TicketsManager():
                 state_id=ticket_data.get('state_id'),
                 teacher_id=ticket_data.get('teacher_id'),
                 priority_id=ticket_data.get('priority_id'),
-                deadline_date=ticket_data.get('deadline_date')
+                deadline_date=ticket_data.get('deadline_date'),
+                problem_description=ticket_data.get('problem_description')
             )
 
             # Добавление задач к тикету

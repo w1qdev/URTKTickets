@@ -13,13 +13,13 @@ const TicketsList = ({ ticketsData, isFetching }) => {
                 </Stack>
             ) : null}
 
-            {isFetching === false && ticketsData.length
+            {ticketsData.length && !isFetching
                 ? ticketsData.map((ticket) => (
                       <TicketItem key={ticket.ticket_id} {...ticket} />
                   ))
                 : null}
 
-            {/* {!isFetching && ticketsData.length === 0 ? (
+            {ticketsData.length === 0 && !isFetching ? (
                 <div className="no-tickets">
                     <img
                         className="no-tickets__img"
@@ -30,7 +30,7 @@ const TicketsList = ({ ticketsData, isFetching }) => {
                         Ой.... Тикеты не найдены
                     </div>
                 </div>
-            ) : null} */}
+            ) : null}
         </>
     );
 };

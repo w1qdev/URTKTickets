@@ -5,7 +5,7 @@ import axios from "axios";
 import { Tooltip } from "@chakra-ui/react";
 import Button from "../Buttons/Button";
 import Notification from "../Notification/Notification";
-import Bookmark from "../Icons/Bookmark";
+import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import Popup from "./Popup";
 
 const ConfirmTicketPopup = ({
@@ -20,6 +20,7 @@ const ConfirmTicketPopup = ({
         room_number,
         submission_date,
         deadline_date,
+        problem_description,
         priority_id,
         tasks,
     } = ticketData;
@@ -78,12 +79,14 @@ const ConfirmTicketPopup = ({
                 </div>
             </div>
 
-            <div className="body__tasks body__section">
+            <div className="body__tasks">
                 <div className="body__tasks-title">Список задач</div>
                 <div className="body__tasks-items">
                     <TasksList tasksData={tasks} />
                 </div>
             </div>
+
+            <DescriptionFeed descriptionText={problem_description} />
 
             <div className="body__actions body__section">
                 <div className="body__actions-user">

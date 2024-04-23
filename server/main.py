@@ -1,5 +1,7 @@
-from fastapi import FastAPI, Query
+import uvicorn
+from fastapi import FastAPI, Query, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_socketio import SocketManager
 from fastapi.openapi.utils import get_openapi
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -42,6 +44,7 @@ ticket_priority_manager = TicketPriorityManager(SessionLocal)
 
 app = FastAPI()
 app.openapi = custom_openapi()
+sio = SocketManager(app=app) # socket io
 
 
 app.add_middleware(
@@ -236,7 +239,6 @@ async def remove_ticket_priority_by_id(ticket_priority_id: int):
         return {"message": "Ticket priority not found"}
 
 
-if __name__ == "__main__":
-    import uvicorn
 
+if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8001)

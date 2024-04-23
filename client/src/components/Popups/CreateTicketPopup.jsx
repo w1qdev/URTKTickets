@@ -1,13 +1,10 @@
 import { getCurrentDate, addDaysToCurrentDate } from "../../helpers/utils";
 import Button from "../Buttons/Button";
-import PlusIcon from "../Icons/PlusIcon";
-import CheckmarkIcon from "../Icons/CheckmarkIcon";
-import CloseIcon from "../Icons/CloseIcon";
-import { AnimatePresence, motion } from "framer-motion";
 import { Tooltip } from "@chakra-ui/react";
-import AngleIcon from "../Icons/AngleIcon";
 import SendTicketIcon from "../Icons/SendTicketIcon";
 import TasksList from "../TasksList/TasksList";
+import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
+import TaskAndDescriptionController from "../TaskAndDescriptionController/TaskAndDescriptionController";
 import EditIcon from "../Icons/EditIcon";
 import axios from "axios";
 import Popup from "./Popup";
@@ -23,6 +20,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
     const [ticketTitle, setTicketTitle] = useState(
         "Устранение технических неполадок"
     );
+    const [ticketDescription, setTicketDescription] = useState("");
     const [tasks, setTasks] = useState([]);
     const [currentTask, setCurrentTask] = useState({
         pc_name: "",
@@ -65,14 +63,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
     ]);
     const [selectedLevelOfImportance, setSelectedLevelOfImportant] =
         useState(1);
-
     const [selectedDeadlineDate, setSelectedDeadlineDate] = useState({
         date: addDaysToCurrentDate(selectedLevelOfImportance * 3).date,
         difference: addDaysToCurrentDate(selectedLevelOfImportance * 3)
             .difference,
     });
-
     const [isCreatingTask, setIsCreatingTask] = useState(false);
+    const [isCreatingDescription, setIsCreatingDescription] = useState(false);
 
     const handleRoom = (e) => {
         setRoom((prev) => e.target.textContent);
@@ -87,8 +84,22 @@ const CreateTicketPopup = ({ popupHandler }) => {
         });
     };
 
+    const handleTicketDescription = (e) => {
+        setTicketDescription((prev) => e.target.value);
+    };
+
     const handleCreatingTask = () => {
         setIsCreatingTask((prev) => !prev);
+    };
+
+    const handleCreateDescription = () => {
+        setIsCreatingDescription((prev) => !prev);
+        console.log(isCreatingDescription);
+    };
+
+    const handleRemoveDescription = () => {
+        setTicketDescription((prev) => "");
+        setIsCreatingDescription((prev) => false);
     };
 
     const handleSaveTasks = () => {
@@ -122,6 +133,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                 room_number: room,
                 state_id: 1,
                 submission_date: currentDate,
+                problem_description: ticketDescription,
                 tasks: tasks,
                 teacher_id: localStorage.getItem("user_id"),
                 priority_id: parseInt(selectedLevelOfImportance),
@@ -247,106 +259,24 @@ const CreateTicketPopup = ({ popupHandler }) => {
                 <div className="body__tasks-items">
                     <TasksList tasksData={tasks} />
 
-                    {!isCreatingTask ? (
-                        <AnimatePresence>
-                            <motion.button
-                                className="create__task-button"
-                                onClick={handleCreatingTask}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0, transition: 0.2 }}
-                            >
-                                <div className="button__text">
-                                    Добавить задачу
-                                </div>
-                                <PlusIcon
-                                    width="20"
-                                    height="20"
-                                    fill="#56ea4e"
-                                />
-                            </motion.button>
-                        </AnimatePresence>
-                    ) : (
-                        <AnimatePresence>
-                            <motion.div
-                                className="new-item"
-                                initial={{ y: 10, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1, transition: 0.3 }}
-                                exit={{
-                                    scale: 0.95,
-                                    opacity: 0,
-                                    transition: 0.2,
-                                }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                <div className="new-item__general">
-                                    <input
-                                        className="new-item__general-pc"
-                                        type="text"
-                                        placeholder="ПК №1"
-                                        name="pc_name"
-                                        value={currentTask.pc_name}
-                                        onChange={handleInputType}
-                                    />
+                    <TaskAndDescriptionController
+                        isCreatingTask={isCreatingTask}
+                        isCreatingDescription={isCreatingDescription}
+                        handleCreatingTask={handleCreatingTask}
+                        handleCreateDescription={handleCreateDescription}
+                        currentTask={currentTask}
+                        ticketDescription={ticketDescription}
+                        handleRemoveDescription={handleRemoveDescription}
+                        handleTicketDescription={handleTicketDescription}
+                        handleInputType={handleInputType}
+                        handlerRemoveTask={handlerRemoveTask}
+                        handleSaveTasks={handleSaveTasks}
+                    />
 
-                                    <AngleIcon className="item__general-angle" />
-
-                                    {/* <WorksList works={currentTask.works} /> */}
-
-                                    <textarea
-                                        className="new-item__general-task type-install"
-                                        type="text"
-                                        placeholder="Установка ПО"
-                                        name="task_description"
-                                        value={currentTask.task_description}
-                                        onChange={handleInputType}
-                                    />
-
-                                    <div className="actions">
-                                        {currentTask.pc_name &&
-                                        currentTask.task_description ? (
-                                            <>
-                                                <div
-                                                    className="action"
-                                                    onClick={handlerRemoveTask}
-                                                >
-                                                    <Tooltip
-                                                        hasArrow
-                                                        label="Удалить задачу"
-                                                        placement="top"
-                                                        bg="gray.600"
-                                                        openDelay={200}
-                                                    >
-                                                        <div className="actions__remove">
-                                                            Отмена
-                                                            {/* <CloseIcon fill="#343434" /> */}
-                                                        </div>
-                                                    </Tooltip>
-                                                </div>
-                                                <div
-                                                    className="action"
-                                                    onClick={handleSaveTasks}
-                                                >
-                                                    <Tooltip
-                                                        hasArrow
-                                                        label="Сохранить изменения"
-                                                        placement="top"
-                                                        bg="gray.600"
-                                                        openDelay={200}
-                                                    >
-                                                        <div className="actions__save">
-                                                            Добавить задачу
-                                                            {/* <CheckmarkIcon fill="#343434" /> */}
-                                                        </div>
-                                                    </Tooltip>
-                                                </div>
-                                            </>
-                                        ) : null}
-                                    </div>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    )}
+                    <DescriptionFeed
+                        isCreatingDescription={isCreatingDescription}
+                        descriptionText={ticketDescription}
+                    />
                 </div>
             </div>
 

@@ -48,7 +48,6 @@ const TicketItem = (props) => {
     const {
         ticket_id,
         problem_title,
-        task_description,
         room_number,
         customer_name,
         submission_date,
