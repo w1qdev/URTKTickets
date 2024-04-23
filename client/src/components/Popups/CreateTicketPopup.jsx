@@ -94,7 +94,6 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
     const handleCreateDescription = () => {
         setIsCreatingDescription((prev) => !prev);
-        console.log(isCreatingDescription);
     };
 
     const handleRemoveDescription = () => {
@@ -181,10 +180,6 @@ const CreateTicketPopup = ({ popupHandler }) => {
         }
     }, [tasks, room, ticketTitle]);
 
-    useEffect(() => {
-        console.log(selectedDeadlineDate.date);
-    }, [selectedDeadlineDate.date]);
-
     return (
         <Popup
             title="Заявка системному администратору"
@@ -192,7 +187,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
             popupHandler={popupHandler}
         >
             <div className="body__title">
-                <div className="body__title-label">Название проблемы: </div>
+                <div className="body__title-label">Название проблемы </div>
                 <input
                     className="body__title-text"
                     value={ticketTitle}
@@ -310,13 +305,34 @@ const CreateTicketPopup = ({ popupHandler }) => {
                         </button>
                     </div>
                 </div>
-                <Button
-                    bgColor={isButtonDisabled ? "#696969" : "#1F7EFF"}
-                    onClick={isButtonDisabled ? null : handleCreateTicket}
+                <Tooltip
+                    hasArrow
+                    label={
+                        isButtonDisabled
+                            ? "Похоже, что вы не указали аудиторию, или не добавили хотя бы одну задачу"
+                            : null
+                    }
+                    placement="top"
+                    bg="gray.600"
+                    openDelay={200}
                 >
-                    <div className="button__text">Создать заявку</div>
-                    <SendTicketIcon className="send-ticket-icon" fill="#fff" />
-                </Button>
+                    <div>
+                        <Button
+                            bgColor={isButtonDisabled ? "#696969" : "#1F7EFF"}
+                            onClick={
+                                isButtonDisabled ? null : handleCreateTicket
+                            }
+                            isDisabled={isButtonDisabled}
+                        >
+                            <div className="button__text">Создать заявку</div>
+
+                            <SendTicketIcon
+                                className="send-ticket-icon"
+                                fill="#fff"
+                            />
+                        </Button>
+                    </div>
+                </Tooltip>
             </div>
         </Popup>
     );

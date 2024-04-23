@@ -38,8 +38,8 @@ const TaskAndDescriptionController = (props) => {
                                 }}
                             >
                                 <TextDescriptionIcon
-                                    width="40"
-                                    height="40"
+                                    width="15px"
+                                    height="15px"
                                     fill="#979797"
                                 />
                             </motion.button>
@@ -74,8 +74,6 @@ const TaskAndDescriptionController = (props) => {
                         />
 
                         <AngleIcon className="item__general-angle" />
-
-                        {/* <WorksList works={currentTask.works} /> */}
 
                         <textarea
                             className="new-item__general-task type-install"
@@ -150,6 +148,7 @@ const TaskAndDescriptionController = (props) => {
                     <textarea
                         value={props.ticketDescription}
                         onChange={props.handleTicketDescription}
+                        placeholder="Ваш комментарий..."
                         className="ticket-description"
                     />
 

@@ -1,20 +1,18 @@
-import './Button.scss'
+import "./Button.scss";
 
-
-const Button = ({ children, bgColor, onClick }) => {
+const Button = ({ children, bgColor, onClick, isDisabled }) => {
     return (
         <button
             onClick={onClick}
-            className='button'
-            style={{ 
+            disabled={isDisabled}
+            className="button"
+            style={{
                 backgroundColor: `${bgColor}`,
             }}
         >
             {children}
         </button>
-    )
-}
-
+    );
+};
 
 export default Button;
-

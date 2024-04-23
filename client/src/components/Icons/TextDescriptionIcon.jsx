@@ -1,11 +1,11 @@
 const TextDescriptionIcon = (props) => {
-    const { className, fill = "white", width = 10, height = 10 } = props;
+    const { className, fill = "white", width = 15, height = 15 } = props;
 
     return (
         <svg
             className={className}
-            width="10"
-            height="10"
+            width={width}
+            height={height}
             viewBox="0 0 10 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
