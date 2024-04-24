@@ -159,7 +159,7 @@ const TaskAndDescriptionController = (props) => {
                                     onClick={props.handleCreateDescription}
                                 >
                                     <div className="actions__save">
-                                        Добавить задачу
+                                        Добавить комментарий
                                         {/* <CheckmarkIcon fill="#343434" /> */}
                                     </div>
                                 </div>

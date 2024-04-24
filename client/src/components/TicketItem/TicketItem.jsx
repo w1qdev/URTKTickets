@@ -15,15 +15,15 @@ import { Tooltip } from "@chakra-ui/react";
 
 const PopupBody = ({ status, popupHandler, ticketData }) => {
     const popupContainers = {
-        "Awaiting Review": (
+        "Under review": (
             <AcceptTicketPopup
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Рассмотрение заявки"
-                popupStatus="Подтверждение заявки"
+                popupStatus="Заявка на рассмотрении"
             />
         ),
-        "Awaiting Confirmation": (
+        "In progress": (
             <ConfirmTicketPopup
                 ticketData={ticketData}
                 popupHandler={popupHandler}
@@ -31,7 +31,7 @@ const PopupBody = ({ status, popupHandler, ticketData }) => {
                 popupStatus="Отправка на проверку"
             />
         ),
-        Confirmed: (
+        Completed: (
             <ViewTicketPopup
                 ticketData={ticketData}
                 popupHandler={popupHandler}

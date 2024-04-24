@@ -100,7 +100,7 @@ POST http://localhost:8001/api/ticket_states/ HTTP/1.1
 content-type: application/json
 
 {
-    "state_name": "Awaiting Review"
+    "state_name": "Under review"
 }
 
 ### Create a ticket state
@@ -108,7 +108,7 @@ POST http://localhost:8001/api/ticket_states/ HTTP/1.1
 content-type: application/json
 
 {
-    "state_name": "Awaiting Confirmation"
+    "state_name": "In progress"
 }
 
 
@@ -117,7 +117,7 @@ POST http://localhost:8001/api/ticket_states/ HTTP/1.1
 content-type: application/json
 
 {
-    "state_name": "Confirmed"
+    "state_name": "Completed"
 }
 
 ### Create a priority [low]

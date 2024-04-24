@@ -15,21 +15,21 @@ export const getCurrentDate = () => {
 export const getTicketStateNameById = (ticket_id) => {
     switch (ticket_id) {
         case 1:
-            return "Awaiting Review";
+            return "Under review";
         case 2:
-            return "Awaiting Confirmation";
+            return "In progress";
         case 3:
-            return "Confirmed";
+            return "Completeda";
     }
 };
 
 export const getTicketIdByStateName = (ticket_name) => {
     switch (ticket_name) {
-        case "Ждет рассмотрения":
+        case "На рассмотрении":
             return 1;
-        case "Ждет подтверждения":
+        case "Выполняется":
             return 2;
-        case "Подтвержден":
+        case "Выполнено":
             return 3;
     }
 };
@@ -39,13 +39,13 @@ export const mapTicketsDataAndChangeState = (data) => {
         let newState;
         switch (item.title) {
             case "1":
-                newState = "Ждет рассмотрения";
+                newState = "На рассмотрении";
                 break;
             case "2":
-                newState = "Ждет подтверждения";
+                newState = "Выполняется";
                 break;
             case "3":
-                newState = "Подтвержден";
+                newState = "Выполнено";
                 break;
             default:
                 newState = "Unknown State"; // Обработка для неизвестных значений state_id
