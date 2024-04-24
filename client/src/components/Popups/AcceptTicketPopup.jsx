@@ -26,6 +26,7 @@ const AcceptTicketPopup = ({
     } = ticketData;
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
+    const username = localStorage.getItem("username");
     const date = dateFormatter(submission_date);
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
 
@@ -38,6 +39,7 @@ const AcceptTicketPopup = ({
                         ticketData.state_id + 1 <= 3
                             ? ticketData.state_id + 1
                             : ticketData.state_id,
+                    administratorUsername: username,
                 }
             )
             .then((res) => {
@@ -89,8 +91,10 @@ const AcceptTicketPopup = ({
             <DescriptionFeed descriptionText={problem_description} />
 
             <div className="body__actions body__section">
-                <div className="body__actions-user">
-                    <b>Заказчик:</b> {customer_name}
+                <div className="body__actions-users">
+                    <div>
+                        <b>Заказчик:</b> {customer_name}
+                    </div>
                 </div>
 
                 {isAdministrator ? (

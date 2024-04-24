@@ -19,7 +19,7 @@ export const getTicketStateNameById = (ticket_id) => {
         case 2:
             return "In progress";
         case 3:
-            return "Completeda";
+            return "Completed";
     }
 };
 

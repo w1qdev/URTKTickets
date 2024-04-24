@@ -91,3 +91,18 @@ class TicketsManager():
             self.session.rollback()
             return False
     
+    def add_ticket_performer(self, ticket_id: int, performer_name: str):
+        try:
+            ticket = self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
+
+            if not ticket:
+                return False  # Тикет не найден
+
+            ticket.performer_name = performer_name
+            self.session.commit()
+            return True  # Исполнитель успешно добавлен к тикету
+            
+        except Exception as e:
+            print(f"An error occurred while adding performer to ticket: {e}")
+            self.session.rollback()
+            return False  # Произошла ошибка, исполнитель не добавлен

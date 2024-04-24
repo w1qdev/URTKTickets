@@ -77,7 +77,6 @@ const TicketsContainer = ({
                     })
                     .then((res) => {
                         if (res.data.tickets?.length) {
-                            console.log(res.data.tickets);
                             setMenuID((prev) => ({
                                 ...prev,
                                 data: getMenuItemsByValue(

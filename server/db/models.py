@@ -35,6 +35,7 @@ class Tickets(Base):
     submission_date = Column(String)
     deadline_date = Column(String)
     customer_name = Column(String(100))
+    performer_name = Column(String(100), default="")
     room_number = Column(String(20))
     problem_title = Column(String(255))
     problem_description = Column(Text)

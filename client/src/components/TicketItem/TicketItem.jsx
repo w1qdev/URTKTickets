@@ -28,7 +28,7 @@ const PopupBody = ({ status, popupHandler, ticketData }) => {
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Подтверждение выполненных задач"
-                popupStatus="Отправка на проверку"
+                popupStatus="В процессе выполнения"
             />
         ),
         Completed: (

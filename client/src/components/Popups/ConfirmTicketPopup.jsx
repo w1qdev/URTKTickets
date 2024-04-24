@@ -16,6 +16,7 @@ const ConfirmTicketPopup = ({
 }) => {
     const {
         customer_name,
+        performer_name,
         problem_title,
         room_number,
         submission_date,
@@ -55,7 +56,7 @@ const ConfirmTicketPopup = ({
             ticketPriority={priority_id}
         >
             <div className="body__title">
-                <div className="body__title-label">Заголовок проблемы: </div>
+                <div className="body__title-label">Заголовок проблемы </div>
                 <div className="body__title-text">{problem_title}</div>
             </div>
 
@@ -89,8 +90,13 @@ const ConfirmTicketPopup = ({
             <DescriptionFeed descriptionText={problem_description} />
 
             <div className="body__actions body__section">
-                <div className="body__actions-user">
-                    <b>Заказчик:</b> {customer_name}
+                <div className="body__actions-users">
+                    <div>
+                        <b>Заказчик:</b> {customer_name}
+                    </div>
+                    <div>
+                        <b>Исполнитель:</b> {performer_name}
+                    </div>
                 </div>
 
                 {!isAdministrator ? (

@@ -177,6 +177,9 @@ async def get_tickets(
 
 @app.put("/api/tickets/{ticket_id}/change_status/")
 async def change_ticket_status(ticket_id: int, status_data: dict):
+
+    if ('administratorUsername' in status_data):
+        tickets_manager.add_ticket_performer(ticket_id, status_data['administratorUsername'])
     changed_ticket = tickets_manager.change_ticket_status(ticket_id, status_data['new_status_id'])
 
     if changed_ticket:

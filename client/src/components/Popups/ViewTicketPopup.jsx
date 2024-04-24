@@ -7,6 +7,7 @@ import Popup from "./Popup";
 const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
     const {
         customer_name,
+        performer_name,
         problem_title,
         room_number,
         problem_description,
@@ -48,8 +49,13 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
             <DescriptionFeed descriptionText={problem_description} />
 
             <div className="body__actions body__section">
-                <div className="body__actions-user">
-                    <b>Заказчик:</b> {customer_name}
+                <div className="body__actions-users">
+                    <div>
+                        <b>Заказчик:</b> {customer_name}
+                    </div>
+                    <div>
+                        <b>Исполнитель:</b> {performer_name}
+                    </div>
                 </div>
 
                 <Notification
