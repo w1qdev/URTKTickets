@@ -1,0 +1,128 @@
+.item {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-content: start;
+
+    &:hover {
+        .actions {
+            display: flex;
+        }
+    }
+
+    &__general {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        &:hover {
+            .enviroment {
+                opacity: 1;
+                margin-left: 0px;
+            }
+        }
+
+        *:not(:last-child) {
+            margin-right: 6px;
+        }
+
+        &-pc {
+            width: 11%;
+            font-size: 14px;
+            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+            background: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        &__tasks {
+            width: 84%;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            flex-wrap: wrap;
+
+            &-task {
+                font-size: 12px;
+                padding: 6px 12px;
+                border-radius: 4px;
+                margin-bottom: 3px;
+            }
+        }
+
+        &-angle {
+            width: 20px;
+            height: 20px;
+        }
+
+        .enviroment {
+            width: auto;
+            height: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            opacity: 0;
+
+            &.edit,
+            &.remove {
+                width: 35px;
+                height: 35px;
+                border-radius: 6px;
+                background-color: #fff;
+                box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+                overflow: hidden;
+                border: 1px solid transparent;
+                transition: border-color 0.2s linear;
+
+                &:hover {
+                    border-color: #4e7fff;
+
+                    .edit-icon {
+                        path {
+                            stroke: #4e7fff;
+                        }
+                    }
+                }
+
+                .edit-icon {
+                    path {
+                        transition: stroke 0.2s linear;
+                    }
+                }
+            }
+
+            &.remove {
+                &:hover {
+                    border-color: #ff714e;
+
+                    .trash-icon {
+                        path {
+                            fill: #ff714e;
+                        }
+                    }
+                }
+
+                .trash-icon {
+                    path {
+                        transition: fill 0.2s linear;
+                    }
+                }
+            }
+        }
+    }
+
+    &__description {
+        max-width: 70%;
+        margin-top: 8px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
+        background: #fff;
+        color: #343434;
+        font-weight: 300;
+        margin-bottom: 5px;
+    }
+}

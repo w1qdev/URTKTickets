@@ -87,7 +87,7 @@ const TaskAndDescriptionController = (props) => {
                         <div className="actions">
                             <div
                                 className="action"
-                                onClick={props.handlerRemoveTask}
+                                onClick={props.handleRemoveTask}
                             >
                                 <div className="actions__remove">Отмена</div>
                             </div>

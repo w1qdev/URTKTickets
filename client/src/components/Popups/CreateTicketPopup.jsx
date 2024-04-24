@@ -103,6 +103,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
     const handleSaveTasks = () => {
         const newTask = {
+            id: Date.now(),
             pc_name: currentTask.pc_name,
             task_description: currentTask.task_description,
         };
@@ -115,7 +116,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
         setIsCreatingTask(false);
     };
 
-    const handlerRemoveTask = () => {
+    const handleCancelTask = () => {
         setCurrentTask({ pc_name: "", task_description: "" });
         setIsCreatingTask(false);
     };
@@ -149,6 +150,14 @@ const CreateTicketPopup = ({ popupHandler }) => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const handleRemoveTask = (id) => {
+        setTasks((prevTasks) => {
+            return prevTasks.filter((task) => task.id !== id);
+        });
+
+        console.log(tasks);
     };
 
     useEffect(() => {
@@ -252,7 +261,11 @@ const CreateTicketPopup = ({ popupHandler }) => {
             <div className="body__tasks body__section">
                 <div className="body__tasks-title">Список задач</div>
                 <div className="body__tasks-items">
-                    <TasksList tasksData={tasks} />
+                    <TasksList
+                        handleRemoveTask={handleRemoveTask}
+                        tasksData={tasks}
+                        isRemovable={true}
+                    />
 
                     <TaskAndDescriptionController
                         isCreatingTask={isCreatingTask}
@@ -264,7 +277,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                         handleRemoveDescription={handleRemoveDescription}
                         handleTicketDescription={handleTicketDescription}
                         handleInputType={handleInputType}
-                        handlerRemoveTask={handlerRemoveTask}
+                        handleRemoveTask={handleCancelTask}
                         handleSaveTasks={handleSaveTasks}
                     />
 
