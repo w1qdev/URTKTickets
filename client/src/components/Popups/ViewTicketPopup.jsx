@@ -7,6 +7,8 @@ import { SERVER_ORIGIN_URI } from "../../api";
 import Popup from "./Popup";
 import DownloadReportButton from "../Buttons/DownloadReportButton";
 import axios from "axios";
+import { useState } from "react";
+import { Spinner } from "@chakra-ui/react";
 
 const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
     const {
@@ -22,7 +24,10 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
     } = ticketData;
     const date = dateFormatter(submission_date);
 
+    const [isFetching, setIsFetching] = useState(false);
+
     const handleFileOperations = async () => {
+        setIsFetching((prev) => true);
         try {
             // Отправка данных на сервер для генерации файла
             await axios.post(`${SERVER_ORIGIN_URI}/generate-report/`, {
@@ -44,6 +49,7 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
         } catch (error) {
             console.error("Ошибка при выполнении операций с файлом:", error);
         }
+        setIsFetching((prev) => false);
     };
 
     return (
@@ -92,8 +98,17 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
                     text="Задачи выполнены системным администратором"
                 /> */}
                 <DownloadReportButton onClick={handleFileOperations}>
-                    Скачать отчет
-                    <DownlaodIcon width="24px" height="24px" />
+                    {isFetching ? (
+                        <>
+                            Скачивание...
+                            <Spinner size="sm" color="#fff" />
+                        </>
+                    ) : (
+                        <>
+                            Скачать отчет
+                            <DownlaodIcon width="24px" height="24px" />
+                        </>
+                    )}
                 </DownloadReportButton>
             </div>
         </Popup>
