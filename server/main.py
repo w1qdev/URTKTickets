@@ -276,8 +276,7 @@ async def remove_ticket_priority_by_id(ticket_priority_id: int):
 # Generate and download report
 @app.post("/generate-report/")
 async def generate_report(data: dict):
-    try:
-        
+    try:        
         # Создаем документ
         document = Document()
         ticket_data = data['ticketData']
@@ -285,7 +284,6 @@ async def generate_report(data: dict):
 
         # Добавляем заголовок
         ticket_heading = document.add_heading('Заявка системному администратору', level=0)
-
 
         # Добавляем информацию о тикете
         document.add_paragraph(f"Заголовок проблемы: {ticket_data['problem_title']}")
