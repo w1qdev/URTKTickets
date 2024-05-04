@@ -9,9 +9,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
-    transition: opacity linear 0.2s, 
-                background-color linear 0.2s;
-    
+    transition: opacity linear 0.2s, background-color linear 0.2s;
 
     &__text {
         font-size: 14px;
@@ -19,5 +17,12 @@
 
     &:hover {
         opacity: 0.8;
+    }
+
+    &.download {
+        background-color: #494949;
+        color: #fff;
+        font-weight: 400;
+        font-size: 15px;
     }
 }

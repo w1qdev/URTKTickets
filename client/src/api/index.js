@@ -1,5 +1,5 @@
-const SERVER_ORIGIN_URI = "http://localhost:8001";
-const API_PATH = "/api";
+export const SERVER_ORIGIN_URI = "http://localhost:8001";
+export const API_PATH = "/api";
 
 export const endpoints = {
     GET_ALL_TICKETS: `${SERVER_ORIGIN_URI}${API_PATH}/tickets/`,

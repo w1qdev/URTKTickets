@@ -1,8 +1,11 @@
 import uvicorn
+import os
+import json
 from fastapi import FastAPI, Query, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db.models import Base
@@ -11,6 +14,10 @@ from db.managers.ticket_state_manager import TicketStatesManager
 from db.managers.ticket_manager import TicketsManager
 from db.managers.task_manager import TasksManager
 from db.managers.ticket_priority_manager import TicketPriorityManager
+
+# docx
+from docx import Document
+
 
 
 # Настройка документации OpenAPI
@@ -240,6 +247,88 @@ async def remove_ticket_priority_by_id(ticket_priority_id: int):
         return {"message": "Ticket priority deleted successfully"}
     else:
         return {"message": "Ticket priority not found"}
+
+# Generate and download report
+# @app.post("/generate-report/")
+# async def generate_report(data: dict):
+#     report_data = data['ticketData']
+    
+#     # Создание объекта Document
+#     doc = Document()
+    
+#     # Добавление данных в документ
+#     for key, value in report_data.items():
+#         doc.add_paragraph(f"{key}: {value}")
+#         # Если значение является списком (например, tasks), добавляем его содержимое в виде списка
+#         if isinstance(value, list):
+#             for item in value:
+#                 for k, v in item.items():
+#                     doc.add_paragraph(f"  {k}: {v}", style='ListBullet')
+    
+#     # Сохранение документа на диск
+#     filename = "report.docx"
+#     doc.save(filename)
+    
+#     # Возвращаем файл как ответ
+#     return FileResponse(filename)
+
+
+# Generate and download report
+@app.post("/generate-report/")
+async def generate_report(data: dict):
+    try:
+        
+        # Создаем документ
+        document = Document()
+        ticket_data = data['ticketData']
+        print(ticket_data)
+
+        # Добавляем заголовок
+        ticket_heading = document.add_heading('Заявка системному администратору', level=0)
+
+
+        # Добавляем информацию о тикете
+        document.add_paragraph(f"Заголовок проблемы: {ticket_data['problem_title']}")
+        document.add_paragraph(f"Номер аудитории: {ticket_data['room_number']}")
+        document.add_paragraph(f"Описание проблемы: {ticket_data['problem_description']}")
+        document.add_paragraph(f"Дата регистрации заявки: {ticket_data['submission_date']}")
+        document.add_paragraph(f"Выполнить работу до: {ticket_data['deadline_date']}")
+        document.add_paragraph(f"ФИО заказчика: {ticket_data['customer_name']}")
+        document.add_paragraph(f"ФИО исполнителя: {ticket_data['performer_name']}")
+        
+        # Добавляем информацию о задачах
+        document.add_heading('Задачи', level=1)
+        for task in ticket_data['tasks']:
+            document.add_paragraph(f"PC Name: {task['pc_name']}")
+            document.add_paragraph(f"Task Description: {task['task_description']}")
+        
+        # Создаем имя файла на основе ticket_id
+        report_filename = f"report_{ticket_data['ticket_id']}.docx"
+
+        # Сохраняем документ
+        document.save(os.path.join("reports", report_filename))
+        
+        print(os.path.join("reports", report_filename))
+
+        # Возвращаем имя файла
+        return {"filename": report_filename}
+    except Exception as e:
+        return {"message": "Something gone wrong | Internal Error"}
+
+@app.get("/download-report/{filename}")
+async def download_report(filename: str):
+    # Здесь нужно добавить логику для загрузки сгенерированного файла
+    # Например, считать содержимое файла с сервера и вернуть его как ответ
+    try:
+        # Проверяем, существует ли файл
+        report_path = os.path.join("reports", filename)
+        if not os.path.exists(report_path):
+            return {"message": "File not found"}
+        
+        # Возвращаем файл как ответ
+        return FileResponse(path=report_path, filename=filename)
+    except Exception as e:
+        return {"message": "Something gone wrong | Internal Error"}
 
 
 

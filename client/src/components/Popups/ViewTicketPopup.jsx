@@ -2,7 +2,11 @@ import TasksList from "../TasksList/TasksList";
 import Notification from "../Notification/Notification";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import { dateFormatter } from "../../helpers/utils";
+import DownlaodIcon from "../Icons/DownloadIcon";
+import { SERVER_ORIGIN_URI } from "../../api";
 import Popup from "./Popup";
+import DownloadReportButton from "../Buttons/DownloadReportButton";
+import axios from "axios";
 
 const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
     const {
@@ -14,8 +18,33 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
         submission_date,
         priority_id,
         tasks,
+        ticket_id,
     } = ticketData;
     const date = dateFormatter(submission_date);
+
+    const handleFileOperations = async () => {
+        try {
+            // Отправка данных на сервер для генерации файла
+            await axios.post(`${SERVER_ORIGIN_URI}/generate-report/`, {
+                ticketData,
+            });
+
+            // Загрузка сгенерированного файла
+            const response = await axios.get(
+                `${SERVER_ORIGIN_URI}/download-report/report_${ticket_id}.docx`,
+                { responseType: "blob" }
+            );
+            const url = URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `report_${ticket_id}.docx`); // Установите желаемое имя файла
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Ошибка при выполнении операций с файлом:", error);
+        }
+    };
 
     return (
         <Popup
@@ -58,10 +87,14 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
                     </div>
                 </div>
 
-                <Notification
+                {/* <Notification
                     type="success"
                     text="Задачи выполнены системным администратором"
-                />
+                /> */}
+                <DownloadReportButton onClick={handleFileOperations}>
+                    Скачать отчет
+                    <DownlaodIcon width="24px" height="24px" />
+                </DownloadReportButton>
             </div>
         </Popup>
     );
