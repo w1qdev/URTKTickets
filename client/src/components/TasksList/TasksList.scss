@@ -18,23 +18,18 @@
         align-items: center;
         flex-wrap: wrap;
 
-        &:hover {
-            .enviroment {
-                opacity: 1;
-                margin-left: 0px;
-            }
-        }
-
         *:not(:last-child) {
             margin-right: 6px;
         }
 
         &-pc {
-            width: 11%;
-            font-size: 14px;
-            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+            width: fit-content;
+            max-width: 20%;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
             background: #fff;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 4px;
         }
 
@@ -64,15 +59,14 @@
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            opacity: 0;
 
             &.edit,
             &.remove {
-                width: 35px;
-                height: 35px;
+                width: 33px;
+                height: 33px;
                 border-radius: 6px;
                 background-color: #fff;
-                box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+                box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
                 overflow: hidden;
                 border: 1px solid transparent;
                 transition: border-color 0.2s linear;
@@ -116,7 +110,8 @@
 
     &__description {
         max-width: 70%;
-        margin-top: 8px;
+        font-size: 15px;
+        margin-top: 5px;
         padding: 5px 10px;
         border-radius: 6px;
         box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);

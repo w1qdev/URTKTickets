@@ -88,6 +88,7 @@
                 margin-bottom: 15px;
 
                 &-label {
+                    min-width: 25%;
                     font-weight: 300;
                     font-size: 16px;
                     margin-right: 1px;
@@ -436,6 +437,10 @@
                     .levels__title {
                         font-weight: 300;
                         font-size: 16px;
+                    }
+
+                    .question-icon {
+                        margin-left: 5px;
                     }
 
                     .levels {

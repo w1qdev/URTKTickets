@@ -15,6 +15,7 @@ from db.managers.task_manager import TasksManager
 from db.managers.ticket_priority_manager import TicketPriorityManager
 from docx_helpers.docx import generate_report_file, get_report_file_path
 from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
+from middlewares.AddProcessTimeHeader import AddProcessTimeHeader
 
 
 
@@ -59,6 +60,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(RemoveReportAfterResponse)
+app.add_middleware(AddProcessTimeHeader)
 
 
 # TEACHERS API

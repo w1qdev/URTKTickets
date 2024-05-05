@@ -16,7 +16,7 @@ const bookmarkColorFormatter = (priorityId) => {
         case 1:
             return "#4ECB71";
         case 2:
-            return "#FFF965";
+            return "#ffc165";
         case 3:
             return "#FF0000";
     }

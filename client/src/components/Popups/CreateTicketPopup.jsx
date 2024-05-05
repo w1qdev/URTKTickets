@@ -11,6 +11,8 @@ import Popup from "./Popup";
 import MenuGroup from "../Menu/MenuGroup";
 import { useEffect, useRef, useState } from "react";
 import { endpoints } from "../../api/index";
+import { reverseDate } from "../../helpers/utils";
+import QuestionIcon from "../Icons/QuestionIcon";
 
 const CreateTicketPopup = ({ popupHandler }) => {
     const currentDate = getCurrentDate();
@@ -125,6 +127,24 @@ const CreateTicketPopup = ({ popupHandler }) => {
         inputRef.current.focus();
     };
 
+    const handleDeadlineDateChange = (e) => {
+        const selectedDate = new Date(e.target.value);
+        const today = new Date();
+        const nextDay = new Date(today);
+        nextDay.setDate(nextDay.getDate());
+
+        if (selectedDate <= nextDay) {
+            // Дата меньше текущей даты плюс один день
+            console.log("Выбранная дата меньше текущей даты плюс один день");
+        } else {
+            // Дата установлена правильно
+            setSelectedDeadlineDate((prev) => ({
+                ...prev,
+                date: e.target.value,
+            }));
+        }
+    };
+
     const handleCreateTicket = async () => {
         try {
             const ticket = {
@@ -156,8 +176,6 @@ const CreateTicketPopup = ({ popupHandler }) => {
         setTasks((prevTasks) => {
             return prevTasks.filter((task) => task.id !== id);
         });
-
-        console.log(tasks);
     };
 
     useEffect(() => {
@@ -196,7 +214,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
             popupHandler={popupHandler}
         >
             <div className="body__title">
-                <div className="body__title-label">Название проблемы </div>
+                <div className="body__title-label">Название проблемы *</div>
                 <input
                     className="body__title-text"
                     value={ticketTitle}
@@ -222,7 +240,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
             <div className="body__location body__section">
                 <div className="body__location__room">
-                    <div className="title">Аудитория</div>
+                    <div className="title">Аудитория *</div>
                     <MenuGroup
                         menuItems={menuRoomsList}
                         defaultMenuTitle="Аудитория не выбрана"
@@ -241,15 +259,10 @@ const CreateTicketPopup = ({ popupHandler }) => {
                     <div className="title">Выполнить задачу до</div>
                     {/* <DatePicker className="date-picker" /> */}
                     <input
+                        min={reverseDate(currentDate)}
                         type="date"
                         className="date"
-                        onChange={(e) => {
-                            console.log(e.target.value);
-                            setSelectedDeadlineDate((prev) => ({
-                                ...prev,
-                                date: e.target.value,
-                            }));
-                        }}
+                        onChange={handleDeadlineDateChange}
                         value={selectedDeadlineDate.date}
                     />
                     {/* <div className="difference">
@@ -259,7 +272,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
             </div>
 
             <div className="body__tasks body__section">
-                <div className="body__tasks-title">Список задач</div>
+                <div className="body__tasks-title">Список задач *</div>
                 <div className="body__tasks-items">
                     <TasksList
                         handleRemoveTask={handleRemoveTask}
@@ -284,6 +297,9 @@ const CreateTicketPopup = ({ popupHandler }) => {
                     <DescriptionFeed
                         isCreatingDescription={isCreatingDescription}
                         descriptionText={ticketDescription}
+                        isRemovable={true}
+                        handleEditDescription={handleCreateDescription}
+                        handleRemoveDescription={handleRemoveDescription}
                     />
                 </div>
             </div>
@@ -291,6 +307,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
             <div className="body__actions body__section">
                 <div className="body__actions-levels">
                     <div className="levels__title">Уровень приоритета</div>
+                    <QuestionIcon
+                        width="20px"
+                        height="20px"
+                        className="question-icon"
+                        fill="#333"
+                        tooltipText="В зависимости от уровня приоритета задачи, сроки выполнения будут изменяться. Низкий уровень приоритета: 14 дней, Средний уровень приоритета: 7 дней, Высокий уровень приоритета: 3 дня"
+                    />
                     <div className="levels">
                         <button
                             className={`level__button start ${
@@ -326,7 +349,7 @@ const CreateTicketPopup = ({ popupHandler }) => {
                             : null
                     }
                     placement="top"
-                    bg="gray.600"
+                    bg="gray.800"
                     openDelay={200}
                 >
                     <div>

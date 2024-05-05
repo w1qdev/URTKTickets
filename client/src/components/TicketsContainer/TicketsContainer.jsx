@@ -254,7 +254,6 @@ const TicketsContainer = ({
                         handleClick={handleClickMenuID}
                     />
                 </div>
-                {/* <div className="tickets-container__header-item__separator"></div> */}
                 <div className="tickets-container__header-item problem">
                     <input
                         className="problem__search"
@@ -266,7 +265,11 @@ const TicketsContainer = ({
                         }
                     />
                 </div>
-                {/* <div className="tickets-container__header-item__separator"></div> */}
+
+                {/* <div className="tickets-container__header-item priority">
+                    <Menu />
+                </div> */}
+
                 <div className="tickets-container__header-item location">
                     <Menu
                         menuItems={menuLocation.data}
@@ -276,7 +279,6 @@ const TicketsContainer = ({
                         prefix="Аудитория №"
                     />
                 </div>
-                {/* <div className="tickets-container__header-item__separator"></div> */}
                 <div className="tickets-container__header-item user">
                     <Menu
                         menuItems={menuCustomer.data}
@@ -285,7 +287,6 @@ const TicketsContainer = ({
                         handleClick={handleClickMenuCustomer}
                     />
                 </div>
-                {/* <div className="tickets-container__header-item__separator"></div> */}
                 <div className="tickets-container__header-item date">
                     <Menu
                         menuItems={menuDate.data}
@@ -294,7 +295,6 @@ const TicketsContainer = ({
                         handleClick={handleClickMenuDate}
                     />
                 </div>
-                {/* <div className="tickets-container__header-item__separator"></div> */}
                 <div className="tickets-container__header-item status">
                     <Menu
                         menuItems={mappedMenuStatus}
