@@ -5,6 +5,7 @@ import "./App.css";
 function App() {
     return (
         <Routes>
+            <Route path="/" element={<AdministratorTicketsPage />} />
             <Route path="/tickets" element={<AdministratorTicketsPage />} />
         </Routes>
     );
