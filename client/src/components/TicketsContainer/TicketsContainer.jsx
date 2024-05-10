@@ -65,8 +65,8 @@ const TicketsContainer = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsFetching((prev) => true);
             try {
+                setIsFetching(true);
                 await axios
                     .get(endpoints.GET_ALL_TICKETS, {
                         params: {
@@ -123,10 +123,10 @@ const TicketsContainer = ({
             } catch (error) {
                 console.error("Произошла ошибка:", error);
             }
+            setIsFetching(false);
         };
 
         fetchData();
-        setIsFetching((prev) => false);
     }, []);
 
     useEffect(() => {
@@ -309,6 +309,7 @@ const TicketsContainer = ({
                 <TicketsList
                     isFetching={isFetching}
                     ticketsData={sortedTickets}
+                    isUsingFilters={isUsingFilters}
                 />
             </div>
         </div>

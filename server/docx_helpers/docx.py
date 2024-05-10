@@ -1,9 +1,11 @@
 import os
 from docx import Document
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
 from docx.enum.style import WD_STYLE_TYPE
+from docx.enum.section import WD_SECTION
 from helpers.utils import reverse_date
-from docx.shared import Cm
+from docx.shared import Cm, Pt
+
 
 
 
@@ -12,17 +14,36 @@ def generate_report_file(data: dict) -> dict:
     document = Document()
     ticket_data = data['ticketData']
 
-    # Добавляем заголовок
-    # ticket_heading = document.add_heading('Заявка системному администратору', level=0)
+    # Добавляем абзац с текстом "И.о. директора"
+    director_text = document.add_paragraph("И.о. директора")
+    director_text.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # Выравнивание текста вправо
+    director_text.paragraph_format.space_after = Pt(0)  # Устанавливаем нулевой отступ снизу
 
-    # ticket_title = document.add_paragraph('').add_run("Заявка системному администратору").bold = True
+    # Добавляем абзац с текстом "УрТК НИЯУ МИФИ"
+    institution_text = document.add_paragraph("УрТК НИЯУ МИФИ")
+    institution_text.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # Выравнивание текста вправо
+    institution_text.paragraph_format.space_after = Pt(0)  # Устанавливаем нулевой отступ снизу
+
+
+    # Добавляем абзац с текстом "Тарасову Д.В."
+    institution_text = document.add_paragraph("Тарасову Д.В.")
+    institution_text.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # Выравнивание текста вправо
+    institution_text.paragraph_format.space_after = Pt(0)  # Устанавливаем нулевой отступ снизу
+    
+    # Добавляем абзац с текстом "УрТК НИЯУ МИФИ"
+    institution_text = document.add_paragraph("От преподавателя ЦМК №4")
+    institution_text.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # Выравнивание текста вправо
+    institution_text.paragraph_format.space_after = Pt(0)  # Устанавливаем нулевой отступ снизу
+
+    # Добавляем абзац с текстом "УрТК НИЯУ МИФИ"
+    institution_text = document.add_paragraph(ticket_data['customer_name'])
+    institution_text.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # Выравнивание текста вправо
+    institution_text.paragraph_format.space_after = Pt(5)  # Устанавливаем нулевой отступ снизу
+
 
     # Добавляем абзац с текстом "Заявка системному администратору"
-    ticket_title = document.add_paragraph("ОТЧЕТ")
-
-    # Делаем текст в абзаце жирным
-    for run in ticket_title.runs:
-        run.bold = True
+    ticket_title = document.add_paragraph("Заявка системному администратору")
+    ticket_title.paragraph_format.space_before = Cm(1.25)
 
     # Устанавливаем выравнивание текста в центр
     paragraph_format = ticket_title.paragraph_format
@@ -48,10 +69,6 @@ def generate_report_file(data: dict) -> dict:
     report_period_run.bold = True
     report_period_paragraph.add_run(f"с {ticket_data['submission_date']} по {reverse_date(ticket_data['deadline_date'])}")
 
-    customer_name_paragraph = document.add_paragraph()
-    customer_name_paragraph.add_run("ФИО заказчика: ").bold = True
-    customer_name_paragraph.add_run(ticket_data['customer_name'])
-
     performer_name_paragraph = document.add_paragraph()
     performer_name_paragraph.add_run("ФИО исполнителя: ").bold = True
     performer_name_paragraph.add_run(ticket_data['performer_name'])
@@ -75,6 +92,11 @@ def generate_report_file(data: dict) -> dict:
         row_cells = table.add_row().cells
         row_cells[0].text = task['pc_name']
         row_cells[1].text = task['task_description']
+
+    # Добавляем текст с подписью внизу документа
+    signature_paragraph = document.add_paragraph("Подпись______________/_______________")
+    signature_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.RIGHT  # Выравниваем текст по правому краю
+    signature_paragraph.paragraph_format.space_before = Cm(3)
 
     # Создаем имя файла на основе ticket_id
     report_filename = f"report_{ticket_data['ticket_id']}.docx"

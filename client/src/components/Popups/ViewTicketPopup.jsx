@@ -42,7 +42,7 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
             const url = URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", `report_${ticket_id}.docx`); // Установите желаемое имя файла
+            link.setAttribute("download", `Отчет_№${ticket_id}.docx`); // Установите желаемое имя файла
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
