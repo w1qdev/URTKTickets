@@ -73,9 +73,9 @@
         padding: 5px;
         padding-bottom: 40px;
         margin-top: 5px;
-        max-height: 598px;
+        min-height: 598px;
         height: 598px;
-        overflow-y: auto !important;
+        overflow-y: auto;
     }
 
     .no-tickets {
