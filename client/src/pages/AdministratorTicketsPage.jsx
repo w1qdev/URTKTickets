@@ -10,6 +10,7 @@ import { Button, Stack } from "@chakra-ui/react";
 import RepeatIcon from "../components/Icons/RepeatIcon";
 import { useState } from "react";
 import CreateTicketPopup from "../components/Popups/CreateTicketPopup";
+import GridSwitcher from "../components/GridSwitcher/GridSwitcher";
 
 const AdministratorTicketsPage = () => {
     const [isUsingFilters, setIsUsingFilters] = useState(false);
@@ -17,7 +18,10 @@ const AdministratorTicketsPage = () => {
     const currentDate = dateFormatter(getCurrentDate());
     const userRole = localStorage.getItem("role") || "";
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isGridMode, setIsGridMode] = useState(false);
 
+    const handleSwitchToGridMode = () => setIsGridMode(true);
+    const handleSwitchToFlexMode = () => setIsGridMode(false);
     const handleOpenPopup = () => setIsPopupOpen((prev) => !prev);
 
     return (
@@ -75,6 +79,16 @@ const AdministratorTicketsPage = () => {
                                         </motion.div>
                                     </AnimatePresence>
                                 ) : null}
+
+                                <GridSwitcher
+                                    isGridMode={isGridMode}
+                                    handleSwitchToFlexMode={
+                                        handleSwitchToFlexMode
+                                    }
+                                    handleSwitchToGridMode={
+                                        handleSwitchToGridMode
+                                    }
+                                />
 
                                 {userRole.includes("administrator") ? (
                                     <div className="current-time">
