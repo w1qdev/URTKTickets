@@ -8,7 +8,8 @@ import Popup from "./Popup";
 import DownloadReportButton from "../Buttons/DownloadReportButton";
 import axios from "axios";
 import { useState } from "react";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, Tooltip } from "@chakra-ui/react";
+import TrashIcon from "../Icons/TrashIcon";
 
 const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
     const {
@@ -52,6 +53,8 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
         setIsFetching((prev) => false);
     };
 
+    const handleRemoveTicket = () => {};
+
     return (
         <Popup
             title={title}
@@ -93,23 +96,34 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
                     </div>
                 </div>
 
-                {/* <Notification
-                    type="success"
-                    text="Задачи выполнены системным администратором"
-                /> */}
-                <DownloadReportButton onClick={handleFileOperations}>
-                    {isFetching ? (
-                        <>
-                            Скачивание...
-                            <Spinner size="sm" color="#fff" />
-                        </>
-                    ) : (
-                        <>
-                            Скачать отчет
-                            <DownlaodIcon width="24px" height="24px" />
-                        </>
-                    )}
-                </DownloadReportButton>
+                <div className="view-ticket__actions">
+                    <Tooltip hasArrow label="Удалить заявку" placement="top">
+                        <button
+                            onClick={handleRemoveTicket}
+                            className="remove-ticket"
+                        >
+                            <TrashIcon
+                                className="icon"
+                                width="22px"
+                                height="22px"
+                            />
+                        </button>
+                    </Tooltip>
+
+                    <DownloadReportButton onClick={handleFileOperations}>
+                        {isFetching ? (
+                            <>
+                                Скачивание...
+                                <Spinner size="sm" color="#fff" />
+                            </>
+                        ) : (
+                            <>
+                                Скачать отчет
+                                <DownlaodIcon width="24px" height="24px" />
+                            </>
+                        )}
+                    </DownloadReportButton>
+                </div>
             </div>
         </Popup>
     );

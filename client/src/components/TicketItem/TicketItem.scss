@@ -28,6 +28,14 @@
         border-color: #86a7d8;
     }
 
+    &.grid {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        flex-direction: row;
+        position: relative;
+    }
+
     &__number {
         width: 7%;
         font-size: 0.9em;
@@ -47,6 +55,11 @@
         align-items: start;
         text-align: start;
 
+        &.grid {
+            width: 100%;
+            padding: 10px 5px;
+        }
+
         .problem__title {
             font-weight: 700;
             width: 100%;
@@ -56,6 +69,19 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            &.grid {
+                width: 90%;
+                white-space: normal;
+                word-wrap: break-word;
+                line-height: 1.1;
+                margin-bottom: 10px;
+                font-size: 16px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2; // количество строк
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
 
         .problem__description {
@@ -68,6 +94,20 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            &.grid {
+                width: 90%;
+                max-height: 34px;
+                white-space: normal;
+                word-wrap: break-word;
+                line-height: 1.1;
+                margin-bottom: 10px;
+                font-size: 16px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2; // количество строк
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
         }
     }
 
@@ -75,11 +115,31 @@
         width: 23px;
         height: 23px;
         margin-left: 10px;
+
+        &.grid {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+        }
     }
 
     &__location {
         width: 15%;
         font-size: 15px;
+
+        &.grid {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+
+            span {
+                margin-right: 5px;
+            }
+        }
     }
 
     &__user {
@@ -100,6 +160,24 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        &.grid {
+            width: 100%;
+            font-size: 14px;
+            margin-left: 5px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: start;
+            align-items: start;
+            flex-direction: column;
+        }
+
+        .date {
+            span {
+                font-weight: 300;
+                margin-right: 4px;
+            }
+        }
     }
 
     &__status {
@@ -109,6 +187,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &.grid {
+            width: fit-content;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
 
         .ticket-item-status {
             display: flex;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TicketItemStatusBadge from "../Badges/TicketItemStatusBadge/TicketItemStatusBadge";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import AcceptTicketPopup from "../Popups/AcceptTicketPopup";
 import ConfirmTicketPopup from "../Popups/ConfirmTicketPopup";
 import "./TicketItem.scss";
@@ -60,8 +60,18 @@ const TicketItem = (props) => {
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
     const submissionDate = dateFormatter(submission_date);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const isGridMode =
+        localStorage.getItem("isTicketContainerGridMode") || false;
 
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
+
+    const itemAnimation = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+        },
+    };
 
     return (
         <>
@@ -74,43 +84,96 @@ const TicketItem = (props) => {
                     />
                 ) : null}
             </AnimatePresence>
-            <div
-                className="ticket-item"
-                onClick={handlePopup}
-                // style={{ opacity: `${state_id === 3 ? 0.8 : 1}` }}
-            >
-                <div className="ticket-item__number">№{ticket_id}</div>
-                <div className="ticket-item__problem">
-                    <div className="problem__title">{problem_title}</div>
 
-                    <div className="problem__description">
-                        {problem_description}
-                    </div>
-                </div>
+            {isGridMode === "true" ? (
+                <motion.div
+                    className="ticket-item grid"
+                    onClick={handlePopup}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: 0.2 }}
+                >
+                    <div className="ticket-item__problem grid">
+                        <div className="problem__title grid">
+                            {problem_title}
+                        </div>
 
-                <Bookmark className="bookmark" priority={priority_id} />
-                <div className="ticket-item__location">
-                    Аудитория <strong>№{room_number}</strong>
-                </div>
-                <div className="ticket-item__user">{customer_name}</div>
-                <div className="ticket-item__date">
-                    <div className="date submission">от {submissionDate}</div>
-                    {deadline_date && (
-                        <Tooltip
-                            label={`Выполнить задачи до ${deadlineDate} года`}
-                            hasArrow
-                            placement="top"
-                        >
-                            <div className="date deadline">
-                                до {deadlineDate}
+                        {problem_description ? (
+                            <div className="problem__description grid">
+                                {problem_description}
                             </div>
-                        </Tooltip>
-                    )}
-                </div>
-                <div className="ticket-item__status">
-                    <TicketItemStatusBadge status={ticketStatus} />
-                </div>
-            </div>
+                        ) : null}
+                    </div>
+
+                    <Bookmark
+                        className="bookmark grid"
+                        priority={priority_id}
+                    />
+
+                    <div className="ticket-item__date grid">
+                        <div className="date submission grid">
+                            <span>Дата создания заявки:</span>
+                            <b>{submissionDate}</b>
+                        </div>
+
+                        <div className="date deadline">
+                            <span>Выполнение до:</span>
+                            <b>{deadlineDate}</b>
+                        </div>
+                    </div>
+
+                    <div className="ticket-item__location grid">
+                        <span>Аудитория</span> <strong>№{room_number}</strong>
+                    </div>
+                    <div className="ticket-item__status grid">
+                        <TicketItemStatusBadge status={ticketStatus} />
+                    </div>
+                </motion.div>
+            ) : null}
+
+            {isGridMode === "false" ? (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: 0.2 }}
+                    className="ticket-item"
+                    onClick={handlePopup}
+                >
+                    <div className="ticket-item__number">№{ticket_id}</div>
+                    <div className="ticket-item__problem">
+                        <div className="problem__title">{problem_title}</div>
+
+                        <div className="problem__description">
+                            {problem_description}
+                        </div>
+                    </div>
+
+                    <Bookmark className="bookmark" priority={priority_id} />
+                    <div className="ticket-item__location">
+                        Аудитория <strong>№{room_number}</strong>
+                    </div>
+                    <div className="ticket-item__user">{customer_name}</div>
+                    <div className="ticket-item__date">
+                        <div className="date submission">
+                            от {submissionDate}
+                        </div>
+                        {deadline_date && (
+                            <Tooltip
+                                label={`Выполнить задачи до ${deadlineDate} года`}
+                                hasArrow
+                                placement="top"
+                            >
+                                <div className="date deadline">
+                                    до {deadlineDate}
+                                </div>
+                            </Tooltip>
+                        )}
+                    </div>
+                    <div className="ticket-item__status">
+                        <TicketItemStatusBadge status={ticketStatus} />
+                    </div>
+                </motion.div>
+            ) : null}
         </>
     );
 };

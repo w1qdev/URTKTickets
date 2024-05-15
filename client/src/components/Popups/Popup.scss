@@ -52,6 +52,8 @@
                 }
 
                 &-popup-bookmark {
+                    width: 32px;
+                    height: 32px;
                     margin-left: 10px;
                 }
             }
@@ -566,4 +568,38 @@
 
     outline: none;
     resize: none;
+}
+
+.view-ticket__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .remove-ticket {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+        border-radius: 6px;
+        border: 1px dashed #494949;
+        transition: border-color linear 0.2s;
+
+        &:hover {
+            border-color: #ff5050;
+            .icon {
+                path {
+                    fill: #ff5050;
+                }
+            }
+        }
+
+        .icon {
+            path {
+                transition: fill 0.2s linear;
+            }
+        }
+    }
 }

@@ -3,21 +3,23 @@ import GridIcon from "../Icons/GridIcon";
 import FlexIcon from "../Icons/FlexIcon";
 
 const GridSwitcher = ({
-    isGridMode = false,
+    isGridMode,
     handleSwitchToFlexMode,
     handleSwitchToGridMode,
 }) => {
+    console.log(isGridMode);
+
     return (
         <div className="grid-switcher">
             <div
                 onClick={handleSwitchToGridMode}
-                className={`grid ${isGridMode ? "active" : null}`}
+                className={`grid ${isGridMode == "true" ? "active" : null}`}
             >
                 <GridIcon fill="#0000009e" />
             </div>
             <div
                 onClick={handleSwitchToFlexMode}
-                className={`flex ${isGridMode ? null : "active"}`}
+                className={`flex ${isGridMode == "true" ? null : "active"}`}
             >
                 <FlexIcon fill="#0000009e" />
             </div>

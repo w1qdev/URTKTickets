@@ -12,6 +12,7 @@ import {
     mapPrioritiesAndChangeState,
     getPriorityById,
 } from "../../helpers/utils.js";
+import { motion } from "framer-motion";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -41,6 +42,8 @@ const TicketsContainer = ({
         currentTitle: "",
         data: [],
     });
+    const isGridMode =
+        localStorage.getItem("isTicketContainerGridMode") || false;
 
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
@@ -296,10 +299,6 @@ const TicketsContainer = ({
                     />
                 </div>
 
-                {/* <div className="tickets-container__header-item priority">
-                    <Menu />
-                </div> */}
-
                 <div className="tickets-container__header-item priority">
                     <Menu
                         menuItems={menuPriority.data}
@@ -344,13 +343,17 @@ const TicketsContainer = ({
                 </div>
             </div>
 
-            <div className="tickets-container__problems-list">
+            <motion.div
+                className={`tickets-container__problems-list ${
+                    isGridMode === "true" ? "grid-mode" : "list-mode"
+                }`}
+            >
                 <TicketsList
                     isFetching={isFetching}
                     ticketsData={sortedTickets}
                     isUsingFilters={isUsingFilters}
                 />
-            </div>
+            </motion.div>
         </div>
     );
 };

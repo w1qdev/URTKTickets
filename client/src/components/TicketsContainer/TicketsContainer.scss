@@ -14,7 +14,6 @@
         display: flex;
         justify-content: start;
         align-items: center;
-
         text-align: center;
 
         &-item {
@@ -73,6 +72,7 @@
     }
 
     &__problems-list {
+        display: grid;
         background-color: #fff;
         padding: 5px;
         padding-bottom: 40px;
@@ -80,6 +80,24 @@
         min-height: 598px;
         height: 598px;
         overflow-y: auto;
+
+        &.grid-mode {
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(300px, 33%)
+            ); // 3 items in a row
+            grid-auto-rows: 170px; // Фиксированная высота строк
+            gap: 5px; // Отступы между элементами
+
+            .ticket-item {
+                height: 100%;
+                display: grid;
+            }
+        }
+
+        &.list-mode {
+            display: block;
+        }
     }
 
     .no-tickets {

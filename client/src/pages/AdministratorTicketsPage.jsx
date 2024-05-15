@@ -18,10 +18,18 @@ const AdministratorTicketsPage = () => {
     const currentDate = dateFormatter(getCurrentDate());
     const userRole = localStorage.getItem("role") || "";
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [isGridMode, setIsGridMode] = useState(false);
+    const [isGridMode, setIsGridMode] = useState(
+        localStorage.getItem("isTicketContainerGridMode")
+    );
 
-    const handleSwitchToGridMode = () => setIsGridMode(true);
-    const handleSwitchToFlexMode = () => setIsGridMode(false);
+    const handleSwitchToGridMode = () => {
+        localStorage.setItem("isTicketContainerGridMode", "true");
+        setIsGridMode("true");
+    };
+    const handleSwitchToFlexMode = () => {
+        localStorage.setItem("isTicketContainerGridMode", "false");
+        setIsGridMode("false");
+    };
     const handleOpenPopup = () => setIsPopupOpen((prev) => !prev);
 
     return (
@@ -69,9 +77,7 @@ const AdministratorTicketsPage = () => {
                                                     />
                                                 }
                                                 onClick={() =>
-                                                    setIsFilterClear(
-                                                        (prev) => true
-                                                    )
+                                                    setIsFilterClear(true)
                                                 }
                                             >
                                                 Сбросить фильтры

@@ -21,16 +21,14 @@ const Bookmark = ({ className, priority }) => {
             hasArrow
             label={`${formattedPriority} уровень приоритета заявки`}
             placement="top"
-            marginLeft="8px"
         >
-            <div>
+            <div className={className}>
                 <svg
-                    width="32"
-                    height="32"
+                    width="100%"
+                    height="100%"
                     viewBox="0 0 32 32"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className={className}
                 >
                     <path
                         d="M6.66675 28V6.66667C6.66675 5.93333 6.92808 5.30578 7.45075 4.784C7.97341 4.26222 8.60097 4.00089 9.33341 4H22.6667C23.4001 4 24.0281 4.26133 24.5507 4.784C25.0734 5.30667 25.3343 5.93422 25.3334 6.66667V28L16.0001 24L6.66675 28Z"
