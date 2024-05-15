@@ -12,7 +12,7 @@
         width: 100%;
         height: 42px;
         display: flex;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
 
         text-align: center;
@@ -22,11 +22,15 @@
             font-size: 15px;
 
             &.number {
-                width: 7%;
+                width: 5%;
             }
 
             &.problem {
-                width: 33%;
+                width: 28%;
+            }
+
+            &.priority {
+                width: 10%;
             }
 
             &.location {
@@ -34,7 +38,7 @@
             }
 
             &.user {
-                width: 18%;
+                width: 13%;
             }
 
             &.date {

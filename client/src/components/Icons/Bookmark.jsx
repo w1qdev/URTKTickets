@@ -1,15 +1,5 @@
 import { Tooltip } from "@chakra-ui/react";
-
-const priorityFormatter = (priorityId) => {
-    switch (priorityId) {
-        case 1:
-            return "низкий";
-        case 2:
-            return "средний";
-        case 3:
-            return "высокий";
-    }
-};
+import { getPriorityById } from "../../helpers/utils";
 
 const bookmarkColorFormatter = (priorityId) => {
     switch (priorityId) {
@@ -24,12 +14,12 @@ const bookmarkColorFormatter = (priorityId) => {
 
 const Bookmark = ({ className, priority }) => {
     const bookmarkColor = bookmarkColorFormatter(priority);
-    const formattedPriority = priorityFormatter(priority);
+    const formattedPriority = getPriorityById(priority);
 
     return (
         <Tooltip
             hasArrow
-            label={`уровень приоритета заявки: ${formattedPriority}`}
+            label={`${formattedPriority} уровень приоритета заявки`}
             placement="top"
             marginLeft="8px"
         >

@@ -34,6 +34,40 @@ export const getTicketIdByStateName = (ticket_name) => {
     }
 };
 
+export const mapPrioritiesAndChangeState = (data) => {
+    const mappedData = data.map((item) => {
+        let newState;
+        switch (item.title) {
+            case "1":
+                newState = "Низкий";
+                break;
+            case "2":
+                newState = "Средний";
+                break;
+            case "3":
+                newState = "Высокий";
+                break;
+        }
+        return {
+            ...item,
+            title: newState,
+        };
+    });
+
+    return mappedData;
+};
+
+export const getPriorityById = (priority_id) => {
+    switch (priority_id) {
+        case 1:
+            return "Низкий";
+        case 2:
+            return "Средний";
+        case 3:
+            return "Высокий";
+    }
+};
+
 export const mapTicketsDataAndChangeState = (data) => {
     const mappedData = data.map((item) => {
         let newState;
@@ -141,10 +175,6 @@ function padZero(num) {
 }
 
 export const addDaysToCurrentDate = (days) => {
-    // if (typeof daysToAdd !== "number") {
-    //     throw new Error("Input should be a number");
-    // }
-
     var currentDate = new Date();
     var futureDate = new Date(currentDate.getTime());
     futureDate.setDate(currentDate.getDate() + days);

@@ -1,7 +1,7 @@
 import TicketItem from "../TicketItem/TicketItem";
 import NoTicketsImage from "../../assets/other/no-tickets-img.png";
 import { Skeleton, Stack } from "@chakra-ui/react";
-// import { Virtuoso } from "react-virtuoso";
+import { Virtuoso } from "react-virtuoso";
 import { useEffect, useState } from "react";
 
 const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
@@ -36,13 +36,27 @@ const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
                 <Skeleton height="80px" borderRadius="6px" />
             </Stack>
         );
-
-        setTimeout(() => {}, 2000);
     } else if (ticketsData.length) {
         // If we get the data from the server, so then show data
         ticketsListContent = ticketsData.map((ticket) => (
             <TicketItem key={ticket.ticket_id} {...ticket} />
         ));
+
+        // ticketsListContent = (
+        //     <Virtuoso
+        //         style={{
+        //             padding: "5px",
+        //             width: "100%",
+        //             height: "100%",
+        //             overflowX: "hidden",
+        //             overflowY: "auto",
+        //         }}
+        //         data={ticketsData}
+        //         itemContent={(_, ticket) => (
+        //             <TicketItem key={ticket.ticket_id} {...ticket} />
+        //         )}
+        //     />
+        // );
     } else if (isUsingFilters && ticketsData.length === 0) {
         // if we using filters and got 0 results after filtering
         ticketsListContent = (

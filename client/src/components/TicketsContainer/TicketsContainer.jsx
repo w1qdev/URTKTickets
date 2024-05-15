@@ -9,6 +9,8 @@ import {
     getMenuItemsByValue,
     mapTicketsDataAndChangeState,
     getTicketIdByStateName,
+    mapPrioritiesAndChangeState,
+    getPriorityById,
 } from "../../helpers/utils.js";
 
 const TicketsContainer = ({
@@ -35,6 +37,10 @@ const TicketsContainer = ({
         currentTitle: "",
         data: [],
     });
+    const [menuPriority, setMenuPriority] = useState({
+        currentTitle: "",
+        data: [],
+    });
 
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
@@ -55,6 +61,11 @@ const TicketsContainer = ({
         }));
     const handleClickMenuCustomer = (e) =>
         setMenuCustomer((prev) => ({
+            ...prev,
+            currentTitle: e.target.textContent,
+        }));
+    const handleClickMenuPriority = (e) =>
+        setMenuPriority((prev) => ({
             ...prev,
             currentTitle: e.target.textContent,
         }));
@@ -110,6 +121,15 @@ const TicketsContainer = ({
                                 data: getMenuItemsByValue(
                                     res.data.tickets,
                                     "customer_name"
+                                ),
+                            }));
+                            setMenuPriority((prev) => ({
+                                ...prev,
+                                data: mapPrioritiesAndChangeState(
+                                    getMenuItemsByValue(
+                                        res.data.tickets,
+                                        "priority_id"
+                                    )
                                 ),
                             }));
                             setTickets(res.data.tickets);
@@ -172,13 +192,19 @@ const TicketsContainer = ({
                       .includes(problemValue.toLowerCase())
                 : true;
 
+            const isPriorityMatch = menuPriority.currentTitle
+                ? getPriorityById(ticket.priority_id) ===
+                  menuPriority.currentTitle
+                : true;
+
             // Возвращаем результат фильтрации по всем критериям
             return (
                 isMenuDateMatch &&
                 isMenuLocationMatch &&
                 isMenuStatusMatch &&
                 isMenuCustomerMatch &&
-                isProblemMatch
+                isProblemMatch &&
+                isPriorityMatch
             );
         });
 
@@ -191,6 +217,7 @@ const TicketsContainer = ({
         menuLocation.currentTitle,
         menuStatus.currentTitle,
         menuCustomer.currentTitle,
+        menuPriority.currentTitle,
         problemValue,
         tickets,
     ]);
@@ -202,6 +229,7 @@ const TicketsContainer = ({
             menuLocation.currentTitle,
             menuStatus.currentTitle,
             menuCustomer.currentTitle,
+            menuPriority.currentTitle,
             problemValue,
         ];
 
@@ -215,6 +243,7 @@ const TicketsContainer = ({
         menuLocation.currentTitle,
         menuStatus.currentTitle,
         menuCustomer.currentTitle,
+        menuPriority.currentTitle,
         problemValue,
     ]);
 
@@ -234,6 +263,7 @@ const TicketsContainer = ({
             setMenuStatus((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
+            setMenuPriority((prev) => ({ ...prev, currentTitle: "" }));
             setProblemValue("");
             handleFilters(false);
             setIsFilterClear(false);
@@ -269,6 +299,15 @@ const TicketsContainer = ({
                 {/* <div className="tickets-container__header-item priority">
                     <Menu />
                 </div> */}
+
+                <div className="tickets-container__header-item priority">
+                    <Menu
+                        menuItems={menuPriority.data}
+                        menuSelectedItem={menuPriority.currentTitle}
+                        defaultMenuTitle="Приоритет"
+                        handleClick={handleClickMenuPriority}
+                    />
+                </div>
 
                 <div className="tickets-container__header-item location">
                     <Menu
