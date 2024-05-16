@@ -1,3 +1,6 @@
+import axios from "axios";
+import { SERVER_ORIGIN_URI, API_PATH } from "../api";
+
 export const getCurrentDate = () => {
     let date = new Date().toJSON().slice(0, 10);
     let currentDateValues = date.split("-");
@@ -194,5 +197,45 @@ export const addDaysToCurrentDate = (days) => {
     return {
         date: formattedDate,
         difference: difference,
+    };
+};
+
+export const getTicketContainerStatusMode = () => {
+    let status = localStorage.getItem("isTicketContainerGridMode");
+
+    if (status === null) {
+        status = localStorage.setItem("isTicketContainerGridMode", "false");
+    }
+
+    return status;
+};
+
+export const initializeStorageUserData = (user_id) => {
+    const isUserDataStoraged =
+        localStorage.getItem("username") &&
+        localStorage.getItem("user_id") &&
+        localStorage.getItem("role");
+
+    if (!isUserDataStoraged) {
+        // if user data doesn't initialized
+        axios
+            .get(`${SERVER_ORIGIN_URI}${API_PATH}/teachers/${user_id}`)
+            .then((res) => {
+                localStorage.setItem("username", res.data.teacher_name);
+                localStorage.setItem("user_id", user_id);
+                localStorage.setItem("role", res.data.role);
+            })
+            .catch((err) => {
+                console.error(
+                    "Something gone wrong with user storage initialising",
+                    err
+                );
+            });
+    }
+
+    return {
+        username: localStorage.getItem("username"),
+        user_id: localStorage.getItem("user_id"),
+        role: localStorage.getItem("role"),
     };
 };

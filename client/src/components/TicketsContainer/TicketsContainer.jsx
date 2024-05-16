@@ -19,6 +19,7 @@ const TicketsContainer = ({
     isUsingFilters,
     setIsFilterClear,
     isFilterClear,
+    userStoragedData,
 }) => {
     const [tickets, setTickets] = useState([]);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
@@ -79,14 +80,16 @@ const TicketsContainer = ({
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log(userStoragedData);
+
             try {
                 setIsFetching(true);
                 await axios
                     .get(endpoints.GET_ALL_TICKETS, {
                         params: {
-                            role: localStorage.getItem("role") || "teacher", // Роль пользователя
-                            user_id: localStorage.getItem("user_id"), // ID пользователя
-                            username: localStorage.getItem("username"),
+                            role: userStoragedData?.role, // Роль пользователя
+                            user_id: userStoragedData?.user_id, // ID пользователя
+                            username: userStoragedData?.username,
                         },
                     })
                     .then((res) => {

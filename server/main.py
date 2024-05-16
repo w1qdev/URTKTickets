@@ -1,5 +1,7 @@
 import uvicorn
 import os
+import threading
+from time import sleep
 from fastapi import FastAPI, Query, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
@@ -16,7 +18,9 @@ from db.managers.ticket_priority_manager import TicketPriorityManager
 from docx_helpers.docx import generate_report_file, get_report_file_path
 from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
 from middlewares.AddProcessTimeHeader import AddProcessTimeHeader
-
+from db.cleaners.tickets_cleaner import TicketsCleaner
+from apscheduler.schedulers.blocking import BlockingScheduler
+from concurrent.futures import ThreadPoolExecutor
 
 
 # Настройка документации OpenAPI
@@ -46,6 +50,7 @@ ticket_states_manager = TicketStatesManager(SessionLocal)
 tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
 ticket_priority_manager = TicketPriorityManager(SessionLocal)
+tickets_cleaner = TicketsCleaner(SessionLocal)
 
 app = FastAPI()
 app.openapi = custom_openapi()
@@ -61,6 +66,13 @@ app.add_middleware(
 )
 app.add_middleware(RemoveReportAfterResponse)
 app.add_middleware(AddProcessTimeHeader)
+
+# Tickets cleaner
+def ticket_cleaner_scheduler():
+    cleaner = TicketsCleaner(SessionLocal)
+    while True:
+        cleaner.clean_old_tickets()
+        sleep(2 * 60 * 60)  # Спим 2 часа
 
 
 # TEACHERS API
@@ -277,7 +289,20 @@ async def download_report(filename: str):
         return FileResponse(path=report_path, filename=filename)
     except Exception as e:
         return {"message": "Something gone wrong | Internal Error"}
+ 
 
+def run_uvicorn():
+    uvicorn.run(app, host="127.0.0.1", port=8001)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    # Создание и запуск потока для uvicorn
+    uvicorn_thread = threading.Thread(target=run_uvicorn)
+    uvicorn_thread.start()
+
+    # Создание и запуск потока для очистки тикетов
+    cleaner_thread = threading.Thread(target=ticket_cleaner_scheduler)
+    cleaner_thread.start()
+
+    # Ожидание завершения потоков
+    uvicorn_thread.join()
+    cleaner_thread.join()
