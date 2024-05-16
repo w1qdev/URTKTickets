@@ -165,3 +165,11 @@ DELETE http://localhost:8001/api/tickets/2 HTTP/1.1
 content-type: application/json
 
 
+### Create a teacher
+POST http://localhost:8001/api/teachers/ HTTP/1.1
+content-type: application/json
+
+
+### REMOVE ALL TICKETS AND TASKS
+DELETE http://localhost:8001/api/tickets/ HTTP/1.1
+content-type: application/json

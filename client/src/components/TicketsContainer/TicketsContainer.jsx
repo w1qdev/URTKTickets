@@ -80,8 +80,6 @@ const TicketsContainer = ({
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log(userStoragedData);
-
             try {
                 setIsFetching(true);
                 await axios

@@ -5,25 +5,6 @@ import { Virtuoso } from "react-virtuoso";
 import { useEffect, useState } from "react";
 
 const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
-    // const [shownTickets, setShownTickets] = useState([]);
-
-    // const getNextTickets = (step = 15) => {
-    //     console.log("endReached");
-
-    //     const nextTickets = ticketsData.slice(
-    //         shownTickets.length,
-    //         shownTickets.length + step
-    //     );
-
-    //     setShownTickets([...shownTickets, ...nextTickets]);
-
-    //     console.log(shownTickets);
-    // };
-
-    // useEffect(() => {
-    //     getNextTickets(15);
-    // }, [ticketsData]);
-
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
 
@@ -109,7 +90,7 @@ const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
         //         )}
         //     />
         // );
-    } else if (isUsingFilters && ticketsData.length === 0) {
+    } else if (isUsingFilters || ticketsData.length === 0) {
         // if we using filters and got 0 results after filtering
         ticketsListContent = (
             <div

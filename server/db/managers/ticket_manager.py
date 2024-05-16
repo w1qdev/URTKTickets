@@ -79,15 +79,20 @@ class TicketsManager():
         # Получение определённого тикета по id
         return self.session.query(Tickets).filter(Tickets.teacher_id == teacher_id).all()
     
-    def remove_all_tickets(self):
-        # Удаление всех тикетов
+    def remove_all_tickets_and_tasks(self):
+        # Удаление всех тикетов и связанных задач
         try:
+            # Удаление всех задач
+            self.session.query(Tasks).delete()
+            
+            # Удаление всех тикетов
             self.session.query(Tickets).delete()
+            
             self.session.commit()
             return True
         
         except Exception as e:
-            print(f"An error occurred while removing all tickets: {e}")
+            print(f"An error occurred while removing all tickets and tasks: {e}")
             self.session.rollback()
             return False
     

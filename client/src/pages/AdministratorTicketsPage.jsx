@@ -25,7 +25,6 @@ const AdministratorTicketsPage = () => {
         user_id: localStorage.getItem("user_id"),
         role: localStorage.getItem("role"),
     });
-    console.log(userData.username != null);
     const [isUsingFilters, setIsUsingFilters] = useState(false);
     const [isFilterClear, setIsFilterClear] = useState(false);
     const currentDate = dateFormatter(getCurrentDate());
@@ -59,7 +58,6 @@ const AdministratorTicketsPage = () => {
                             `${SERVER_ORIGIN_URI}${API_PATH}/teachers/${testUserID}`
                         )
                         .then((res) => {
-                            console.log(res.data);
                             localStorage.setItem(
                                 "username",
                                 res.data.teacher_name
@@ -88,8 +86,6 @@ const AdministratorTicketsPage = () => {
 
         fetchUserData();
     }, []);
-
-    console.log(userData);
 
     return (
         <>

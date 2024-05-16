@@ -7,8 +7,6 @@ const GridSwitcher = ({
     handleSwitchToFlexMode,
     handleSwitchToGridMode,
 }) => {
-    console.log(isGridMode);
-
     return (
         <div className="grid-switcher">
             <div

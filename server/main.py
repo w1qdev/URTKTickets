@@ -19,8 +19,6 @@ from docx_helpers.docx import generate_report_file, get_report_file_path
 from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
 from middlewares.AddProcessTimeHeader import AddProcessTimeHeader
 from db.cleaners.tickets_cleaner import TicketsCleaner
-from apscheduler.schedulers.blocking import BlockingScheduler
-from concurrent.futures import ThreadPoolExecutor
 
 
 # Настройка документации OpenAPI
@@ -208,6 +206,11 @@ async def change_ticket_status(ticket_id: int, status_data: dict):
         }
     else:
         return {"message": "Ошибка при изменении статуса тикета"}
+
+@app.delete("/api/tickets/")
+async def remove_all_tickets_and_tasks():
+    tickets_manager.remove_all_tickets_and_tasks()
+    return { "message": "All tickets and tasks removed" }
 
 
 # TASKS API
