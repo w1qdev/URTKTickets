@@ -177,6 +177,17 @@
                 font-weight: 300;
                 margin-right: 4px;
             }
+
+            .deadline-date {
+                font-weight: 700;
+
+                &.strong {
+                }
+
+                &.warn {
+                    color: #ff5353;
+                }
+            }
         }
     }
 

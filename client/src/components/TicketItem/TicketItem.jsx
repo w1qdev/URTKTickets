@@ -9,6 +9,7 @@ import {
     getTicketStateNameById,
     reverseDate,
     dateFormatter,
+    getDatesDifference,
 } from "../../helpers/utils";
 import Bookmark from "../Icons/Bookmark";
 import { Tooltip } from "@chakra-ui/react";
@@ -62,6 +63,11 @@ const TicketItem = (props) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
+    const isAdministrator =
+        localStorage.getItem("role") === "administrator" ? true : false;
+    const datesDifference = getDatesDifference(reverseDate(deadline_date));
+
+    console.log(datesDifference);
 
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
 
@@ -110,7 +116,29 @@ const TicketItem = (props) => {
 
                         <div className="date deadline">
                             <span>Выполнение до:</span>
-                            <b>{deadlineDate}</b>
+                            {isAdministrator ? (
+                                <Tooltip
+                                    label={`${
+                                        datesDifference.days >= -2
+                                            ? "Поторопитесь! Вам нужно выполнить задачи этой заявки вовремя!"
+                                            : ""
+                                    }`}
+                                    hasArrow
+                                    placement="top"
+                                >
+                                    <span
+                                        className={`deadline-date ${
+                                            datesDifference.days >= -2
+                                                ? "warn"
+                                                : "strong"
+                                        }`}
+                                    >
+                                        {deadlineDate}
+                                    </span>
+                                </Tooltip>
+                            ) : (
+                                <b>{deadlineDate}</b>
+                            )}
                         </div>
                     </div>
 
@@ -141,6 +169,7 @@ const TicketItem = (props) => {
                     </div>
 
                     <Bookmark className="bookmark" priority={priority_id} />
+
                     <div className="ticket-item__location">
                         Аудитория <strong>№{room_number}</strong>
                     </div>
@@ -156,7 +185,19 @@ const TicketItem = (props) => {
                                 placement="top"
                             >
                                 <div className="date deadline">
-                                    до {deadlineDate}
+                                    {isAdministrator ? (
+                                        <span
+                                            className={`deadline-date ${
+                                                datesDifference.days >= -1
+                                                    ? "warn"
+                                                    : "strong"
+                                            }`}
+                                        >
+                                            до {deadlineDate}
+                                        </span>
+                                    ) : (
+                                        <b>до {deadlineDate}</b>
+                                    )}
                                 </div>
                             </Tooltip>
                         )}

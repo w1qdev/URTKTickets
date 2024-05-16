@@ -239,3 +239,31 @@ export const initializeStorageUserData = (user_id) => {
         role: localStorage.getItem("role"),
     };
 };
+
+export const getDatesDifference = (inputDate) => {
+    const [day, month, year] = inputDate.split(".").map(Number);
+
+    // Создаем объект даты для переданной даты
+    const passedDate = new Date(year, month - 1, day);
+
+    // Получаем текущую дату
+    const currentDate = new Date();
+
+    // Вычисляем разницу в миллисекундах между текущей датой и переданной датой
+    const differenceInMs = currentDate - passedDate;
+
+    // Преобразуем разницу в дни, часы, минуты и секунды
+    const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+    const differenceInHours = Math.floor(
+        (differenceInMs / (1000 * 60 * 60)) % 24
+    );
+    const differenceInMinutes = Math.floor((differenceInMs / (1000 * 60)) % 60);
+    const differenceInSeconds = Math.floor((differenceInMs / 1000) % 60);
+
+    return {
+        days: differenceInDays,
+        hours: differenceInHours,
+        minutes: differenceInMinutes,
+        seconds: differenceInSeconds,
+    };
+};
