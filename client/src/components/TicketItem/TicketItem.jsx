@@ -65,14 +65,6 @@ const TicketItem = (props) => {
 
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
 
-    const itemAnimation = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-        },
-    };
-
     return (
         <>
             <AnimatePresence>

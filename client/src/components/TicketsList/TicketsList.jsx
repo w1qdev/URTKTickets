@@ -24,18 +24,70 @@ const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
     //     getNextTickets(15);
     // }, [ticketsData]);
 
+    const isGridMode =
+        localStorage.getItem("isTicketContainerGridMode") || false;
+
     let ticketsListContent;
     if (isFetching) {
         // If we still fetching the data from the server
-        ticketsListContent = (
-            <Stack>
-                <Skeleton height="80px" borderRadius="6px" />
-                <Skeleton height="80px" borderRadius="6px" />
-                <Skeleton height="80px" borderRadius="6px" />
-                <Skeleton height="80px" borderRadius="6px" />
-                <Skeleton height="80px" borderRadius="6px" />
-            </Stack>
-        );
+        if (isGridMode === "true") {
+            ticketsListContent = (
+                <>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                    <Stack>
+                        <Skeleton
+                            width="99%"
+                            height="170px"
+                            borderRadius="6px"
+                        />
+                    </Stack>
+                </>
+            );
+        } else if (isGridMode === "false") {
+            ticketsListContent = (
+                <Stack>
+                    <Skeleton height="80px" borderRadius="6px" />
+                    <Skeleton height="80px" borderRadius="6px" />
+                    <Skeleton height="80px" borderRadius="6px" />
+                    <Skeleton height="80px" borderRadius="6px" />
+                    <Skeleton height="80px" borderRadius="6px" />
+                </Stack>
+            );
+        }
     } else if (ticketsData.length) {
         // If we get the data from the server, so then show data
         ticketsListContent = ticketsData.map((ticket) => (
@@ -60,7 +112,10 @@ const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
     } else if (isUsingFilters && ticketsData.length === 0) {
         // if we using filters and got 0 results after filtering
         ticketsListContent = (
-            <div className="no-tickets">
+            <div
+                className="no-tickets"
+                style={{ width: `${isGridMode === "true" ? "304%" : "100%"}` }}
+            >
                 <img
                     className="no-tickets__img"
                     src={NoTicketsImage}
