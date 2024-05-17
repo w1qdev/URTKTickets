@@ -13,6 +13,7 @@ const AcceptTicketPopup = ({
     popupStatus,
     popupHandler,
     ticketData,
+    sendJsonMessage,
 }) => {
     const {
         customer_name,
@@ -44,7 +45,13 @@ const AcceptTicketPopup = ({
             )
             .then((res) => {
                 if (res.data.status === "OK") {
-                    window.location.pathname = "/tickets";
+                    sendJsonMessage({
+                        action: "update",
+                        user_id: localStorage.getItem("user_id"),
+                        username: localStorage.getItem("username"),
+                        role: localStorage.getItem("role"),
+                    });
+                    popupHandler();
                 }
             });
     };

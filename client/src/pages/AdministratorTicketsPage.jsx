@@ -42,12 +42,13 @@ const AdministratorTicketsPage = () => {
         localStorage.setItem("isTicketContainerGridMode", "false");
         setIsGridMode("false");
     };
+
     const handleOpenPopup = () => setIsPopupOpen((prev) => !prev);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const testUserID = 2; // FIXME: TEST USER ID
+                const testUserID = localStorage.getItem("user_id") || 2; // FIXME: TEST USER ID
                 const isUserDataStoraged =
                     userData.username && userData.user_id && userData.role;
 

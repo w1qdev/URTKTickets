@@ -14,7 +14,7 @@ import { endpoints } from "../../api/index";
 import { reverseDate } from "../../helpers/utils";
 import QuestionIcon from "../Icons/QuestionIcon";
 
-const CreateTicketPopup = ({ popupHandler }) => {
+const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     const currentDate = getCurrentDate();
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const inputRef = useRef(null);
@@ -164,7 +164,13 @@ const CreateTicketPopup = ({ popupHandler }) => {
 
             await axios.post(endpoints.CREATE_TICKET, ticket).then((res) => {
                 if (res.data.status === "OK") {
-                    window.location.pathname = "/tickets";
+                    sendJsonMessage({
+                        action: "update",
+                        user_id: localStorage.getItem("user_id"),
+                        username: localStorage.getItem("username"),
+                        role: localStorage.getItem("role"),
+                    });
+                    popupHandler();
                 }
             });
         } catch (error) {

@@ -14,10 +14,11 @@ import {
 import Bookmark from "../Icons/Bookmark";
 import { Tooltip } from "@chakra-ui/react";
 
-const PopupBody = ({ status, popupHandler, ticketData }) => {
+const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
     const popupContainers = {
         "Under review": (
             <AcceptTicketPopup
+                sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Рассмотрение заявки"
@@ -26,6 +27,7 @@ const PopupBody = ({ status, popupHandler, ticketData }) => {
         ),
         "In progress": (
             <ConfirmTicketPopup
+                sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Подтверждение выполненных задач"
@@ -34,6 +36,7 @@ const PopupBody = ({ status, popupHandler, ticketData }) => {
         ),
         Completed: (
             <ViewTicketPopup
+                sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Заявка системному администратору"
@@ -56,6 +59,7 @@ const TicketItem = (props) => {
         deadline_date,
         priority_id,
         state_id,
+        sendJsonMessage,
     } = props;
     const ticketStatus = getTicketStateNameById(state_id);
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
@@ -67,8 +71,6 @@ const TicketItem = (props) => {
         localStorage.getItem("role") === "administrator" ? true : false;
     const datesDifference = getDatesDifference(reverseDate(deadline_date));
 
-    console.log(datesDifference);
-
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
 
     return (
@@ -79,6 +81,7 @@ const TicketItem = (props) => {
                         ticketData={props}
                         status={ticketStatus}
                         popupHandler={handlePopup}
+                        sendJsonMessage={sendJsonMessage}
                     />
                 ) : null}
             </AnimatePresence>

@@ -1,8 +1,9 @@
 import uvicorn
 import os
 import threading
+import json
 from time import sleep
-from fastapi import FastAPI, Query, WebSocket
+from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
 from fastapi.openapi.utils import get_openapi
@@ -19,6 +20,8 @@ from docx_helpers.docx import generate_report_file, get_report_file_path
 from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
 from middlewares.AddProcessTimeHeader import AddProcessTimeHeader
 from db.cleaners.tickets_cleaner import TicketsCleaner
+from ws.websocket import WebSocketConnectionManager
+from helpers.utils import serialize_sqlalchemy_obj
 
 
 # Настройка документации OpenAPI
@@ -49,10 +52,11 @@ tickets_manager = TicketsManager(SessionLocal)
 tasks_manager = TasksManager(SessionLocal)
 ticket_priority_manager = TicketPriorityManager(SessionLocal)
 tickets_cleaner = TicketsCleaner(SessionLocal)
+ws_manager = WebSocketConnectionManager()
+
 
 app = FastAPI()
 app.openapi = custom_openapi()
-sio = SocketManager(app=app) # socket io
 
 
 app.add_middleware(
@@ -292,7 +296,58 @@ async def download_report(filename: str):
         return FileResponse(path=report_path, filename=filename)
     except Exception as e:
         return {"message": "Something gone wrong | Internal Error"}
- 
+
+# WebSockets
+@app.websocket("/ws/tickets")
+async def websocket_tickets(websocket: WebSocket):
+    await ws_manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            message = json.loads(data)
+            tickets = None
+
+            if message['action'] == 'update':
+                # get all updated tickets from the database 
+                if message['role'] == "administrator":
+                    tickets = tickets_manager.get_all_tickets()
+                    tickets_with_tasks = []
+
+                    for ticket in tickets:
+                        ticket_data = serialize_sqlalchemy_obj(ticket)
+                        tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                        ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
+                        tickets_with_tasks.append(ticket_data)
+
+                    tickets = {"tickets": tickets_with_tasks}
+                
+                elif message['role'] == "teacher":
+                    # Проверяем, существует ли преподаватель с указанным user_id
+                    teacher = teachers_manager.get_teacher_by_id(teacher_id=message['user_id'])
+                    if not teacher:
+                        teacher_data = { 'teacher_name': message['username'], 'role': message['role'] }
+
+                        teachers_manager.add_teacher(teacher_data=teacher_data)
+                        return {"message": "Преподаватель с таким id не существует"}
+                    
+                    # Получаем все тикеты, созданные указанным преподавателем
+                    teacher_tickets = tickets_manager.get_tickets_by_teacher_id(message['user_id'])
+                    tickets_with_tasks = []
+
+                    for ticket in teacher_tickets:
+                        ticket_data = serialize_sqlalchemy_obj(ticket)
+                        tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                        ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
+                        tickets_with_tasks.append(ticket_data)
+
+                    tickets = {"tickets": tickets_with_tasks}
+                else:
+                    tickets = {"message": "Роль неверна"}
+            
+            await ws_manager.broadcast(tickets)
+    except WebSocketDisconnect:
+        ws_manager.disconnect(websocket)
+
 
 def run_uvicorn():
     uvicorn.run(app, host="127.0.0.1", port=8001)

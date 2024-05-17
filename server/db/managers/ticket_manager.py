@@ -66,14 +66,24 @@ class TicketsManager():
             return False  # Произошла ошибка, статус не обновлен
     
     def remove_ticket(self, ticket_id: int):
-        # Удаление тикета по id
-        ticket = self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
-
-        if ticket:
-            self.session.delete(ticket)
-            self.session.commit()
-            return True
-        return False
+        # Удаление тикета и связанных задач по id тикета
+        try:
+            # Находим тикет
+            ticket = self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
+            
+            if ticket:
+                # Удаляем связанные задачи
+                self.session.query(Tasks).filter(Tasks.ticket_id == ticket_id).delete()
+                
+                # Удаляем сам тикет
+                self.session.delete(ticket)
+                self.session.commit()
+                return True
+            return False
+        except Exception as e:
+            print(f"An error occurred while removing the ticket: {e}")
+            self.session.rollback()
+            return False
     
     def get_tickets_by_teacher_id(self, teacher_id: int):
         # Получение определённого тикета по id

@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import TicketsList from "../TicketsList/TicketsList.jsx";
 import Menu from "../Menu/Menu.jsx";
 import MenuFilterButton from "../Menu/MenuFilterButton.jsx";
-import { endpoints } from "../../api/index.js";
+import { endpoints, SERVER_ORIGIN_DOMAIN } from "../../api/index.js";
 import {
     getMenuItemsByValue,
     mapTicketsDataAndChangeState,
@@ -13,6 +13,7 @@ import {
     getPriorityById,
 } from "../../helpers/utils.js";
 import { motion } from "framer-motion";
+import useWebSocket from "react-use-websocket";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -45,8 +46,25 @@ const TicketsContainer = ({
     });
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
-
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
+
+    const { sendJsonMessage } = useWebSocket(
+        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
+        {
+            onOpen: () => {
+                console.log("WebSocket connection established.");
+            },
+            onClose: () => console.log("WebSocket connection closed."),
+            onMessage: (messages) => {
+                const tickets = JSON.parse(messages.data);
+
+                setTickets((prev) => [...tickets.tickets]);
+            },
+            onError: (event) =>
+                console.error("WebSocket error observed:", event),
+            shouldReconnect: (closeEvent) => true,
+        }
+    );
 
     const handleClickMenuDate = (e) =>
         setMenuDate((prev) => ({
@@ -77,6 +95,13 @@ const TicketsContainer = ({
         setMenuID((prev) => ({ ...prev, isIncreasing: !prev.isIncreasing }));
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
     const handleFilters = (value) => handleUsingFilters(value);
+
+    // useEffect(() => {
+    //     if (lastMessage !== null) {
+    //         // Handle incoming WebSocket messages
+    //         console.log(JSON.parse(lastMessage.data));
+    //     }
+    // }, [lastMessage]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -350,6 +375,7 @@ const TicketsContainer = ({
                 }`}
             >
                 <TicketsList
+                    sendJsonMessage={sendJsonMessage}
                     isFetching={isFetching}
                     ticketsData={sortedTickets}
                     isUsingFilters={isUsingFilters}

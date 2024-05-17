@@ -3,7 +3,7 @@ import TasksList from "../TasksList/TasksList";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import { dateFormatter, reverseDate } from "../../helpers/utils";
 import DownlaodIcon from "../Icons/DownloadIcon";
-import { SERVER_ORIGIN_URI } from "../../api";
+import { SERVER_ORIGIN_URI, API_PATH } from "../../api";
 import Popup from "./Popup";
 import DownloadReportButton from "../Buttons/DownloadReportButton";
 import axios from "axios";
@@ -11,7 +11,13 @@ import { useState } from "react";
 import { Spinner, Tooltip } from "@chakra-ui/react";
 import TrashIcon from "../Icons/TrashIcon";
 
-const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
+const ViewTicketPopup = ({
+    title,
+    popupStatus,
+    popupHandler,
+    ticketData,
+    sendJsonMessage,
+}) => {
     const {
         customer_name,
         performer_name,
@@ -53,7 +59,28 @@ const ViewTicketPopup = ({ title, popupStatus, popupHandler, ticketData }) => {
         setIsFetching((prev) => false);
     };
 
-    const handleRemoveTicket = () => {};
+    const handleRemoveTicket = async () => {
+        try {
+            await axios
+                .delete(`${SERVER_ORIGIN_URI}${API_PATH}/tickets/${ticket_id}`)
+                .then((res) => {
+                    if (res.status === 200) {
+                        console.log("Tickets successfuly removed");
+                        sendJsonMessage({
+                            action: "update",
+                            user_id: localStorage.getItem("user_id"),
+                            username: localStorage.getItem("username"),
+                            role: localStorage.getItem("role"),
+                        });
+                        popupHandler();
+                    } else {
+                        console.error("Failed to delete ticket", res);
+                    }
+                });
+        } catch (err) {
+            console.error("Some error with removing the tickets", err);
+        }
+    };
 
     return (
         <Popup

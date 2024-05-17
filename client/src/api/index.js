@@ -1,4 +1,7 @@
-export const SERVER_ORIGIN_URI = "http://localhost:8001";
+export const SERVER_ORIGIN_PROTOCOL = "http://";
+export const SERVER_ORIGIN_DOMAIN = "localhost:8001";
+export const SERVER_ORIGIN_URI = SERVER_ORIGIN_PROTOCOL + SERVER_ORIGIN_DOMAIN;
+
 export const API_PATH = "/api";
 
 export const endpoints = {

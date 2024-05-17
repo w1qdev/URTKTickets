@@ -4,7 +4,12 @@ import { Skeleton, Stack } from "@chakra-ui/react";
 import { Virtuoso } from "react-virtuoso";
 import { useEffect, useState } from "react";
 
-const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
+const TicketsList = ({
+    ticketsData,
+    isFetching,
+    isUsingFilters,
+    sendJsonMessage,
+}) => {
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
 
@@ -72,7 +77,11 @@ const TicketsList = ({ ticketsData, isFetching, isUsingFilters }) => {
     } else if (ticketsData.length) {
         // If we get the data from the server, so then show data
         ticketsListContent = ticketsData.map((ticket) => (
-            <TicketItem key={ticket.ticket_id} {...ticket} />
+            <TicketItem
+                key={ticket.ticket_id}
+                sendJsonMessage={sendJsonMessage}
+                {...ticket}
+            />
         ));
 
         // ticketsListContent = (
