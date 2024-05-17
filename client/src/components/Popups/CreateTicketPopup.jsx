@@ -14,7 +14,7 @@ import { endpoints } from "../../api/index";
 import { reverseDate } from "../../helpers/utils";
 import QuestionIcon from "../Icons/QuestionIcon";
 
-const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
+const CreateTicketPopup = ({ popupHandler }) => {
     const currentDate = getCurrentDate();
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const inputRef = useRef(null);
@@ -160,17 +160,9 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                 deadline_date: selectedDeadlineDate.date.replaceAll("-", "."),
             };
 
-            console.log(ticket);
-
             await axios.post(endpoints.CREATE_TICKET, ticket).then((res) => {
                 if (res.data.status === "OK") {
-                    sendJsonMessage({
-                        action: "update",
-                        user_id: localStorage.getItem("user_id"),
-                        username: localStorage.getItem("username"),
-                        role: localStorage.getItem("role"),
-                    });
-                    popupHandler();
+                    window.location.pathname = "/tickets";
                 }
             });
         } catch (error) {
