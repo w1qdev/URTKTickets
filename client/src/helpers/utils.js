@@ -267,3 +267,25 @@ export const getDatesDifference = (inputDate) => {
         seconds: differenceInSeconds,
     };
 };
+
+export function findFirstDifference(arr1, arr2) {
+    const map1 = new Map(arr1.map((item) => [item.ticket_id, item]));
+    const map2 = new Map(arr2.map((item) => [item.ticket_id, item]));
+
+    // Проверяем изменения и удаленные элементы
+    for (let [key, item] of map1) {
+        const newItem = map2.get(key);
+        if (!newItem || JSON.stringify(item) !== JSON.stringify(newItem)) {
+            return { oldItem: item, newItem: newItem || null };
+        }
+    }
+
+    // Проверяем добавленные элементы
+    for (let [key, item] of map2) {
+        if (!map1.has(key)) {
+            return { oldItem: null, newItem: item };
+        }
+    }
+
+    return null; // Если различий нет
+}

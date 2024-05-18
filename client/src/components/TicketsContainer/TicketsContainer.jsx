@@ -11,9 +11,11 @@ import {
     getTicketIdByStateName,
     mapPrioritiesAndChangeState,
     getPriorityById,
+    findFirstDifference,
 } from "../../helpers/utils.js";
 import { motion } from "framer-motion";
-import useWebSocket from "react-use-websocket";
+import { toastInfo, toastSuccess } from "../../helpers/toasts";
+import useWebSocketConnectionManager from "../../hooks/useWebSocketConnectionManager";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -28,6 +30,8 @@ const TicketsContainer = ({
     const [menuID, setMenuID] = useState({ isIncreasing: null });
     const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
     const [isFetching, setIsFetching] = useState(false);
+    const isAdministrator =
+        localStorage.getItem("role") === "administrator" ? true : false;
     const [menuLocation, setMenuLocation] = useState({
         currentTitle: "",
         data: [],
@@ -48,22 +52,48 @@ const TicketsContainer = ({
         localStorage.getItem("isTicketContainerGridMode") || false;
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
-    const { sendJsonMessage } = useWebSocket(
-        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
-        {
-            onOpen: () => {
-                console.log("WebSocket connection established.");
-            },
-            onClose: () => console.log("WebSocket connection closed."),
-            onMessage: (messages) => {
-                const tickets = JSON.parse(messages.data);
+    const wsActions = {
+        onOpen: () => {
+            console.log("WebSocket connection established.");
+        },
+        onClose: () => console.log("WebSocket connection closed."),
+        onMessage: (messages) => {
+            const newTicketsData = JSON.parse(messages.data);
+            const differenceTicket = findFirstDifference(
+                newTicketsData.tickets,
+                tickets
+            ).oldItem;
+            if (differenceTicket && isAdministrator === false) {
+                if (differenceTicket.state_id === 2) {
+                    toastInfo(
+                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} уже в процессе выполнения.`
+                    );
+                } else if (differenceTicket.state_id === 3) {
+                    toastSuccess(
+                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} успешно выполнена.`
+                    );
+                }
+            } else if (differenceTicket && isAdministrator === true) {
+                if (differenceTicket.state_id === 2) {
+                    toastInfo(
+                        `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач`
+                    );
+                } else if (differenceTicket.state_id === 3) {
+                    toastSuccess(
+                        `Вы успешно выполнили все задачи заявки №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}.`
+                    );
+                }
+            }
 
-                setTickets((prev) => [...tickets.tickets]);
-            },
-            onError: (event) =>
-                console.error("WebSocket error observed:", event),
-            shouldReconnect: (closeEvent) => true,
-        }
+            setTickets((prev) => [...newTicketsData.tickets]);
+        },
+        onError: (event) => console.error("WebSocket error observed:", event),
+        shouldReconnect: (closeEvent) => true,
+    };
+
+    const { sendJsonMessage } = useWebSocketConnectionManager(
+        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
+        wsActions
     );
 
     const handleClickMenuDate = (e) =>

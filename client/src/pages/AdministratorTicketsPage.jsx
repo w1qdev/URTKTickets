@@ -9,7 +9,6 @@ import {
     getCurrentDate,
     dateFormatter,
     getTicketContainerStatusMode,
-    initializeStorageUserData,
 } from "../helpers/utils";
 import { Button, Stack } from "@chakra-ui/react";
 import RepeatIcon from "../components/Icons/RepeatIcon";
@@ -18,6 +17,7 @@ import CreateTicketPopup from "../components/Popups/CreateTicketPopup";
 import GridSwitcher from "../components/GridSwitcher/GridSwitcher";
 import axios from "axios";
 import { SERVER_ORIGIN_URI, API_PATH } from "../api";
+import { ToastContainer } from "react-toastify";
 
 const AdministratorTicketsPage = () => {
     const [userData, setUserData] = useState({
@@ -188,6 +188,7 @@ const AdministratorTicketsPage = () => {
                     ) : null}
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };
