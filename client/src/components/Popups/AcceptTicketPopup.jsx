@@ -3,7 +3,7 @@ import CheckmarkIcon from "../Icons/CheckmarkIcon";
 import Button from "../Buttons/Button";
 import TasksList from "../TasksList/TasksList";
 import { Tooltip } from "@chakra-ui/react";
-import Notification from "../Notification/Notification";
+import Blockquote from "../Blockquotes/Blockquote";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import axios from "axios";
 import Popup from "./Popup";
@@ -143,7 +143,7 @@ const AcceptTicketPopup = ({
                         )}
                     </Button>
                 ) : (
-                    <Notification
+                    <Blockquote
                         type="warning"
                         text="Заявка на рассмотрении у системного администратора"
                     />

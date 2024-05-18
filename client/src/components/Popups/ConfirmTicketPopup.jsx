@@ -4,7 +4,7 @@ import TasksList from "../TasksList/TasksList";
 import axios from "axios";
 import { Tooltip } from "@chakra-ui/react";
 import Button from "../Buttons/Button";
-import Notification from "../Notification/Notification";
+import Blockquote from "../Blockquotes/Blockquote";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import Popup from "./Popup";
 import { useState } from "react";
@@ -119,7 +119,7 @@ const ConfirmTicketPopup = ({
                 </div>
 
                 {!isAdministrator ? (
-                    <Notification
+                    <Blockquote
                         type="warning"
                         text="Задачи заявки находятся в процессе выполнения системным администратором"
                     />

@@ -1,6 +1,6 @@
 import { getCurrentDate, addDaysToCurrentDate } from "../../helpers/utils";
 import Button from "../Buttons/Button";
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip, Spinner } from "@chakra-ui/react";
 import SendTicketIcon from "../Icons/SendTicketIcon";
 import TasksList from "../TasksList/TasksList";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
@@ -24,6 +24,7 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     );
     const [ticketDescription, setTicketDescription] = useState("");
     const [tasks, setTasks] = useState([]);
+    const [isFetching, setIsFetching] = useState(false);
     const [currentTask, setCurrentTask] = useState({
         pc_name: "",
         task_description: "",
@@ -146,6 +147,7 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     };
 
     const handleCreateTicket = async () => {
+        setIsFetching(true);
         try {
             const ticket = {
                 problem_title: ticketTitle,
@@ -174,6 +176,8 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             });
         } catch (error) {
             console.log(error);
+        } finally {
+            setIsFetching(false);
         }
     };
 
@@ -346,34 +350,48 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         </button>
                     </div>
                 </div>
-                <Tooltip
-                    hasArrow
-                    label={
-                        isButtonDisabled
-                            ? "Похоже, что вы не указали аудиторию, или не добавили хотя бы одну задачу"
-                            : null
-                    }
-                    placement="top"
-                    bg="gray.800"
-                    openDelay={200}
-                >
-                    <div>
-                        <Button
-                            bgColor={isButtonDisabled ? "#696969" : "#1F7EFF"}
-                            onClick={
-                                isButtonDisabled ? null : handleCreateTicket
-                            }
-                            isDisabled={isButtonDisabled}
-                        >
-                            <div className="button__text">Создать заявку</div>
+                {isFetching ? (
+                    <Button
+                        bgColor={isButtonDisabled ? "#696969" : "#1F7EFF"}
+                        isDisabled={isButtonDisabled}
+                    >
+                        <div className="button__text">Создание...</div>
+                        <Spinner size="sm" color="#fff" />
+                    </Button>
+                ) : (
+                    <Tooltip
+                        hasArrow
+                        label={
+                            isButtonDisabled
+                                ? "Похоже, что вы не указали аудиторию, или не добавили хотя бы одну задачу"
+                                : null
+                        }
+                        placement="top"
+                        bg="gray.800"
+                        openDelay={200}
+                    >
+                        <div>
+                            <Button
+                                bgColor={
+                                    isButtonDisabled ? "#696969" : "#1F7EFF"
+                                }
+                                onClick={
+                                    isButtonDisabled ? null : handleCreateTicket
+                                }
+                                isDisabled={isButtonDisabled}
+                            >
+                                <div className="button__text">
+                                    Создать заявку
+                                </div>
 
-                            <SendTicketIcon
-                                className="send-ticket-icon"
-                                fill="#fff"
-                            />
-                        </Button>
-                    </div>
-                </Tooltip>
+                                <SendTicketIcon
+                                    className="send-ticket-icon"
+                                    fill="#fff"
+                                />
+                            </Button>
+                        </div>
+                    </Tooltip>
+                )}
             </div>
         </Popup>
     );

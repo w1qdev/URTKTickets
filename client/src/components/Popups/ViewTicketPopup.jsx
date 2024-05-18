@@ -1,5 +1,4 @@
 import TasksList from "../TasksList/TasksList";
-// import Notification from "../Notification/Notification";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import { dateFormatter } from "../../helpers/utils";
 import DownlaodIcon from "../Icons/DownloadIcon";

@@ -22,6 +22,7 @@ import { SERVER_ORIGIN_URI, API_PATH, SERVER_ORIGIN_DOMAIN } from "../api";
 import { toastInfo, toastSuccess } from "../helpers/toasts.js";
 import { ToastContainer } from "react-toastify";
 import useWebSocketConnectionManager from "../hooks/useWebSocketConnectionManager";
+import Notification from "../components/Notification/Notification";
 
 const TicketsPage = () => {
     const [userData, setUserData] = useState({
@@ -207,6 +208,8 @@ const TicketsPage = () => {
                                         </motion.div>
                                     </AnimatePresence>
                                 ) : null}
+
+                                <Notification className="notification__trigger" />
 
                                 <GridSwitcher
                                     isGridMode={isGridMode}

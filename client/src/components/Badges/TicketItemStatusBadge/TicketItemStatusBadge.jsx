@@ -1,6 +1,4 @@
 const TicketItemStatusBadge = ({ status }) => {
-    const role = localStorage.getItem("role");
-
     if (status === "Under review") {
         return (
             <div className="ticket-item-status awaiting-review">
