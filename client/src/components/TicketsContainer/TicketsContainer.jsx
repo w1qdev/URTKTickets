@@ -4,18 +4,15 @@ import { useState, useEffect, useMemo } from "react";
 import TicketsList from "../TicketsList/TicketsList.jsx";
 import Menu from "../Menu/Menu.jsx";
 import MenuFilterButton from "../Menu/MenuFilterButton.jsx";
-import { endpoints, SERVER_ORIGIN_DOMAIN } from "../../api/index.js";
+import { endpoints } from "../../api/index.js";
 import {
     getMenuItemsByValue,
     mapTicketsDataAndChangeState,
     getTicketIdByStateName,
     mapPrioritiesAndChangeState,
     getPriorityById,
-    findFirstDifference,
 } from "../../helpers/utils.js";
 import { motion } from "framer-motion";
-import { toastInfo, toastSuccess } from "../../helpers/toasts";
-import useWebSocketConnectionManager from "../../hooks/useWebSocketConnectionManager";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -23,15 +20,17 @@ const TicketsContainer = ({
     setIsFilterClear,
     isFilterClear,
     userStoragedData,
+    sendJsonMessage,
+    tickets,
+    handleTickets,
 }) => {
-    const [tickets, setTickets] = useState([]);
+    // const [containerTickets, setContainerTickets] = useState(tickets);
+    console.log(tickets);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: null });
     const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
     const [isFetching, setIsFetching] = useState(false);
-    const isAdministrator =
-        localStorage.getItem("role") === "administrator" ? true : false;
     const [menuLocation, setMenuLocation] = useState({
         currentTitle: "",
         data: [],
@@ -52,49 +51,13 @@ const TicketsContainer = ({
         localStorage.getItem("isTicketContainerGridMode") || false;
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
-    const wsActions = {
-        onOpen: () => {
-            console.log("WebSocket connection established.");
-        },
-        onClose: () => console.log("WebSocket connection closed."),
-        onMessage: (messages) => {
-            const newTicketsData = JSON.parse(messages.data);
-            const differenceTicket = findFirstDifference(
-                newTicketsData.tickets,
-                tickets
-            ).oldItem;
-            if (differenceTicket && isAdministrator === false) {
-                if (differenceTicket.state_id === 2) {
-                    toastInfo(
-                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} уже в процессе выполнения.`
-                    );
-                } else if (differenceTicket.state_id === 3) {
-                    toastSuccess(
-                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} успешно выполнена.`
-                    );
-                }
-            } else if (differenceTicket && isAdministrator === true) {
-                if (differenceTicket.state_id === 2) {
-                    toastInfo(
-                        `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач`
-                    );
-                } else if (differenceTicket.state_id === 3) {
-                    toastSuccess(
-                        `Вы успешно выполнили все задачи заявки №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}.`
-                    );
-                }
-            }
-
-            setTickets((prev) => [...newTicketsData.tickets]);
-        },
-        onError: (event) => console.error("WebSocket error observed:", event),
-        shouldReconnect: (closeEvent) => true,
+    const handleClearFilters = () => {
+        setMenuDate((prev) => ({ ...prev, data: [] }));
+        setMenuLocation((prev) => ({ ...prev, data: [] }));
+        setMenuStatus((prev) => ({ ...prev, data: [] }));
+        setMenuCustomer((prev) => ({ ...prev, data: [] }));
+        setMenuPriority((prev) => ({ ...prev, data: [] }));
     };
-
-    const { sendJsonMessage } = useWebSocketConnectionManager(
-        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
-        wsActions
-    );
 
     const handleClickMenuDate = (e) =>
         setMenuDate((prev) => ({
@@ -126,14 +89,9 @@ const TicketsContainer = ({
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
     const handleFilters = (value) => handleUsingFilters(value);
 
-    // useEffect(() => {
-    //     if (lastMessage !== null) {
-    //         // Handle incoming WebSocket messages
-    //         console.log(JSON.parse(lastMessage.data));
-    //     }
-    // }, [lastMessage]);
-
     useEffect(() => {
+        console.log("make request");
+        handleClearFilters();
         const fetchData = async () => {
             try {
                 setIsFetching(true);
@@ -191,9 +149,9 @@ const TicketsContainer = ({
                                     )
                                 ),
                             }));
-                            setTickets(res.data.tickets);
+                            handleTickets(res.data.tickets);
                         } else {
-                            setTickets([]);
+                            handleTickets([]);
                         }
                     })
                     .catch((error) => {
@@ -207,6 +165,8 @@ const TicketsContainer = ({
 
         fetchData();
     }, []);
+
+    useEffect(() => {}, [tickets.length]);
 
     useEffect(() => {
         const newSortedTickets = tickets.slice(); // Создаем копию исходных данных

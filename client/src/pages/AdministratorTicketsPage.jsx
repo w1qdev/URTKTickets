@@ -9,6 +9,7 @@ import {
     getCurrentDate,
     dateFormatter,
     getTicketContainerStatusMode,
+    findFirstDifference,
 } from "../helpers/utils";
 import { Button, Stack } from "@chakra-ui/react";
 import RepeatIcon from "../components/Icons/RepeatIcon";
@@ -16,8 +17,10 @@ import { useEffect, useState } from "react";
 import CreateTicketPopup from "../components/Popups/CreateTicketPopup";
 import GridSwitcher from "../components/GridSwitcher/GridSwitcher";
 import axios from "axios";
-import { SERVER_ORIGIN_URI, API_PATH } from "../api";
+import { SERVER_ORIGIN_URI, API_PATH, SERVER_ORIGIN_DOMAIN } from "../api";
+import { toastInfo, toastSuccess } from "../helpers/toasts.js";
 import { ToastContainer } from "react-toastify";
+import useWebSocketConnectionManager from "../hooks/useWebSocketConnectionManager";
 
 const AdministratorTicketsPage = () => {
     const [userData, setUserData] = useState({
@@ -25,11 +28,14 @@ const AdministratorTicketsPage = () => {
         user_id: localStorage.getItem("user_id"),
         role: localStorage.getItem("role"),
     });
+    const [tickets, setTickets] = useState([]);
     const [isUsingFilters, setIsUsingFilters] = useState(false);
     const [isFilterClear, setIsFilterClear] = useState(false);
     const currentDate = dateFormatter(getCurrentDate());
     const userRole = localStorage.getItem("role") || "";
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const isAdministrator =
+        localStorage.getItem("role") === "administrator" ? true : false;
     const [isGridMode, setIsGridMode] = useState(
         getTicketContainerStatusMode()
     );
@@ -42,6 +48,50 @@ const AdministratorTicketsPage = () => {
         localStorage.setItem("isTicketContainerGridMode", "false");
         setIsGridMode("false");
     };
+
+    const wsActions = {
+        onOpen: () => {
+            console.log("WebSocket connection established.");
+        },
+        onClose: () => console.log("WebSocket connection closed."),
+        onMessage: (messages) => {
+            const newTicketsData = JSON.parse(messages.data);
+            const differenceTicket = findFirstDifference(
+                newTicketsData.tickets,
+                tickets
+            ).oldItem;
+            if (differenceTicket && isAdministrator === false) {
+                if (differenceTicket.state_id === 2) {
+                    toastInfo(
+                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} уже в процессе выполнения.`
+                    );
+                } else if (differenceTicket.state_id === 3) {
+                    toastSuccess(
+                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} успешно выполнена.`
+                    );
+                }
+            } else if (differenceTicket && isAdministrator === true) {
+                if (differenceTicket.state_id === 2) {
+                    toastInfo(
+                        `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач`
+                    );
+                } else if (differenceTicket.state_id === 3) {
+                    toastSuccess(
+                        `Вы успешно выполнили все задачи заявки №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}.`
+                    );
+                }
+            }
+
+            setTickets((prev) => [...newTicketsData.tickets]);
+        },
+        onError: (event) => console.error("WebSocket error observed:", event),
+        shouldReconnect: (closeEvent) => true,
+    };
+
+    const { sendJsonMessage } = useWebSocketConnectionManager(
+        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
+        wsActions
+    );
 
     const handleOpenPopup = () => setIsPopupOpen((prev) => !prev);
 
@@ -92,7 +142,10 @@ const AdministratorTicketsPage = () => {
         <>
             <AnimatePresence>
                 {isPopupOpen ? (
-                    <CreateTicketPopup popupHandler={handleOpenPopup} />
+                    <CreateTicketPopup
+                        sendJsonMessage={sendJsonMessage}
+                        popupHandler={handleOpenPopup}
+                    />
                 ) : null}
             </AnimatePresence>
             <div className="administrator-tickets-page">
@@ -184,6 +237,9 @@ const AdministratorTicketsPage = () => {
                             isUsingFilters={isUsingFilters}
                             isFilterClear={isFilterClear}
                             userStoragedData={userData}
+                            tickets={tickets}
+                            handleTickets={setTickets}
+                            sendJsonMessage={sendJsonMessage}
                         />
                     ) : null}
                 </div>
