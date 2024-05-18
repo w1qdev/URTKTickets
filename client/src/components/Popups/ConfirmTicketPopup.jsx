@@ -7,6 +7,8 @@ import Button from "../Buttons/Button";
 import Notification from "../Notification/Notification";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import Popup from "./Popup";
+import { useState } from "react";
+import { Spinner } from "@chakra-ui/react";
 
 const ConfirmTicketPopup = ({
     title,
@@ -31,30 +33,38 @@ const ConfirmTicketPopup = ({
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
+    const [isFetching, setIsFetching] = useState(false);
 
     const handleConfirmTicket = async () => {
-        await axios
-            .put(
-                `http://localhost:8001/api/tickets/${ticketData.ticket_id}/change_status/`,
-                {
-                    new_status_id:
-                        ticketData.state_id + 1 <= 3
-                            ? ticketData.state_id + 1
-                            : ticketData.state_id,
-                }
-            )
-            .then((res) => {
-                if (res.data.status === "OK") {
-                    sendJsonMessage({
-                        action: "update",
-                        user_id: localStorage.getItem("user_id"),
-                        username: localStorage.getItem("username"),
-                        role: localStorage.getItem("role"),
-                        ticket_id: ticket_id,
-                    });
-                    popupHandler();
-                }
-            });
+        setIsFetching(true);
+        try {
+            await axios
+                .put(
+                    `http://localhost:8001/api/tickets/${ticketData.ticket_id}/change_status/`,
+                    {
+                        new_status_id:
+                            ticketData.state_id + 1 <= 3
+                                ? ticketData.state_id + 1
+                                : ticketData.state_id,
+                    }
+                )
+                .then((res) => {
+                    if (res.data.status === "OK") {
+                        sendJsonMessage({
+                            action: "update",
+                            user_id: localStorage.getItem("user_id"),
+                            username: localStorage.getItem("username"),
+                            role: localStorage.getItem("role"),
+                            ticket_id: ticket_id,
+                        });
+                        popupHandler();
+                    }
+                });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsFetching(false);
+        }
     };
 
     return (
@@ -115,16 +125,29 @@ const ConfirmTicketPopup = ({
                     />
                 ) : (
                     <Button onClick={handleConfirmTicket} bgColor="#99D16F">
-                        <Tooltip
-                            marginBottom="10px"
-                            marginLeft="20px"
-                            hasArrow
-                            label="Вы подтверждаете, что все задачи были выполнены"
-                            placement="top"
-                        >
-                            <div className="button__text">Задачи выполнены</div>
-                        </Tooltip>
-                        <CheckmarkIcon fill="#fff" />
+                        {isFetching ? (
+                            <>
+                                <div className="button__text">
+                                    Выполнение...
+                                </div>
+                                <Spinner size="sm" color="#fff" />
+                            </>
+                        ) : (
+                            <>
+                                <Tooltip
+                                    marginBottom="10px"
+                                    marginLeft="20px"
+                                    hasArrow
+                                    label="Вы подтверждаете, что все задачи были выполнены"
+                                    placement="top"
+                                >
+                                    <div className="button__text">
+                                        Задачи выполнены
+                                    </div>
+                                </Tooltip>
+                                <CheckmarkIcon fill="#fff" />
+                            </>
+                        )}
                     </Button>
                 )}
             </div>

@@ -7,6 +7,8 @@ import Notification from "../Notification/Notification";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import axios from "axios";
 import Popup from "./Popup";
+import { useState } from "react";
+import { Spinner } from "@chakra-ui/react";
 
 const AcceptTicketPopup = ({
     title,
@@ -31,31 +33,39 @@ const AcceptTicketPopup = ({
     const username = localStorage.getItem("username");
     const date = dateFormatter(submission_date);
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
+    const [isFetching, setIsFetching] = useState(false);
 
     const handlerAcceptTicket = async () => {
-        await axios
-            .put(
-                `http://localhost:8001/api/tickets/${ticketData.ticket_id}/change_status/`,
-                {
-                    new_status_id:
-                        ticketData.state_id + 1 <= 3
-                            ? ticketData.state_id + 1
-                            : ticketData.state_id,
-                    administratorUsername: username,
-                }
-            )
-            .then((res) => {
-                if (res.data.status === "OK") {
-                    sendJsonMessage({
-                        action: "update",
-                        user_id: localStorage.getItem("user_id"),
-                        username: localStorage.getItem("username"),
-                        role: localStorage.getItem("role"),
-                        ticket_id: ticket_id,
-                    });
-                    popupHandler();
-                }
-            });
+        setIsFetching(true);
+        try {
+            await axios
+                .put(
+                    `http://localhost:8001/api/tickets/${ticketData.ticket_id}/change_status/`,
+                    {
+                        new_status_id:
+                            ticketData.state_id + 1 <= 3
+                                ? ticketData.state_id + 1
+                                : ticketData.state_id,
+                        administratorUsername: username,
+                    }
+                )
+                .then((res) => {
+                    if (res.data.status === "OK") {
+                        sendJsonMessage({
+                            action: "update",
+                            user_id: localStorage.getItem("user_id"),
+                            username: localStorage.getItem("username"),
+                            role: localStorage.getItem("role"),
+                            ticket_id: ticket_id,
+                        });
+                        popupHandler();
+                    }
+                });
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsFetching(false);
+        }
     };
 
     return (
@@ -108,16 +118,29 @@ const AcceptTicketPopup = ({
 
                 {isAdministrator ? (
                     <Button onClick={handlerAcceptTicket} bgColor="#1F7EFF">
-                        <Tooltip
-                            marginBottom="10px"
-                            marginLeft="20px"
-                            hasArrow
-                            label="Вы принимаете заявку и согласны с выполнением списка задач"
-                            placement="top"
-                        >
-                            <div className="button__text">Принять заявку</div>
-                        </Tooltip>
-                        <CheckmarkIcon fill="#fff" />
+                        {isFetching ? (
+                            <>
+                                <div className="button__text">
+                                    Выполнение...
+                                </div>
+                                <Spinner size="sm" color="#fff" />
+                            </>
+                        ) : (
+                            <>
+                                <Tooltip
+                                    marginBottom="10px"
+                                    marginLeft="20px"
+                                    hasArrow
+                                    label="Вы принимаете заявку и согласны с выполнением списка задач"
+                                    placement="top"
+                                >
+                                    <div className="button__text">
+                                        Принять заявку
+                                    </div>
+                                </Tooltip>
+                                <CheckmarkIcon fill="#fff" />
+                            </>
+                        )}
                     </Button>
                 ) : (
                     <Notification

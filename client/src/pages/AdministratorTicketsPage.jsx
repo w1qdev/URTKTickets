@@ -10,6 +10,7 @@ import {
     dateFormatter,
     getTicketContainerStatusMode,
     findFirstDifference,
+    reverseDate,
 } from "../helpers/utils";
 import { Button, Stack } from "@chakra-ui/react";
 import RepeatIcon from "../components/Icons/RepeatIcon";
@@ -73,7 +74,17 @@ const AdministratorTicketsPage = () => {
                     );
                 }
             } else if (differenceTicket && isAdministrator === true) {
-                if (differenceTicket.state_id === 2) {
+                if (differenceTicket.state_id === 1) {
+                    toastInfo(
+                        `Вам пришла новая заявка от ${
+                            differenceTicket.customer_name
+                        }, №${differenceTicket.ticket_id}, ${
+                            differenceTicket.problem_title
+                        }. Выполнить нужно до ${dateFormatter(
+                            reverseDate(differenceTicket.deadline_date)
+                        )} года!`
+                    );
+                } else if (differenceTicket.state_id === 2) {
                     toastInfo(
                         `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач`
                     );
