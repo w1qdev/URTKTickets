@@ -1,4 +1,4 @@
-import "./AdministratorTicketsPage.scss";
+import "./TicketsPage.scss";
 import CreateTicketButton from "../components/Buttons/CreateTicketButton";
 import URTKLogo from "../assets/logo/urtkLogo.png";
 import PlusIcon from "../components/Icons/PlusIcon";
@@ -23,7 +23,7 @@ import { toastInfo, toastSuccess } from "../helpers/toasts.js";
 import { ToastContainer } from "react-toastify";
 import useWebSocketConnectionManager from "../hooks/useWebSocketConnectionManager";
 
-const AdministratorTicketsPage = () => {
+const TicketsPage = () => {
     const [userData, setUserData] = useState({
         username: localStorage.getItem("username"),
         user_id: localStorage.getItem("user_id"),
@@ -63,6 +63,9 @@ const AdministratorTicketsPage = () => {
                 newTicketsData.tickets,
                 tickets
             ).oldItem;
+
+            console.log(differenceTicket);
+
             if (differenceTicket && isAdministrator === false) {
                 if (differenceTicket.state_id === 2) {
                     toastInfo(
@@ -262,4 +265,4 @@ const AdministratorTicketsPage = () => {
     );
 };
 
-export default AdministratorTicketsPage;
+export default TicketsPage;

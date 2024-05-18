@@ -28,6 +28,7 @@ const ViewTicketPopup = ({
         priority_id,
         tasks,
         ticket_id,
+        teacher_id,
     } = ticketData;
     const date = dateFormatter(submission_date);
 
@@ -67,11 +68,11 @@ const ViewTicketPopup = ({
                     if (res.status === 200) {
                         console.log("Tickets successfuly removed");
                         sendJsonMessage({
-                            action: "update",
+                            action: "remove",
                             user_id: localStorage.getItem("user_id"),
                             username: localStorage.getItem("username"),
                             role: localStorage.getItem("role"),
-                            ticket_id: ticket_id,
+                            teacher_id: teacher_id,
                         });
                         popupHandler();
                     } else {

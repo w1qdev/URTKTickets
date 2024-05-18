@@ -1,8 +1,7 @@
 import TicketItem from "../TicketItem/TicketItem";
-import NoTicketsImage from "../../assets/other/no-tickets-img.png";
 import { Skeleton, Stack } from "@chakra-ui/react";
 import { Virtuoso } from "react-virtuoso";
-import { useEffect, useState } from "react";
+import NoTicketItems from "../NoTicketItems/NoTicketItems";
 
 const TicketsList = ({
     ticketsData,
@@ -12,7 +11,6 @@ const TicketsList = ({
 }) => {
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
-
     let ticketsListContent;
     if (isFetching) {
         // If we still fetching the data from the server
@@ -99,25 +97,20 @@ const TicketsList = ({
         //         )}
         //     />
         // );
-    } else if (isUsingFilters || ticketsData.length === 0) {
+    } else if (isUsingFilters && ticketsData.length === 0) {
         // if we using filters and got 0 results after filtering
         ticketsListContent = (
-            <div
-                className="no-tickets"
-                style={{ width: `${isGridMode === "true" ? "304%" : "100%"}` }}
-            >
-                <img
-                    className="no-tickets__img"
-                    src={NoTicketsImage}
-                    alt="Нет новых тикетов"
-                />
-                <div className="no-tickets__description">
-                    Ой.... Тикеты не найдены
-                </div>
-            </div>
+            <NoTicketItems isGridMode={isGridMode}>
+                Ой... по вашему запросу ничего не найдено
+            </NoTicketItems>
+        );
+    } else if (isUsingFilters === false || ticketsData.length === 0) {
+        ticketsListContent = (
+            <NoTicketItems isGridMode={isGridMode}>
+                Тут пока нет тикетов 😊
+            </NoTicketItems>
         );
     }
-
     return <>{ticketsListContent}</>;
 };
 

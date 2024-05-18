@@ -310,10 +310,7 @@ async def websocket_tickets(websocket: WebSocket, client_id: int):
             teacher_tickets = None
             teacher_id = None
 
-            if message['action'] == 'update':
-                # Get all updated tickets for administrators
-                all_tickets = tickets_manager.get_all_tickets()
-                
+            if message['action'] == 'update': 
                 # Get tickets for the specific teacher
                 if (message['ticket_id'] is not None):
                     ticket = tickets_manager.get_ticket_by_id(message['ticket_id'])
@@ -321,27 +318,35 @@ async def websocket_tickets(websocket: WebSocket, client_id: int):
                         teacher_id = ticket.teacher_id
                         teacher_tickets = tickets_manager.get_tickets_by_teacher_id(teacher_id)
 
-                # Serialize tickets for administrators
-                all_tickets_with_tasks = []
-                if all_tickets:
-                    for ticket in all_tickets:
-                        ticket_data = serialize_sqlalchemy_obj(ticket)
-                        tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
-                        ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
-                        all_tickets_with_tasks.append(ticket_data)
+            elif message['action'] == 'remove':
+                # Get tickets for the specific teacher
+                if (message['teacher_id'] is not None):
+                    teacher_id = message['teacher_id']
+                    teacher_tickets = tickets_manager.get_tickets_by_teacher_id(teacher_id)
+            
+            # Get all updated tickets for administrators
+            all_tickets = tickets_manager.get_all_tickets()
+            # Serialize tickets for administrators
+            all_tickets_with_tasks = []
+            if all_tickets:
+                for ticket in all_tickets:
+                    ticket_data = serialize_sqlalchemy_obj(ticket)
+                    tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                    ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
+                    all_tickets_with_tasks.append(ticket_data)
 
-                all_tickets_response = {"tickets": all_tickets_with_tasks}
+            all_tickets_response = {"tickets": all_tickets_with_tasks}
 
-                # Serialize tickets for the specific teacher
-                teacher_tickets_with_tasks = []
-                if teacher_tickets:
-                    for ticket in teacher_tickets:
-                        ticket_data = serialize_sqlalchemy_obj(ticket)
-                        tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
-                        ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
-                        teacher_tickets_with_tasks.append(ticket_data)
+            # Serialize tickets for the specific teacher
+            teacher_tickets_with_tasks = []
+            if teacher_tickets:
+                for ticket in teacher_tickets:
+                    ticket_data = serialize_sqlalchemy_obj(ticket)
+                    tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                    ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
+                    teacher_tickets_with_tasks.append(ticket_data)
 
-                teacher_tickets_response = {"tickets": teacher_tickets_with_tasks}
+            teacher_tickets_response = {"tickets": teacher_tickets_with_tasks}
 
             # Получаем ID пользователя
             user_id = message['user_id']
