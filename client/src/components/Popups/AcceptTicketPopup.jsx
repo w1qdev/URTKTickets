@@ -24,6 +24,7 @@ const AcceptTicketPopup = ({
         deadline_date,
         priority_id,
         tasks,
+        ticket_id,
     } = ticketData;
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
@@ -50,6 +51,7 @@ const AcceptTicketPopup = ({
                         user_id: localStorage.getItem("user_id"),
                         username: localStorage.getItem("username"),
                         role: localStorage.getItem("role"),
+                        ticket_id: ticket_id,
                     });
                     popupHandler();
                 }

@@ -1,4 +1,10 @@
 from db.models import Tickets, Tasks
+# from helpers.utils import serialize_sqlalchemy_obj
+
+
+def serialize_sqlalchemy_obj(obj):
+    """Функция для сериализации объектов SQLAlchemy"""
+    return {column.name: getattr(obj, column.name) for column in obj.__table__.columns}
 
 
 class TicketsManager():
@@ -42,8 +48,16 @@ class TicketsManager():
 
             self.session.add(ticket)
             self.session.commit()
+
+            # Сериализация тикета
+            serialized_ticket = serialize_sqlalchemy_obj(ticket)
         
-            return ticket
+            if hasattr(ticket, 'tasks'):
+                serialized_ticket['tasks'] = [serialize_sqlalchemy_obj(task) for task in ticket.tasks]
+            else:
+                serialized_ticket['tasks'] = []
+
+            return serialized_ticket
         finally: 
             self.session.close()
 
@@ -85,10 +99,14 @@ class TicketsManager():
             self.session.rollback()
             return False
     
-    def get_tickets_by_teacher_id(self, teacher_id: int):
-        # Получение определённого тикета по id
-        return self.session.query(Tickets).filter(Tickets.teacher_id == teacher_id).all()
+    def get_ticket_by_id(self, ticket_id: int):
+        # Получение данных тикета по id
+        return self.session.query(Tickets).filter(Tickets.ticket_id == ticket_id).first()
     
+    def get_tickets_by_teacher_id(self, teacher_id: int):
+        # Получение определённого тикета по id учителя
+        return self.session.query(Tickets).filter(Tickets.teacher_id == teacher_id).all()
+
     def remove_all_tickets_and_tasks(self):
         # Удаление всех тикетов и связанных задач
         try:

@@ -141,10 +141,11 @@ async def get_ticket_state_by_id(state_id: int):
 # TICKETS API
 @app.post("/api/tickets/")
 async def create_ticket(ticket_data: dict):
-    tickets_manager.create_ticket(ticket_data)
+    new_ticket = tickets_manager.create_ticket(ticket_data)
     return { 
         'message': "Новый тикет успешно создан",
-        'status': 'OK'
+        'status': 'OK',
+        'ticket': new_ticket
     }
 
 @app.delete("/api/tickets/{ticket_id}")
@@ -298,53 +299,64 @@ async def download_report(filename: str):
         return {"message": "Something gone wrong | Internal Error"}
 
 # WebSockets
-@app.websocket("/ws/tickets")
-async def websocket_tickets(websocket: WebSocket):
-    await ws_manager.connect(websocket)
+@app.websocket("/ws/tickets/{client_id}")
+async def websocket_tickets(websocket: WebSocket, client_id: int):
+    await ws_manager.connect(websocket, client_id)
     try:
         while True:
             data = await websocket.receive_text()
             message = json.loads(data)
-            tickets = None
+            all_tickets = None
+            teacher_tickets = None
+            teacher_id = None
 
             if message['action'] == 'update':
-                # get all updated tickets from the database 
-                if message['role'] == "administrator":
-                    tickets = tickets_manager.get_all_tickets()
-                    tickets_with_tasks = []
+                # Get all updated tickets for administrators
+                all_tickets = tickets_manager.get_all_tickets()
+                
+                # Get tickets for the specific teacher
+                if (message['ticket_id'] is not None):
+                    ticket = tickets_manager.get_ticket_by_id(message['ticket_id'])
+                    if ticket:
+                        teacher_id = ticket.teacher_id
+                        teacher_tickets = tickets_manager.get_tickets_by_teacher_id(teacher_id)
 
-                    for ticket in tickets:
+                # Serialize tickets for administrators
+                all_tickets_with_tasks = []
+                if all_tickets:
+                    for ticket in all_tickets:
                         ticket_data = serialize_sqlalchemy_obj(ticket)
                         tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
                         ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
-                        tickets_with_tasks.append(ticket_data)
+                        all_tickets_with_tasks.append(ticket_data)
 
-                    tickets = {"tickets": tickets_with_tasks}
-                
-                elif message['role'] == "teacher":
-                    # Проверяем, существует ли преподаватель с указанным user_id
-                    teacher = teachers_manager.get_teacher_by_id(teacher_id=message['user_id'])
-                    if not teacher:
-                        teacher_data = { 'teacher_name': message['username'], 'role': message['role'] }
+                all_tickets_response = {"tickets": all_tickets_with_tasks}
 
-                        teachers_manager.add_teacher(teacher_data=teacher_data)
-                        return {"message": "Преподаватель с таким id не существует"}
-                    
-                    # Получаем все тикеты, созданные указанным преподавателем
-                    teacher_tickets = tickets_manager.get_tickets_by_teacher_id(message['user_id'])
-                    tickets_with_tasks = []
-
+                # Serialize tickets for the specific teacher
+                teacher_tickets_with_tasks = []
+                if teacher_tickets:
                     for ticket in teacher_tickets:
                         ticket_data = serialize_sqlalchemy_obj(ticket)
                         tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
                         ticket_data["tasks"] = [serialize_sqlalchemy_obj(task) for task in tasks]
-                        tickets_with_tasks.append(ticket_data)
+                        teacher_tickets_with_tasks.append(ticket_data)
 
-                    tickets = {"tickets": tickets_with_tasks}
-                else:
-                    tickets = {"message": "Роль неверна"}
+                teacher_tickets_response = {"tickets": teacher_tickets_with_tasks}
+
+            # Получаем ID пользователя
+            user_id = message['user_id']
+            if user_id:
+                administrators = teachers_manager.get_all_administrators()
+                admin_ids = [admin.teacher_id for admin in administrators]
+
+                # Send all tickets to administrators
+                if all_tickets_response and teacher_tickets_response:
+                    await ws_manager.send_message_to_clients(all_tickets_response, admin_ids)
+                    await ws_manager.send_personal_message(teacher_tickets_response, teacher_id)
+            else:
+                # Send message only to one user
+                await ws_manager.send_personal_message({"message": "Invalid user ID"}, client_id)
             
-            await ws_manager.broadcast(tickets)
     except WebSocketDisconnect:
         ws_manager.disconnect(websocket)
 

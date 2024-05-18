@@ -24,6 +24,7 @@ const ConfirmTicketPopup = ({
         deadline_date,
         problem_description,
         priority_id,
+        ticket_id,
         tasks,
     } = ticketData;
     const date = dateFormatter(submission_date);
@@ -49,6 +50,7 @@ const ConfirmTicketPopup = ({
                         user_id: localStorage.getItem("user_id"),
                         username: localStorage.getItem("username"),
                         role: localStorage.getItem("role"),
+                        ticket_id: ticket_id,
                     });
                     popupHandler();
                 }

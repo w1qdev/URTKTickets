@@ -161,12 +161,14 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             };
 
             await axios.post(endpoints.CREATE_TICKET, ticket).then((res) => {
-                if (res.data.status === "OK") {
+                if (res.data.status === "OK" && res.data.ticket) {
+                    console.log(res.data);
                     sendJsonMessage({
                         action: "update",
                         user_id: localStorage.getItem("user_id"),
                         username: localStorage.getItem("username"),
                         role: localStorage.getItem("role"),
+                        ticket_id: res.data.ticket.ticket_id,
                     });
                     popupHandler();
                 }

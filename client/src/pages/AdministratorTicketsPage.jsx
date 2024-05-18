@@ -55,7 +55,9 @@ const AdministratorTicketsPage = () => {
         },
         onClose: () => console.log("WebSocket connection closed."),
         onMessage: (messages) => {
+            console.log("got the data from the ws server");
             const newTicketsData = JSON.parse(messages.data);
+
             const differenceTicket = findFirstDifference(
                 newTicketsData.tickets,
                 tickets
@@ -89,7 +91,7 @@ const AdministratorTicketsPage = () => {
     };
 
     const { sendJsonMessage } = useWebSocketConnectionManager(
-        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets`,
+        `ws://${SERVER_ORIGIN_DOMAIN}/ws/tickets/${userData?.user_id}`,
         wsActions
     );
 

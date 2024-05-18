@@ -24,8 +24,6 @@ const TicketsContainer = ({
     tickets,
     handleTickets,
 }) => {
-    // const [containerTickets, setContainerTickets] = useState(tickets);
-    console.log(tickets);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: null });

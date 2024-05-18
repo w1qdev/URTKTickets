@@ -71,6 +71,7 @@ const ViewTicketPopup = ({
                             user_id: localStorage.getItem("user_id"),
                             username: localStorage.getItem("username"),
                             role: localStorage.getItem("role"),
+                            ticket_id: ticket_id,
                         });
                         popupHandler();
                     } else {
