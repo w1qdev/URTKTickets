@@ -2,7 +2,6 @@ import "./DescriptionFeed.scss";
 import { Tooltip } from "@chakra-ui/react";
 import TrashIcon from "../Icons/TrashIcon";
 import EditIcon from "../Icons/EditIcon";
-import { AnimatePresence, motion } from "framer-motion";
 
 const DescriptionFeed = ({
     descriptionText,

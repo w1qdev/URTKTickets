@@ -56,15 +56,12 @@ const TicketsPage = () => {
         },
         onClose: () => console.log("WebSocket connection closed."),
         onMessage: (messages) => {
-            console.log("got the data from the ws server");
             const newTicketsData = JSON.parse(messages.data);
 
             const differenceTicket = findFirstDifference(
                 newTicketsData.tickets,
                 tickets
             ).oldItem;
-
-            console.log(differenceTicket);
 
             if (differenceTicket && isAdministrator === false) {
                 if (differenceTicket.state_id === 2) {

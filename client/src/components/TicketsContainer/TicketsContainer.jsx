@@ -88,7 +88,6 @@ const TicketsContainer = ({
     const handleFilters = (value) => handleUsingFilters(value);
 
     useEffect(() => {
-        console.log("make request");
         handleClearFilters();
         const fetchData = async () => {
             try {

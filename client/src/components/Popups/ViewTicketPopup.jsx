@@ -1,7 +1,7 @@
 import TasksList from "../TasksList/TasksList";
 // import Notification from "../Notification/Notification";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
-import { dateFormatter, reverseDate } from "../../helpers/utils";
+import { dateFormatter } from "../../helpers/utils";
 import DownlaodIcon from "../Icons/DownloadIcon";
 import { SERVER_ORIGIN_URI, API_PATH } from "../../api";
 import Popup from "./Popup";
@@ -66,7 +66,6 @@ const ViewTicketPopup = ({
                 .delete(`${SERVER_ORIGIN_URI}${API_PATH}/tickets/${ticket_id}`)
                 .then((res) => {
                     if (res.status === 200) {
-                        console.log("Tickets successfuly removed");
                         sendJsonMessage({
                             action: "remove",
                             user_id: localStorage.getItem("user_id"),
