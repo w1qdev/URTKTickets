@@ -1,6 +1,6 @@
 import TicketItem from "../TicketItem/TicketItem";
 import { Skeleton, Stack } from "@chakra-ui/react";
-import { Virtuoso } from "react-virtuoso";
+import { Virtuoso, VirtuosoGrid } from "react-virtuoso";
 import NoTicketItems from "../NoTicketItems/NoTicketItems";
 
 const TicketsList = ({
@@ -83,14 +83,8 @@ const TicketsList = ({
         ));
 
         // ticketsListContent = (
-        //     <Virtuoso
-        //         style={{
-        //             padding: "5px",
-        //             width: "100%",
-        //             height: "100%",
-        //             overflowX: "hidden",
-        //             overflowY: "auto",
-        //         }}
+        //     <VirtuosoGrid
+        //         style={{ width: "700px", height: "100%"  }}
         //         data={ticketsData}
         //         itemContent={(_, ticket) => (
         //             <TicketItem key={ticket.ticket_id} {...ticket} />

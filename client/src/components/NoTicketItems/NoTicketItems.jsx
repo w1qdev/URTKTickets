@@ -11,6 +11,7 @@ const NoTicketItems = ({ isGridMode, children }) => {
                 src={NoTicketsImage}
                 alt="Нет новых тикетов"
             />
+
             <div className="no-tickets__description">{children}</div>
         </div>
     );
