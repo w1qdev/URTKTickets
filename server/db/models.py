@@ -39,6 +39,7 @@ class Tickets(Base):
     room_number = Column(String(20))
     problem_title = Column(String(255))
     problem_description = Column(Text)
+    created_at = Column(String)
     state_id = Column(Integer, ForeignKey('TicketStates.state_id'))
     teacher_id = Column(Integer, ForeignKey("Teachers.teacher_id"))
     priority_id = Column(Integer, ForeignKey("TicketPriorities.priority_id"))

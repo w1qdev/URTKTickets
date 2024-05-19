@@ -13,6 +13,7 @@ import {
 } from "../../helpers/utils";
 import Bookmark from "../Icons/Bookmark";
 import { Tooltip } from "@chakra-ui/react";
+import RelativeTime from "../RelativeTime/RelativeTime";
 
 const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
     const popupContainers = {
@@ -60,6 +61,7 @@ const TicketItem = (props) => {
         priority_id,
         state_id,
         sendJsonMessage,
+        created_at,
     } = props;
     const ticketStatus = getTicketStateNameById(state_id);
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
@@ -94,6 +96,13 @@ const TicketItem = (props) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: 0.2 }}
                 >
+                    <div className="ticket-item__header grid">
+                        <div className="header-ticket-id grid">
+                            №{ticket_id} |
+                        </div>
+                        <RelativeTime className="timer" date={created_at} />
+                    </div>
+
                     <div className="ticket-item__problem grid">
                         <div className="problem__title grid">
                             {problem_title}

@@ -36,6 +36,33 @@
         position: relative;
     }
 
+    &__header {
+        &.grid {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: fit-content;
+            padding-left: 5px;
+            padding-top: 3px;
+
+            .timer {
+                text-align: start;
+                font-size: 14px;
+                font-weight: 400;
+                color: #b8b8b8;
+                margin-left: 4px;
+            }
+        }
+
+        .header-ticket-id {
+            &.grid {
+                font-size: 14px;
+                font-weight: 400;
+                color: #b8b8b8;
+            }
+        }
+    }
+
     &__number {
         width: 7%;
         font-size: 0.9em;
@@ -57,7 +84,7 @@
 
         &.grid {
             width: 100%;
-            padding: 10px 5px;
+            padding: 0px 5px;
         }
 
         .problem__title {
@@ -77,6 +104,7 @@
                 line-height: 1.1;
                 margin-bottom: 10px;
                 font-size: 16px;
+                color: #000333;
                 display: -webkit-box;
                 -webkit-line-clamp: 2; // количество строк
                 -webkit-box-orient: vertical;
@@ -97,14 +125,13 @@
 
             &.grid {
                 width: 90%;
-                max-height: 34px;
+                max-height: 19px;
                 white-space: normal;
                 word-wrap: break-word;
                 line-height: 1.1;
-                margin-bottom: 10px;
                 font-size: 16px;
                 display: -webkit-box;
-                -webkit-line-clamp: 2; // количество строк
+                -webkit-line-clamp: 1; // количество строк
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }

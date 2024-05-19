@@ -155,11 +155,12 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                 room_number: room,
                 state_id: 1,
                 submission_date: currentDate,
+                deadline_date: selectedDeadlineDate.date.replaceAll("-", "."),
                 problem_description: ticketDescription,
                 tasks: tasks,
                 teacher_id: localStorage.getItem("user_id"),
                 priority_id: parseInt(selectedLevelOfImportance),
-                deadline_date: selectedDeadlineDate.date.replaceAll("-", "."),
+                createdAt: new Date(),
             };
 
             await axios.post(endpoints.CREATE_TICKET, ticket).then((res) => {

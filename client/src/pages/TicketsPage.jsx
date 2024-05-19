@@ -59,6 +59,8 @@ const TicketsPage = () => {
         onMessage: (messages) => {
             const newTicketsData = JSON.parse(messages.data);
 
+            console.log(newTicketsData);
+
             const differenceTicket = findFirstDifference(
                 newTicketsData.tickets,
                 tickets

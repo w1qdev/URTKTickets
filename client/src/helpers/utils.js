@@ -268,7 +268,7 @@ export const getDatesDifference = (inputDate) => {
     };
 };
 
-export function findFirstDifference(arr1, arr2) {
+export const findFirstDifference = (arr1, arr2) => {
     const map1 = new Map(arr1.map((item) => [item.ticket_id, item]));
     const map2 = new Map(arr2.map((item) => [item.ticket_id, item]));
 
@@ -288,4 +288,35 @@ export function findFirstDifference(arr1, arr2) {
     }
 
     return null; // Если различий нет
-}
+};
+
+export const getRelativeTimeString = (date, lang = "ru") => {
+    const rtf = new Intl.RelativeTimeFormat(lang, {
+        numeric: "auto",
+    });
+
+    // date in miliseconds
+    const timeMs = typeof date === "number" ? date : date.getTime();
+    // difference between current time and date in seconds
+    const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
+
+    const cutoffs = [
+        60,
+        3600,
+        86400,
+        86400 * 7,
+        86400 * 30,
+        86400 * 365,
+        Infinity,
+    ];
+
+    const unit = ["second", "minute", "hour", "day", "week", "month", "year"];
+
+    const unitIndex = cutoffs.findIndex(
+        (cutoff) => cutoff > Math.abs(deltaSeconds)
+    );
+
+    const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
+
+    return rtf.format(Math.floor(deltaSeconds / divisor), unit[unitIndex]);
+};
