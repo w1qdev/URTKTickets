@@ -54,6 +54,10 @@ ticket_priority_manager = TicketPriorityManager(SessionLocal)
 tickets_cleaner = TicketsCleaner(SessionLocal)
 ws_manager = WebSocketConnectionManager()
 
+# initializing default values
+# ticket_states_manager.initialize_default_states()
+# ticket_priority_manager.initialize_default_priorities()
+
 
 app = FastAPI()
 app.openapi = custom_openapi()
@@ -309,6 +313,15 @@ async def websocket_tickets(websocket: WebSocket, client_id: int):
             all_tickets = None
             teacher_tickets = None
             teacher_id = None
+
+            """ 
+                TODO: there you need to go to MySQL Database 
+                and get the data of user using messages['teacher_id']
+                if user exist in your database, then just send the tickets
+                data for him
+                else if user doesn't exist in your database, save this user
+                into your database
+            """
 
             if message['action'] == 'update': 
                 # Get tickets for the specific teacher

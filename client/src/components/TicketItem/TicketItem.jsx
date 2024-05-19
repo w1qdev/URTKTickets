@@ -98,7 +98,7 @@ const TicketItem = (props) => {
                 >
                     <div className="ticket-item__header grid">
                         <div className="header-ticket-id grid">
-                            №{ticket_id} |
+                            №{ticket_id} •
                         </div>
                         <RelativeTime className="timer" date={created_at} />
                     </div>
