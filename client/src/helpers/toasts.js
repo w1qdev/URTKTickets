@@ -1,7 +1,7 @@
 import { toast, Slide } from "react-toastify";
 
 const defaultConfig = {
-    position: "bottom-left",
+    position: "bottom-right",
     autoClose: 10 * 1000, // 10 sec
     hideProgressBar: false,
     closeOnClick: true,
