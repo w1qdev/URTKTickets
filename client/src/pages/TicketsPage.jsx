@@ -211,7 +211,7 @@ const TicketsPage = () => {
                                     </AnimatePresence>
                                 ) : null}
 
-                                <Notification className="notification__trigger" />
+                                {/* <Notification className="notification__trigger" /> */}
 
                                 <GridSwitcher
                                     isGridMode={isGridMode}
