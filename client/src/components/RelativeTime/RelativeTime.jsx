@@ -12,7 +12,7 @@ const RelativeTime = ({ className, date }) => {
 
     useEffect(() => {
         // Функция для обновления данных
-        const timeInterval = 4 * 60 * 1000; // 4 minutes to update the state
+        const timeInterval = 1 * 60 * 1000; // 1 minute to update the state
         const interval = setInterval(() => updateDate(), timeInterval);
 
         return () => clearInterval(interval);

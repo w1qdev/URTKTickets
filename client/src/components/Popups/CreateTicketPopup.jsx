@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { endpoints } from "../../api/index";
 import { reverseDate } from "../../helpers/utils";
 import QuestionIcon from "../Icons/QuestionIcon";
+import { toastSuccess } from "../../helpers/toasts";
 
 const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     const currentDate = getCurrentDate();
@@ -173,6 +174,9 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         ticket_id: res.data.ticket.ticket_id,
                     });
                     popupHandler();
+                    toastSuccess(
+                        "Ваша заявка успешно создана и будет рассмотрена в ближайшее время."
+                    );
                 }
             });
         } catch (error) {

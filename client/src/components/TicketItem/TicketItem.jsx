@@ -77,8 +77,6 @@ const TicketItem = (props) => {
 
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
 
-    console.log(isDeadlineComing, state_id);
-
     return (
         <>
             <AnimatePresence>
