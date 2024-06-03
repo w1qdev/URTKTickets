@@ -63,17 +63,21 @@ const TicketItem = (props) => {
         sendJsonMessage,
         created_at,
     } = props;
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const ticketStatus = getTicketStateNameById(state_id);
     const deadlineDate = dateFormatter(reverseDate(deadline_date));
     const submissionDate = dateFormatter(submission_date);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
     const isAdministrator =
         localStorage.getItem("role") === "administrator" ? true : false;
     const datesDifference = getDatesDifference(reverseDate(deadline_date));
 
+    const isDeadlineComing = datesDifference.days >= -2 && state_id != 3;
+
     const handlePopup = () => setIsPopupOpen((prev) => !prev);
+
+    console.log(isDeadlineComing, state_id);
 
     return (
         <>
@@ -131,7 +135,7 @@ const TicketItem = (props) => {
                             {isAdministrator ? (
                                 <Tooltip
                                     label={`${
-                                        datesDifference.days >= -2
+                                        isDeadlineComing
                                             ? "Поторопитесь! Вам нужно выполнить задачи этой заявки вовремя!"
                                             : ""
                                     }`}
@@ -140,9 +144,7 @@ const TicketItem = (props) => {
                                 >
                                     <span
                                         className={`deadline-date ${
-                                            datesDifference.days >= -2
-                                                ? "warn"
-                                                : "strong"
+                                            isDeadlineComing ? "warn" : "strong"
                                         }`}
                                     >
                                         {deadlineDate}
@@ -190,27 +192,33 @@ const TicketItem = (props) => {
                         <div className="date submission">
                             от {submissionDate}
                         </div>
-                        {deadline_date && (
+                        {isAdministrator ? (
                             <Tooltip
-                                label={`Выполнить задачи до ${deadlineDate} года`}
+                                label={`${
+                                    isDeadlineComing
+                                        ? "Поторопитесь! Вам нужно выполнить задачи этой заявки вовремя!"
+                                        : ""
+                                }`}
                                 hasArrow
                                 placement="top"
                             >
                                 <div className="date deadline">
-                                    {isAdministrator ? (
-                                        <span
-                                            className={`deadline-date ${
-                                                datesDifference.days >= -1
-                                                    ? "warn"
-                                                    : "strong"
-                                            }`}
-                                        >
-                                            до {deadlineDate}
-                                        </span>
-                                    ) : (
-                                        <b>до {deadlineDate}</b>
-                                    )}
+                                    <span
+                                        className={`deadline-date ${
+                                            isDeadlineComing ? "warn" : "strong"
+                                        }`}
+                                    >
+                                        до {deadlineDate}
+                                    </span>
                                 </div>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip
+                                label={`Выполнение задачи до: ${deadlineDate} года`}
+                                hasArrow
+                                placement="top"
+                            >
+                                <b>{deadlineDate}</b>
                             </Tooltip>
                         )}
                     </div>

@@ -61,6 +61,35 @@ const Notification = ({ className, iconFill = "#0000009e" }) => {
                         <div className="notification__item-ticket-id">№12</div>
                     </div>
                 </div>
+
+                <div className="notification__item">
+                    <div className="item__header">5 минут назад</div>
+
+                    <div className="item__body">
+                        <div className="item__info">
+                            <div className="item__info-title">
+                                Устранение технических неполадок
+                            </div>
+
+                            <div className="item__info-text customer">
+                                От: <b>Землянов Даниил</b>
+                            </div>
+
+                            <div className="item__info-text deadline_date">
+                                Выполнить до: <b>12 мая 2024 года</b>
+                            </div>
+                        </div>
+
+                        <div className="notification__item-status">
+                            <div className="text">Теперь в процессе</div>
+                            <div className="status awaiting-confirmation">
+                                Выполняется
+                            </div>
+                        </div>
+
+                        <div className="notification__item-ticket-id">№12</div>
+                    </div>
+                </div>
             </MenuList>
         </ChakraMenu>
     );

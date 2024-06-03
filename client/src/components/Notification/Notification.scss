@@ -40,12 +40,18 @@
 }
 
 .notification__content {
+    width: 100%;
     overflow-x: hidden;
+    box-shadow: 0px 0px 10px #36363641;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .notification__item {
     position: relative;
-    width: 98%;
+    width: 97%;
     height: auto;
     padding: 10px;
     display: flex;

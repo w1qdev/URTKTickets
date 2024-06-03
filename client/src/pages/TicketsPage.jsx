@@ -2,7 +2,6 @@ import "./TicketsPage.scss";
 import CreateTicketButton from "../components/Buttons/CreateTicketButton";
 import URTKLogo from "../assets/logo/urtkLogo.png";
 import PlusIcon from "../components/Icons/PlusIcon";
-// import BlueLine from '../assets/other/blue-line.png'
 import { AnimatePresence, motion } from "framer-motion";
 import TicketsContainer from "../components/TicketsContainer/TicketsContainer";
 import {
@@ -211,7 +210,7 @@ const TicketsPage = () => {
                                     </AnimatePresence>
                                 ) : null}
 
-                                {/* <Notification className="notification__trigger" /> */}
+                                <Notification className="notification__trigger" />
 
                                 <GridSwitcher
                                     isGridMode={isGridMode}
