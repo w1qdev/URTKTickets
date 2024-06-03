@@ -32,7 +32,7 @@ const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
                 ticketData={ticketData}
                 popupHandler={popupHandler}
                 title="Подтверждение выполненных задач"
-                popupStatus="В процессе выполнения"
+                popupStatus="Подтверждение"
             />
         ),
         Completed: (

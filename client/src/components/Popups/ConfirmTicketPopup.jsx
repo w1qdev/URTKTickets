@@ -93,7 +93,7 @@ const ConfirmTicketPopup = ({
             <div className="body__deadline body__section">
                 <div className="body__deadline__date">
                     <div className="title">
-                        <b>Выполнить задачу до</b>
+                        <b>Выполнить задачи до</b>
                     </div>
                     <div className="deadline__date">{deadlineDate} г.</div>
                 </div>

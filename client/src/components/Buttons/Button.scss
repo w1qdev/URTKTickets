@@ -1,5 +1,5 @@
 .button {
-    width: 178px !important;
+    width: auto !important;
     height: 36px !important;
     display: flex;
     justify-content: space-evenly;
@@ -9,6 +9,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
+    padding: 0px 15px;
     transition: opacity linear 0.2s, background-color linear 0.2s;
 
     &__text {

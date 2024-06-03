@@ -1,11 +1,4 @@
-import {
-    Box,
-    Button,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-} from "@chakra-ui/react";
+import { Button, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const TicketOptionMenu = ({ children }) => {
