@@ -124,31 +124,44 @@ const ConfirmTicketPopup = ({
                         text="Задачи заявки находятся в процессе выполнения системным администратором"
                     />
                 ) : (
-                    <Button onClick={handleConfirmTicket} bgColor="#99D16F">
-                        {isFetching ? (
-                            <>
-                                <div className="button__text">
-                                    Выполнение...
-                                </div>
-                                <Spinner size="sm" color="#fff" />
-                            </>
-                        ) : (
-                            <>
-                                <Tooltip
-                                    marginBottom="10px"
-                                    marginLeft="20px"
-                                    hasArrow
-                                    label="Вы подтверждаете, что все задачи были выполнены"
-                                    placement="top"
-                                >
-                                    <div className="button__text">
-                                        Задачи выполнены
-                                    </div>
-                                </Tooltip>
-                                <CheckmarkIcon fill="#fff" />
-                            </>
-                        )}
-                    </Button>
+                    <Tooltip
+                        hasArrow
+                        label={
+                            !isFetching &&
+                            "Вы подтверждаете, что все задачи были выполнены"
+                        }
+                        placement="top"
+                    >
+                        <div>
+                            <Button
+                                onClick={handleConfirmTicket}
+                                bgColor="#99D16F"
+                            >
+                                {isFetching ? (
+                                    <>
+                                        <div
+                                            className="button__text"
+                                            style={{ marginRight: "8px" }}
+                                        >
+                                            Выполнение...
+                                        </div>
+                                        <Spinner size="sm" color="#fff" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <div
+                                            className="button__text"
+                                            style={{ marginRight: "8px" }}
+                                        >
+                                            Задачи выполнены
+                                        </div>
+
+                                        <CheckmarkIcon fill="#fff" />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </Tooltip>
                 )}
             </div>
         </Popup>

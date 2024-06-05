@@ -9,6 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Spinner, Tooltip } from "@chakra-ui/react";
 import TrashIcon from "../Icons/TrashIcon";
+import { toastSuccess, toastError } from "../../helpers/toasts";
 
 const ViewTicketPopup = ({
     title,
@@ -32,6 +33,7 @@ const ViewTicketPopup = ({
     const date = dateFormatter(submission_date);
 
     const [isFetching, setIsFetching] = useState(false);
+    const [isTicketRemoving, setIsTicketRemoving] = useState(false);
 
     const handleFileOperations = async () => {
         setIsFetching((prev) => true);
@@ -54,12 +56,18 @@ const ViewTicketPopup = ({
             link.click();
             document.body.removeChild(link);
         } catch (error) {
+            toastError("Не удалось скачать файл 😟");
             console.error("Ошибка при выполнении операций с файлом:", error);
+        } finally {
+            setIsFetching((prev) => false);
         }
-        setIsFetching((prev) => false);
     };
 
     const handleRemoveTicket = async () => {
+        setIsTicketRemoving((prev) => true);
+
+        // if (!confirm("Вы действительно хотите удалить эту заявку?")) return;
+
         try {
             await axios
                 .delete(`${SERVER_ORIGIN_URI}${API_PATH}/tickets/${ticket_id}`)
@@ -73,12 +81,17 @@ const ViewTicketPopup = ({
                             teacher_id: teacher_id,
                         });
                         popupHandler();
+                        toastSuccess(
+                            `Вы успешно удалили заявку: №${ticket_id}: ${problem_title}.`
+                        );
                     } else {
                         console.error("Failed to delete ticket", res);
                     }
                 });
         } catch (err) {
             console.error("Some error with removing the tickets", err);
+        } finally {
+            setIsTicketRemoving((prev) => false);
         }
     };
 
@@ -129,11 +142,19 @@ const ViewTicketPopup = ({
                             onClick={handleRemoveTicket}
                             className="remove-ticket"
                         >
-                            <TrashIcon
-                                className="icon"
-                                width="22px"
-                                height="22px"
-                            />
+                            {isTicketRemoving ? (
+                                <>
+                                    <Spinner size="sm" color="#343434" />
+                                </>
+                            ) : (
+                                <>
+                                    <TrashIcon
+                                        className="icon"
+                                        width="22px"
+                                        height="22px"
+                                    />
+                                </>
+                            )}
                         </button>
                     </Tooltip>
 

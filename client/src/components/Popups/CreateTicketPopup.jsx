@@ -365,7 +365,12 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         bgColor={isButtonDisabled ? "#696969" : "#1F7EFF"}
                         isDisabled={isButtonDisabled}
                     >
-                        <div className="button__text">Создание...</div>
+                        <div
+                            className="button__text"
+                            style={{ marginRight: "8px" }}
+                        >
+                            Создание...
+                        </div>
                         <Spinner size="sm" color="#fff" />
                     </Button>
                 ) : (
@@ -390,7 +395,10 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                                 }
                                 isDisabled={isButtonDisabled}
                             >
-                                <div className="button__text">
+                                <div
+                                    className="button__text"
+                                    style={{ marginRight: "8px" }}
+                                >
                                     Создать заявку
                                 </div>
 

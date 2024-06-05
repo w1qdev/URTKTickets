@@ -117,31 +117,44 @@ const AcceptTicketPopup = ({
                 </div>
 
                 {isAdministrator ? (
-                    <Button onClick={handlerAcceptTicket} bgColor="#1F7EFF">
-                        {isFetching ? (
-                            <>
-                                <div className="button__text">
-                                    Выполнение...
-                                </div>
-                                <Spinner size="sm" color="#fff" />
-                            </>
-                        ) : (
-                            <>
-                                <Tooltip
-                                    marginBottom="10px"
-                                    marginLeft="20px"
-                                    hasArrow
-                                    label="Вы принимаете заявку и согласны с выполнением списка задач"
-                                    placement="top"
-                                >
-                                    <div className="button__text">
-                                        Принять заявку
-                                    </div>
-                                </Tooltip>
-                                <CheckmarkIcon fill="#fff" />
-                            </>
-                        )}
-                    </Button>
+                    <Tooltip
+                        hasArrow
+                        label={
+                            !isFetching &&
+                            "Вы принимаете заявку и согласны с выполнением списка задач"
+                        }
+                        placement="top"
+                    >
+                        <div>
+                            <Button
+                                onClick={handlerAcceptTicket}
+                                bgColor="#1F7EFF"
+                            >
+                                {isFetching ? (
+                                    <>
+                                        <div
+                                            className="button__text"
+                                            style={{ marginRight: "8px" }}
+                                        >
+                                            Выполнение...
+                                        </div>
+                                        <Spinner size="sm" color="#fff" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <div
+                                            className="button__text"
+                                            style={{ marginRight: "8px" }}
+                                        >
+                                            Принять заявку
+                                        </div>
+
+                                        <CheckmarkIcon fill="#fff" />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                    </Tooltip>
                 ) : (
                     <Blockquote
                         type="warning"

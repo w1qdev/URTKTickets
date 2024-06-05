@@ -261,7 +261,10 @@ const TicketsPage = () => {
                     ) : null}
                 </div>
             </div>
-            <ToastContainer />
+            <ToastContainer
+                className="toasts-container"
+                style={{ width: "450px" }}
+            />
         </>
     );
 };
