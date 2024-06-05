@@ -68,7 +68,7 @@ const TicketsPage = () => {
             if (differenceTicket && isAdministrator === false) {
                 if (differenceTicket.state_id === 2) {
                     toastInfo(
-                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} уже в процессе выполнения.`
+                        `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} рассмотрена и находится в процессе выполнения.`
                     );
                 } else if (differenceTicket.state_id === 3) {
                     toastSuccess(
@@ -88,7 +88,7 @@ const TicketsPage = () => {
                     );
                 } else if (differenceTicket.state_id === 2) {
                     toastInfo(
-                        `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач`
+                        `Вы успешно приняли заявку №${differenceTicket.ticket_id}: ${differenceTicket.problem_title}. Можете приступать к выполнению задач.`
                     );
                 } else if (differenceTicket.state_id === 3) {
                     toastSuccess(

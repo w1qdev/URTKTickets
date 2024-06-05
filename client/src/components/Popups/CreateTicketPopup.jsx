@@ -43,7 +43,7 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             ],
         },
         {
-            id: 1,
+            id: 2,
             menuOptionGroupTitle: "этаж 3",
             items: [
                 { id: 1, title: "31" },
@@ -54,7 +54,7 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             ],
         },
         {
-            id: 1,
+            id: 3,
             menuOptionGroupTitle: "этаж 2",
             items: [
                 { id: 1, title: "21" },
@@ -63,6 +63,11 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                 { id: 4, title: "24" },
                 { id: 5, title: "25" },
             ],
+        },
+        {
+            id: 4,
+            menuOptionGroupTitle: "Второй корпус, этаж 3",
+            items: [{ id: 1, title: "306" }],
         },
     ]);
     const [selectedLevelOfImportance, setSelectedLevelOfImportant] =

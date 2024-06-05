@@ -163,14 +163,12 @@ const TicketsContainer = ({
         fetchData();
     }, []);
 
-    useEffect(() => {}, [tickets.length]);
-
     useEffect(() => {
-        const newSortedTickets = tickets.slice(); // Создаем копию исходных данных
+        let sortedTickets = [...tickets]; // Создаем копию исходного массива
 
         // Применяем сортировку в зависимости от значения isIncreasing
         if (menuID.isIncreasing !== null) {
-            newSortedTickets.sort((a, b) => {
+            sortedTickets.sort((a, b) => {
                 // Если isIncreasing равен true, сортируем по возрастанию
                 if (menuID.isIncreasing) {
                     return a.ticket_id - b.ticket_id;
@@ -180,12 +178,12 @@ const TicketsContainer = ({
             });
         }
 
-        const newFilteredTickets = newSortedTickets.filter((ticket) => {
+        // Применяем фильтрацию к уже отсортированным данным
+        const filteredTickets = sortedTickets.filter((ticket) => {
             const currentTicketsStateId = getTicketIdByStateName(
                 menuStatus.currentTitle
             );
 
-            // Проверка на соответствие значений из меню и значения проблемы
             const isMenuDateMatch = menuDate.currentTitle
                 ? ticket.submission_date === menuDate.currentTitle
                 : true;
@@ -207,13 +205,11 @@ const TicketsContainer = ({
                       .toLowerCase()
                       .includes(problemValue.toLowerCase())
                 : true;
-
             const isPriorityMatch = menuPriority.currentTitle
                 ? getPriorityById(ticket.priority_id) ===
                   menuPriority.currentTitle
                 : true;
 
-            // Возвращаем результат фильтрации по всем критериям
             return (
                 isMenuDateMatch &&
                 isMenuLocationMatch &&
@@ -225,7 +221,7 @@ const TicketsContainer = ({
         });
 
         // Обновляем состояние отфильтрованных данных
-        setFilteredTickets(newFilteredTickets);
+        setFilteredTickets(filteredTickets);
     }, [
         menuID.currentTitle,
         menuID.isIncreasing,

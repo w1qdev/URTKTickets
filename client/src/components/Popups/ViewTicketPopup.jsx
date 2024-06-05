@@ -49,7 +49,7 @@ const ViewTicketPopup = ({
             const url = URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", `Отчет_№${ticket_id}.docx`); // Установите желаемое имя файла
+            link.setAttribute("download", `Отчет №${ticket_id}.docx`); // Установите желаемое имя файла
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -145,8 +145,12 @@ const ViewTicketPopup = ({
                             </>
                         ) : (
                             <>
-                                Скачать отчет
-                                <DownlaodIcon width="24px" height="24px" />
+                                Скачать отчет (.docx)
+                                <DownlaodIcon
+                                    className="download-icon"
+                                    width="24px"
+                                    height="24px"
+                                />
                             </>
                         )}
                     </DownloadReportButton>
