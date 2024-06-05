@@ -110,11 +110,9 @@ const TicketItem = (props) => {
                             {problem_title}
                         </div>
 
-                        {problem_description ? (
-                            <div className="problem__description grid">
-                                {problem_description}
-                            </div>
-                        ) : null}
+                        <div className="problem__description grid">
+                            {customer_name}
+                        </div>
                     </div>
 
                     <Bookmark
