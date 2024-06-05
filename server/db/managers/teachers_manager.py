@@ -9,8 +9,8 @@ class TeachersManager():
     def get_teacher_by_id(self, teacher_id: int) -> Teachers:
         return self.session.query(Teachers).filter(Teachers.teacher_id == teacher_id).first()
 
-    def get_teacher_by_ticket_id(self, ticket_id: int):
-        return self.session.query()
+    # def get_teacher_by_ticket_id(self, ticket_id: int):
+    #     return self.session.query()
 
     # checked - all good
     def get_all_teachers(self):

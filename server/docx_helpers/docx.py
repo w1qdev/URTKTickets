@@ -1,12 +1,8 @@
 import os
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_PARAGRAPH_ALIGNMENT
-from docx.enum.style import WD_STYLE_TYPE
-from docx.enum.section import WD_SECTION
 from helpers.utils import reverse_date
 from docx.shared import Cm, Pt
-
-
 
 
 def generate_report_file(data: dict) -> dict:

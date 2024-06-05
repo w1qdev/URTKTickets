@@ -1,6 +1,9 @@
-const TextDescriptionIcon = (props) => {
-    const { className, fill = "white", width = 15, height = 15 } = props;
-
+const TextDescriptionIcon = ({
+    className,
+    fill = "white",
+    width = 15,
+    height = 15,
+}) => {
     return (
         <svg
             className={className}
