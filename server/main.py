@@ -316,7 +316,7 @@ async def websocket_tickets(websocket: WebSocket, client_id: int):
 
             """ 
                 TODO: there you need to go to MySQL Database 
-                and get the data of user using messages['teacher_id']
+                and get the data of user using message['teacher_id']
                 if user exist in your database, then just send the tickets
                 data for him
                 else if user doesn't exist in your database, save this user
