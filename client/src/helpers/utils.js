@@ -336,6 +336,7 @@ export const getRelativeTimeString = (date, lang = "ru") => {
     );
 
     if (unitIndex < 2) {
+        // if date more than hour (day, week, month, etc.)
         const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
 
         return rtf.format(Math.floor(deltaSeconds / divisor), unit[unitIndex]);
