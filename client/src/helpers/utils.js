@@ -290,6 +290,25 @@ export const findFirstDifference = (arr1, arr2) => {
     return null; // Если различий нет
 };
 
+export const getMonthStringById = (monthId) => {
+    const months = [
+        "Января",
+        "Февраля",
+        "Марта",
+        "Апреля",
+        "Мая",
+        "Июня",
+        "Июля",
+        "Августа",
+        "Сентября",
+        "Октября",
+        "Ноября",
+        "Декабря",
+    ];
+
+    return months[monthId];
+};
+
 export const getRelativeTimeString = (date, lang = "ru") => {
     const rtf = new Intl.RelativeTimeFormat(lang, {
         numeric: "auto",
@@ -316,7 +335,15 @@ export const getRelativeTimeString = (date, lang = "ru") => {
         (cutoff) => cutoff > Math.abs(deltaSeconds)
     );
 
-    const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
+    if (unitIndex < 2) {
+        const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
 
-    return rtf.format(Math.floor(deltaSeconds / divisor), unit[unitIndex]);
+        return rtf.format(Math.floor(deltaSeconds / divisor), unit[unitIndex]);
+    }
+
+    const dateDay = date.getDate();
+    const dateMonthString = getMonthStringById(date.getMonth()).toLowerCase();
+    const dateYear = date.getFullYear();
+
+    return `${dateDay} ${dateMonthString} ${dateYear}`;
 };
