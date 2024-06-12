@@ -5,7 +5,6 @@ import json
 from time import sleep
 from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi_socketio import SocketManager
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
@@ -84,80 +83,123 @@ def ticket_cleaner_scheduler():
 # TEACHERS API
 @app.post("/api/teachers/")
 async def create_teacher(teacher_data: dict):
-    new_teacher = teachers_manager.add_teacher(teacher_data)
-    return new_teacher
+    try: 
+        new_teacher = teachers_manager.add_teacher(teacher_data)
+        return new_teacher
+    except Exception as ex:
+        print(ex)
+        return {"error": "Internal Server Error"}, 500
+
 
 @app.delete("/api/teachers/{teacher_id}")
 async def delete_teacher(teacher_id: int):
-    teacher = teachers_manager.get_teacher_by_id(teacher_id)
-    if not teacher:
-        return {"message": "Учитель не найден"}, 404
-    teachers_manager.delete_teacher(teacher_id)
-    return {"message": "Учитель успешно удалён"}
+    try:
+        teacher = teachers_manager.get_teacher_by_id(teacher_id)
+        
+        if not teacher:
+            return {"message": "Учитель не найден"}, 404
+        teachers_manager.delete_teacher(teacher_id)
+
+        return {"message": "Учитель успешно удалён"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
+
 
 @app.get("/api/teachers/")
 async def get_all_teachers():
-    return teachers_manager.get_all_teachers()
+    try: 
+        return teachers_manager.get_all_teachers()
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
+
 
 @app.get("/api/teachers/{teacher_id}")
 async def get_teacher_by_id(teacher_id: int):
-    teacher = teachers_manager.get_teacher_by_id(teacher_id)
+    try:
+        teacher = teachers_manager.get_teacher_by_id(teacher_id)
 
-    if not teacher:
-        return {"message": "Учитель не найден"}
-    return teacher
+        if not teacher:
+            return {"message": "Учитель не найден"}
+        return teacher
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 
 # TICKET STATES API
 @app.post("/api/ticket_states/")
 async def create_ticket_state(state_data: dict):
     # Создание состояний для тикетов
-
-    new_state = ticket_states_manager.add_ticket_state(state_data)
-    return new_state
+    try:
+        new_state = ticket_states_manager.add_ticket_state(state_data)
+        return new_state
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
+    
 
 @app.delete("/api/ticket_states/{state_id}")
 async def delete_ticket_state(state_id: int):
     # Удаление состояний для тикетов
-
-    state = ticket_states_manager.get_ticket_state_by_id(state_id)
-    if not state:
-        return {"message": "Состояние тикета не найдено"}
-    ticket_states_manager.delete_ticket_state(state_id)
-    return {"message": "Состояние для тикета удалено успешно"}
+    try:
+        state = ticket_states_manager.get_ticket_state_by_id(state_id)
+        if not state:
+            return {"message": "Состояние тикета не найдено"}
+        ticket_states_manager.delete_ticket_state(state_id)
+        return {"message": "Состояние для тикета удалено успешно"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.get("/api/ticket_states/")
 async def get_all_ticket_states():
     # Отправка свех состояний для тикетов
+    try: 
+        return ticket_states_manager.get_all_ticket_states()
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
-    return ticket_states_manager.get_all_ticket_states()
 
 @app.get("/api/ticket_states/{state_id}")
 async def get_ticket_state_by_id(state_id: int):
     # получение данных о состоянии тикета по id
+    try:
+        teacher = ticket_states_manager.get_ticket_state_by_id(state_id)
 
-    teacher = ticket_states_manager.get_ticket_state_by_id(state_id)
-
-    if not teacher:
-        return {"message": "Состояние тикета не найдено"}
-    return teacher
+        if not teacher:
+            return {"message": "Состояние тикета не найдено"}
+        return teacher
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # TICKETS API
 @app.post("/api/tickets/")
 async def create_ticket(ticket_data: dict):
-    new_ticket = tickets_manager.create_ticket(ticket_data)
-    return { 
-        'message': "Новый тикет успешно создан",
-        'status': 'OK',
-        'ticket': new_ticket
-    }
+    try:
+        new_ticket = tickets_manager.create_ticket(ticket_data)
+        return { 
+            'message': "Новый тикет успешно создан",
+            'status': 'OK',
+            'ticket': new_ticket
+        }
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.delete("/api/tickets/{ticket_id}")
 async def delete_ticket(ticket_id: int):
-    deleted = tickets_manager.remove_ticket(ticket_id)
-    if not deleted:
-        return {"message": "Тикет не найден"}
-    return {"message": "Тикет успешно удалён"}
+    try:
+        deleted = tickets_manager.remove_ticket(ticket_id)
+        if not deleted:
+            return {"message": "Тикет не найден"}
+        return {"message": "Тикет успешно удалён"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.get("/api/tickets/")
 async def get_tickets(
@@ -166,111 +208,153 @@ async def get_tickets(
         username: str = Query(...)
     ):
     
-    if role == "administrator":
-        tickets = tickets_manager.get_all_tickets()
-        tickets_with_tasks = []
+    try:
+        if role == "administrator":
+            tickets = tickets_manager.get_all_tickets()
+            tickets_with_tasks = []
 
-        for ticket in tickets:
-            ticket_data = ticket.__dict__
-            tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
-            ticket_data["tasks"] = [task.__dict__ for task in tasks]
-            tickets_with_tasks.append(ticket_data)
+            for ticket in tickets:
+                ticket_data = ticket.__dict__
+                tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                ticket_data["tasks"] = [task.__dict__ for task in tasks]
+                tickets_with_tasks.append(ticket_data)
 
-        return {"tickets": tickets_with_tasks}
-    
-    elif role == "teacher":
-        # Проверяем, существует ли преподаватель с указанным user_id
-        teacher = teachers_manager.get_teacher_by_id(teacher_id=user_id)
-        if not teacher:
-            teacher_data = { 'teacher_name': username, 'role': role }
-
-            teachers_manager.add_teacher(teacher_data=teacher_data)
-            return {"message": "Преподаватель с таким id не существует"}
+            return {"tickets": tickets_with_tasks}
         
-        # Получаем все тикеты, созданные указанным преподавателем
-        teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)
-        tickets_with_tasks = []
+        elif role == "teacher":
+            # Проверяем, существует ли преподаватель с указанным user_id
+            teacher = teachers_manager.get_teacher_by_id(teacher_id=user_id)
+            if not teacher:
+                teacher_data = { 'teacher_name': username, 'role': role }
 
-        for ticket in teacher_tickets:
-            ticket_data = ticket.__dict__
-            tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
-            ticket_data["tasks"] = [task.__dict__ for task in tasks]
-            tickets_with_tasks.append(ticket_data)
+                teachers_manager.add_teacher(teacher_data=teacher_data)
+                return {"message": "Преподаватель с таким id не существует"}
+            
+            # Получаем все тикеты, созданные указанным преподавателем
+            teacher_tickets = tickets_manager.get_tickets_by_teacher_id(user_id)
+            tickets_with_tasks = []
 
-        return {"tickets": tickets_with_tasks}
-    else:
-        return {"message": "Роль неверна"}
+            for ticket in teacher_tickets:
+                ticket_data = ticket.__dict__
+                tasks = tasks_manager.get_tasks_by_ticket_id(ticket.ticket_id)
+                ticket_data["tasks"] = [task.__dict__ for task in tasks]
+                tickets_with_tasks.append(ticket_data)
+
+            return {"tickets": tickets_with_tasks}
+        else:
+            return {"message": "Роль неверна"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
+
 
 @app.put("/api/tickets/{ticket_id}/change_status/")
 async def change_ticket_status(ticket_id: int, status_data: dict):
+    try:
+        if ('administratorUsername' in status_data):
+            tickets_manager.add_ticket_performer(ticket_id, status_data['administratorUsername'])
+        changed_ticket = tickets_manager.change_ticket_status(ticket_id, status_data['new_status_id'])
 
-    if ('administratorUsername' in status_data):
-        tickets_manager.add_ticket_performer(ticket_id, status_data['administratorUsername'])
-    changed_ticket = tickets_manager.change_ticket_status(ticket_id, status_data['new_status_id'])
-
-    if changed_ticket:
-        return {
-            "message": "Статус тикета успешно изменен",
-            "status": "OK"
-        }
-    else:
-        return {"message": "Ошибка при изменении статуса тикета"}
+        if changed_ticket:
+            return {
+                "message": "Статус тикета успешно изменен",
+                "status": "OK"
+            }
+        else:
+            return {"message": "Ошибка при изменении статуса тикета"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.delete("/api/tickets/")
 async def remove_all_tickets_and_tasks():
-    tickets_manager.remove_all_tickets_and_tasks()
-    return { "message": "All tickets and tasks removed" }
-
+    try:
+        tickets_manager.remove_all_tickets_and_tasks()
+        return { "message": "All tickets and tasks removed" }
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # TASKS API
 @app.post("/api/tasks/")
 async def create_task(task_data: dict):
-    task = tasks_manager.create_task(task_data)
-    return task
+    try:
+        task = tasks_manager.create_task(task_data)
+        return task
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # API эндпоинт для получения задач по ID тикета
 @app.get("/api/tasks/{ticket_id}")
 async def get_tasks_by_ticket_id(ticket_id: int):
-    tasks = tasks_manager.get_tasks_by_ticket_id(ticket_id)
-    return tasks
+    try:
+        tasks = tasks_manager.get_tasks_by_ticket_id(ticket_id)
+        return tasks
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # API эндпоинт для удаления задачи по ID
 @app.delete("/api/tasks/{task_id}")
 async def delete_task(task_id: int):
-    result = tasks_manager.delete_task(task_id)
-    return {"success": result}
+    try:
+        result = tasks_manager.delete_task(task_id)
+        return {"success": result}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # API эндпоинт для удаления всех задач
 @app.delete("/api/tasks/")
 async def delete_all_task():
-    tasks_manager.delete_all_tasks()
-    return {"message": "Все задачи удалены"}
+    try:
+        tasks_manager.delete_all_tasks()
+        return {"message": "Все задачи удалены"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.get("/api/tasks/")
 async def get_all_tasks():
-    all_tasks = tasks_manager.get_all_tasks()
-    return all_tasks
-
+    try:
+        all_tasks = tasks_manager.get_all_tasks()
+        return all_tasks
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # Ticket Priorities API
 # TODO: Проверить работу API
 @app.get("/api/ticket_prorities/")
 async def get_all_ticket_priorities():
-    all_ticket_priorities = ticket_priority_manager.get_all_ticket_priorities()
-    return all_ticket_priorities
+    try:
+        all_ticket_priorities = ticket_priority_manager.get_all_ticket_priorities()
+        return all_ticket_priorities
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.post("/api/ticket_prorities/")
 async def create_ticket_priority(ticket_priority_data: dict):
-    new_ticket_priority = ticket_priority_manager.create_ticket_priority(ticket_priority_data)
-    return new_ticket_priority
+    try:
+        new_ticket_priority = ticket_priority_manager.create_ticket_priority(ticket_priority_data)
+        return new_ticket_priority
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 @app.delete("/api/ticket_prorities/{ticket_priority_id}")
 async def remove_ticket_priority_by_id(ticket_priority_id: int):
-    deleted_ticket_priority = ticket_priority_manager.remove_ticket_priority_by_id(ticket_priority_id)
-    if deleted_ticket_priority:
-        return {"message": "Ticket priority deleted successfully"}
-    else:
-        return {"message": "Ticket priority not found"}
+    try:
+        deleted_ticket_priority = ticket_priority_manager.remove_ticket_priority_by_id(ticket_priority_id)
+        if deleted_ticket_priority:
+            return {"message": "Ticket priority deleted successfully"}
+        else:
+            return {"message": "Ticket priority not found"}
+    except Exception as ex:
+        print(ex)
+        return {"error": "Server Internal Error"}, 500
 
 # Generate and download report
 @app.post("/generate-report/")
@@ -287,7 +371,7 @@ async def generate_report(data: dict):
         # Возвращаем имя файла
         return {"filename": report_filename}
     except Exception as e:
-        return {"message": "Something gone wrong | Internal Error"}
+        return {"error": "Internal Server Error"}, 500
 
 @app.get("/download-report/{filename}")
 async def download_report(filename: str):
@@ -295,12 +379,12 @@ async def download_report(filename: str):
         report_path = os.path.join(os.path.dirname(__file__), "reports", filename)
         
         if not os.path.exists(report_path):
-            return {"message": "File not found"}
+            return {"message": "File not found"}, 404 
         
         # Возвращаем файл как ответ
         return FileResponse(path=report_path, filename=filename)
     except Exception as e:
-        return {"message": "Something gone wrong | Internal Error"}
+        return {"error": "Internal Server Error"}, 500
 
 # WebSockets
 @app.websocket("/ws/tickets/{client_id}")
