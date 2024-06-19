@@ -33,22 +33,18 @@ const Popup = ({
                     <div className="header__title">
                         <div className="header__title-text">{title}</div>
 
-                        {popupStatus ? (
-                            <>
-                                <div
-                                    className="header__title-popup-status"
-                                    style={{
-                                        backgroundColor: `${currentPopupStatusTextColor}`,
-                                    }}
-                                >
-                                    {popupStatus}
-                                </div>
-                                <Bookmark
-                                    className="header__title-popup-bookmark"
-                                    priority={ticketPriority}
-                                />
-                            </>
-                        ) : null}
+                        <div
+                            className="header__title-popup-status"
+                            style={{
+                                backgroundColor: `${currentPopupStatusTextColor}`,
+                            }}
+                        >
+                            {popupStatus}
+                        </div>
+                        <Bookmark
+                            className="header__title-popup-bookmark"
+                            priority={ticketPriority}
+                        />
                     </div>
                     <div className="header__close" onClick={popupHandler}>
                         <CloseIcon className="close-icon" />

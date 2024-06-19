@@ -7,6 +7,47 @@ export const ticketItemsStatus = {
     completed: "Completed",
 };
 
+export const menuRoomsData = [
+    {
+        id: 1,
+        menuOptionGroupTitle: "этаж 4",
+        items: [
+            { id: 1, title: "41" },
+            { id: 2, title: "42" },
+            { id: 3, title: "43" },
+            { id: 4, title: "44" },
+            { id: 5, title: "45" },
+        ],
+    },
+    {
+        id: 2,
+        menuOptionGroupTitle: "этаж 3",
+        items: [
+            { id: 1, title: "31" },
+            { id: 2, title: "32" },
+            { id: 3, title: "33" },
+            { id: 4, title: "34" },
+            { id: 5, title: "35" },
+        ],
+    },
+    {
+        id: 3,
+        menuOptionGroupTitle: "этаж 2",
+        items: [
+            { id: 1, title: "21" },
+            { id: 2, title: "22" },
+            { id: 3, title: "23" },
+            { id: 4, title: "24" },
+            { id: 5, title: "25" },
+        ],
+    },
+    {
+        id: 4,
+        menuOptionGroupTitle: "Второй корпус, этаж 3",
+        items: [{ id: 1, title: "306" }],
+    },
+];
+
 export const getCurrentDate = () => {
     let date = new Date().toJSON().slice(0, 10);
     let currentDateValues = date.split("-");

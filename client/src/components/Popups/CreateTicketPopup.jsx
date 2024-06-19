@@ -14,6 +14,7 @@ import { endpoints } from "../../api/index";
 import { reverseDate } from "../../helpers/utils";
 import QuestionIcon from "../Icons/QuestionIcon";
 import { toastSuccess } from "../../helpers/toasts";
+import { menuRoomsData } from "../../helpers/utils";
 
 const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     const currentDate = getCurrentDate();
@@ -30,46 +31,7 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
         pc_name: "",
         task_description: "",
     });
-    const [menuRoomsList, setMenuRoomsList] = useState([
-        {
-            id: 1,
-            menuOptionGroupTitle: "этаж 4",
-            items: [
-                { id: 1, title: "41" },
-                { id: 2, title: "42" },
-                { id: 3, title: "43" },
-                { id: 4, title: "44" },
-                { id: 5, title: "45" },
-            ],
-        },
-        {
-            id: 2,
-            menuOptionGroupTitle: "этаж 3",
-            items: [
-                { id: 1, title: "31" },
-                { id: 2, title: "32" },
-                { id: 3, title: "33" },
-                { id: 4, title: "34" },
-                { id: 5, title: "35" },
-            ],
-        },
-        {
-            id: 3,
-            menuOptionGroupTitle: "этаж 2",
-            items: [
-                { id: 1, title: "21" },
-                { id: 2, title: "22" },
-                { id: 3, title: "23" },
-                { id: 4, title: "24" },
-                { id: 5, title: "25" },
-            ],
-        },
-        {
-            id: 4,
-            menuOptionGroupTitle: "Второй корпус, этаж 3",
-            items: [{ id: 1, title: "306" }],
-        },
-    ]);
+    const [menuRoomsList, setMenuRoomsList] = useState([...menuRoomsData]);
     const [selectedLevelOfImportance, setSelectedLevelOfImportant] =
         useState(1);
     const [selectedDeadlineDate, setSelectedDeadlineDate] = useState({
@@ -284,7 +246,6 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             <div className="body__deadline body__section">
                 <div className="body__deadline__date">
                     <div className="title">Выполнить задачу до</div>
-                    {/* <DatePicker className="date-picker" /> */}
                     <input
                         min={reverseDate(currentDate)}
                         type="date"
@@ -292,9 +253,6 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         onChange={handleDeadlineDateChange}
                         value={selectedDeadlineDate.date}
                     />
-                    {/* <div className="difference">
-                        {selectedDeadlineDate.difference}
-                    </div> */}
                 </div>
             </div>
 
