@@ -1,4 +1,5 @@
 import "./TicketsPage.scss";
+import { useDispatch } from "react-redux";
 import CreateTicketButton from "../components/Buttons/CreateTicketButton";
 import URTKLogo from "../assets/logo/urtkLogo.png";
 import PlusIcon from "../components/Icons/PlusIcon";
@@ -21,9 +22,14 @@ import { SERVER_ORIGIN_URI, API_PATH, SERVER_ORIGIN_DOMAIN } from "../api";
 import { toastInfo, toastSuccess } from "../helpers/toasts.js";
 import { ToastContainer } from "react-toastify";
 import useWebSocketConnectionManager from "../hooks/useWebSocketConnectionManager";
-// import Notification from "../components/Notification/Notification";
+import { setMenuCustomers } from "../service/store/slices/MenuCustomerSlice.js";
+import { setMenuDates } from "../service/store/slices/MenuDateSlice.js";
+import { setMenuLocations } from "../service/store/slices/MenuLocationSlice.js";
+import { setMenuPriorities } from "../service/store/slices/MenuPrioritySlice.js";
+import { setMenuStatuses } from "../service/store/slices/MenuStatusSlice.js";
 
 const TicketsPage = () => {
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState({
         username: localStorage.getItem("username"),
         user_id: localStorage.getItem("user_id"),
@@ -58,14 +64,13 @@ const TicketsPage = () => {
         onMessage: (messages) => {
             const newTicketsData = JSON.parse(messages.data);
 
-            console.log(newTicketsData);
-
             const differenceTicket = findFirstDifference(
                 newTicketsData.tickets,
                 tickets
             ).oldItem;
 
             if (differenceTicket && isAdministrator === false) {
+                // if user is teacher
                 if (differenceTicket.state_id === 2) {
                     toastInfo(
                         `Ваша заявка №${differenceTicket.ticket_id}: ${differenceTicket.problem_title} рассмотрена и находится в процессе выполнения.`
@@ -76,6 +81,7 @@ const TicketsPage = () => {
                     );
                 }
             } else if (differenceTicket && isAdministrator === true) {
+                // if user is administrator
                 if (differenceTicket.state_id === 1) {
                     toastInfo(
                         `Вам пришла новая заявка от ${
@@ -98,6 +104,15 @@ const TicketsPage = () => {
             }
 
             setTickets((prev) => [...newTicketsData.tickets]);
+
+            // Updating all menu items
+            dispatch(setMenuCustomers({ ticketsData: newTicketsData.tickets }));
+            dispatch(
+                setMenuPriorities({ ticketsData: newTicketsData.tickets })
+            );
+            dispatch(setMenuDates({ ticketsData: newTicketsData.tickets }));
+            dispatch(setMenuStatuses({ ticketsData: newTicketsData.tickets }));
+            dispatch(setMenuLocations({ ticketsData: newTicketsData.tickets }));
         },
         onError: (event) => console.error("WebSocket error observed:", event),
         shouldReconnect: (closeEvent) => true,
