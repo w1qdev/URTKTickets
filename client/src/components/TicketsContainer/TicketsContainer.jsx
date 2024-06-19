@@ -46,6 +46,7 @@ const TicketsContainer = ({
     sendJsonMessage,
     tickets,
     handleTickets,
+    isGridMode,
 }) => {
     const dispatch = useDispatch();
 
@@ -59,9 +60,6 @@ const TicketsContainer = ({
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: false });
     const [isFetching, setIsFetching] = useState(false);
-    const isGridMode =
-        localStorage.getItem("isTicketContainerGridMode") || false;
-
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
     const handleClearFilters = () => {

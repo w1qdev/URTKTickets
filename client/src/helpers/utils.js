@@ -250,7 +250,7 @@ export const getTicketContainerStatusMode = () => {
     let status = localStorage.getItem("isTicketContainerGridMode");
 
     if (status === null) {
-        status = localStorage.setItem("isTicketContainerGridMode", "false");
+        status = localStorage.setItem("isTicketContainerGridMode", "true");
     }
 
     return status;
