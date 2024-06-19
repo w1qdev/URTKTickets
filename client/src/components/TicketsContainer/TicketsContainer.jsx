@@ -26,6 +26,12 @@ import {
     setMenuLocations,
     getMenuLocations,
 } from "../../service/store/slices/MenuLocationSlice.js";
+import {
+    clearMenuStatuses,
+    setMenuStatusCurrentTitle,
+    setMenuStatuses,
+    getMenuStatuses,
+} from "../../service/store/slices/MenuStatusSlice.js";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -40,14 +46,11 @@ const TicketsContainer = ({
     const dispatch = useDispatch();
     const menuDate = useSelector(getMenuDates);
     const menuLocation = useSelector(getMenuLocations);
+    const menuStatus = useSelector(getMenuStatuses);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: false });
     const [isFetching, setIsFetching] = useState(false);
-    const [menuStatus, setMenuStatus] = useState({
-        currentTitle: "",
-        data: [],
-    });
     const [menuCustomer, setMenuCustomer] = useState({
         currentTitle: "",
         data: [],
@@ -63,7 +66,7 @@ const TicketsContainer = ({
     const handleClearFilters = () => {
         dispatch(clearMenuDates());
         dispatch(clearMenuLocations());
-        setMenuStatus((prev) => ({ ...prev, data: [] }));
+        dispatch(clearMenuStatuses());
         setMenuCustomer((prev) => ({ ...prev, data: [] }));
         setMenuPriority((prev) => ({ ...prev, data: [] }));
     };
@@ -80,11 +83,11 @@ const TicketsContainer = ({
         );
     };
 
-    const handleClickMenuStatus = (e) =>
-        setMenuStatus((prev) => ({
-            ...prev,
-            currentTitle: e.target.textContent,
-        }));
+    const handleClickMenuStatus = (e) => {
+        dispatch(
+            setMenuStatusCurrentTitle({ currentTitle: e.target.textContent })
+        );
+    };
     const handleClickMenuCustomer = (e) =>
         setMenuCustomer((prev) => ({
             ...prev,
@@ -97,6 +100,7 @@ const TicketsContainer = ({
         }));
     const handleClickMenuID = () =>
         setMenuID((prev) => ({ ...prev, isIncreasing: !prev.isIncreasing }));
+
     const handleChangeMenuInputValue = (e) => {
         setProblemValue((prev) => e.target.value);
     };
@@ -135,13 +139,12 @@ const TicketsContainer = ({
                                     ticketsData: res.data.tickets,
                                 })
                             );
-                            setMenuStatus((prev) => ({
-                                ...prev,
-                                data: getMenuItemsByValue(
-                                    res.data.tickets,
-                                    "state_id"
-                                ),
-                            }));
+
+                            dispatch(
+                                setMenuStatuses({
+                                    ticketsData: res.data.tickets,
+                                })
+                            );
                             setMenuCustomer((prev) => ({
                                 ...prev,
                                 data: getMenuItemsByValue(
@@ -284,7 +287,7 @@ const TicketsContainer = ({
         if (isFilterClear) {
             dispatch(setMenuDateCurrentTitle({ currentTitle: "" }));
             dispatch(setMenuLocationCurrentTitle({ currentTitle: "" }));
-            setMenuStatus((prev) => ({ ...prev, currentTitle: "" }));
+            dispatch(setMenuStatusCurrentTitle({ currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
             setMenuPriority((prev) => ({ ...prev, currentTitle: "" }));
