@@ -4,45 +4,38 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import "./TicketsContainer.scss";
 import TicketsList from "../TicketsList/TicketsList.jsx";
-import Menu from "../Menu/Menu.jsx";
-import MenuFilterButton from "../Menu/MenuFilterButton.jsx";
 import { endpoints } from "../../api/index.js";
 import {
     getMenuItemsByValue,
-    mapTicketsDataAndChangeState,
     getTicketIdByStateName,
     getPriorityById,
 } from "../../helpers/utils.js";
 import {
     clearMenuDates,
-    setMenuDateCurrentTitle,
     setMenuDates,
     getMenuDates,
 } from "../../service/store/slices/MenuDateSlice.js";
 import {
     clearMenuLocations,
-    setMenuLocationCurrentTitle,
     setMenuLocations,
     getMenuLocations,
 } from "../../service/store/slices/MenuLocationSlice.js";
 import {
     clearMenuStatuses,
-    setMenuStatusCurrentTitle,
     setMenuStatuses,
     getMenuStatuses,
 } from "../../service/store/slices/MenuStatusSlice.js";
 import {
     clearMenuCustomers,
-    setMenuCustomerCurrentTitle,
     setMenuCustomers,
     getMenuCustomers,
 } from "../../service/store/slices/MenuCustomerSlice.js";
 import {
     clearMenuPriorities,
-    setMenuPriorityCurrentTitle,
-    getMenuPriorities,
     setMenuPriorities,
+    getMenuPriorities,
 } from "../../service/store/slices/MenuPrioritySlice.js";
+import TicketsContainerMenu from "./TicketsContainerMenu.jsx";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -55,18 +48,21 @@ const TicketsContainer = ({
     handleTickets,
 }) => {
     const dispatch = useDispatch();
+
     const menuDate = useSelector(getMenuDates);
     const menuLocation = useSelector(getMenuLocations);
     const menuStatus = useSelector(getMenuStatuses);
     const menuCustomer = useSelector(getMenuCustomers);
     const menuPriority = useSelector(getMenuPriorities);
+
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: false });
     const [isFetching, setIsFetching] = useState(false);
     const isGridMode =
         localStorage.getItem("isTicketContainerGridMode") || false;
-    const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
+
+    const [activeFiltersCount, setActiveFiltersCount] = useState(0);
 
     const handleClearFilters = () => {
         dispatch(clearMenuDates());
@@ -75,45 +71,6 @@ const TicketsContainer = ({
         dispatch(clearMenuCustomers());
         dispatch(clearMenuPriorities());
     };
-
-    const handleClickMenuDate = (e) => {
-        dispatch(
-            setMenuDateCurrentTitle({ currentTitle: e.target.textContent })
-        );
-    };
-
-    const handleClickMenuLocation = (e) => {
-        dispatch(
-            setMenuLocationCurrentTitle({ currentTitle: e.target.textContent })
-        );
-    };
-
-    const handleClickMenuStatus = (e) => {
-        dispatch(
-            setMenuStatusCurrentTitle({ currentTitle: e.target.textContent })
-        );
-    };
-    const handleClickMenuCustomer = (e) => {
-        dispatch(
-            setMenuCustomerCurrentTitle({ currentTitle: e.target.textContent })
-        );
-    };
-
-    const handleClickMenuPriority = (e) => {
-        dispatch(
-            setMenuPriorityCurrentTitle({ currentTitle: e.target.textContent })
-        );
-    };
-
-    const handleClickMenuID = () =>
-        setMenuID((prev) => ({ ...prev, isIncreasing: !prev.isIncreasing }));
-
-    const handleChangeMenuInputValue = (e) => {
-        setProblemValue((prev) => e.target.value);
-    };
-
-    const [activeFiltersCount, setActiveFiltersCount] = useState(0);
-    const handleFilters = (value) => handleUsingFilters(value);
 
     useEffect(() => {
         handleClearFilters();
@@ -278,95 +235,22 @@ const TicketsContainer = ({
         problemValue,
     ]);
 
-    useEffect(() => {
-        // Проверяем, есть ли хотя бы один активный фильтр
-        if (activeFiltersCount > 0) {
-            handleFilters(true);
-        } else {
-            handleFilters(false);
-        }
-    }, [activeFiltersCount]);
-
-    useEffect(() => {
-        if (isFilterClear) {
-            dispatch(setMenuDateCurrentTitle({ currentTitle: "" }));
-            dispatch(setMenuLocationCurrentTitle({ currentTitle: "" }));
-            dispatch(setMenuStatusCurrentTitle({ currentTitle: "" }));
-            dispatch(setMenuCustomerCurrentTitle({ currentTitle: "" }));
-            dispatch(setMenuPriorityCurrentTitle({ currentTitle: "" }));
-            setProblemValue("");
-            handleFilters(false);
-            setIsFilterClear(false);
-        }
-    }, [isFilterClear]);
-
     const sortedTickets = useMemo(() => {
         return filteredTickets.slice().sort((a, b) => a.state_id - b.state_id);
     }, [filteredTickets]);
 
     return (
         <div className="tickets-container">
-            <div className="tickets-container__header">
-                <div className="tickets-container__header-item number">
-                    <MenuFilterButton
-                        title="Номер"
-                        isIncreasing={menuID.isIncreasing}
-                        handleClick={handleClickMenuID}
-                    />
-                </div>
-                <div className="tickets-container__header-item problem">
-                    <input
-                        className="problem__search"
-                        type="text"
-                        placeholder="Название проблемы..."
-                        value={problemValue}
-                        onChange={handleChangeMenuInputValue}
-                    />
-                </div>
-
-                <div className="tickets-container__header-item priority">
-                    <Menu
-                        menuItems={menuPriority.data}
-                        menuSelectedItem={menuPriority.currentTitle}
-                        defaultMenuTitle="Приоритет"
-                        handleClick={handleClickMenuPriority}
-                    />
-                </div>
-
-                <div className="tickets-container__header-item location">
-                    <Menu
-                        menuItems={menuLocation.data}
-                        menuSelectedItem={menuLocation.currentTitle}
-                        defaultMenuTitle="Местоположение"
-                        handleClick={handleClickMenuLocation}
-                        prefix="Аудитория №"
-                    />
-                </div>
-                <div className="tickets-container__header-item user">
-                    <Menu
-                        menuItems={menuCustomer.data}
-                        menuSelectedItem={menuCustomer.currentTitle}
-                        defaultMenuTitle="Заказчик"
-                        handleClick={handleClickMenuCustomer}
-                    />
-                </div>
-                <div className="tickets-container__header-item date">
-                    <Menu
-                        menuItems={menuDate.data}
-                        menuSelectedItem={menuDate.currentTitle}
-                        defaultMenuTitle="Дата"
-                        handleClick={handleClickMenuDate}
-                    />
-                </div>
-                <div className="tickets-container__header-item status">
-                    <Menu
-                        menuItems={mappedMenuStatus}
-                        menuSelectedItem={menuStatus.currentTitle}
-                        defaultMenuTitle="Статус"
-                        handleClick={handleClickMenuStatus}
-                    />
-                </div>
-            </div>
+            <TicketsContainerMenu
+                isFilterClear={isFilterClear}
+                activeFiltersCount={activeFiltersCount}
+                handleUsingFilters={handleUsingFilters}
+                setIsFilterClear={setIsFilterClear}
+                menuID={menuID}
+                problemValue={problemValue}
+                setProblemValue={setProblemValue}
+                setMenuID={setMenuID}
+            />
 
             <motion.div
                 className={`tickets-container__problems-list ${

@@ -92,10 +92,10 @@ const TicketsList = ({
         //     />
         // );
     } else if (isUsingFilters && ticketsData.length === 0) {
-        // if we using filters and got 0 results after filtering
+        // if user using filters and got 0 results after filtering
         ticketsListContent = (
             <NoTicketItems isGridMode={isGridMode}>
-                Ой... по вашему запросу ничего не найдено
+                По вашему запросу ничего не найдено
             </NoTicketItems>
         );
     } else if (isUsingFilters === false || ticketsData.length === 0) {
