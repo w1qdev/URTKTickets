@@ -77,7 +77,9 @@ def ticket_cleaner_scheduler():
     cleaner = TicketsCleaner(SessionLocal)
     while True:
         cleaner.clean_old_tickets()
-        sleep(2 * 60 * 60)  # Спим 2 часа
+        
+        clean_delay = 2 * 60 * 60 # 2 hours
+        sleep(clean_delay) 
 
 
 # TEACHERS API
