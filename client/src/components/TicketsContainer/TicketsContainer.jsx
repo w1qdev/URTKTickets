@@ -16,10 +16,16 @@ import {
 } from "../../helpers/utils.js";
 import {
     clearMenuDates,
-    setCurrentTitle,
+    setMenuDateCurrentTitle,
     setMenuDates,
     getMenuDates,
 } from "../../service/store/slices/MenuDateSlice.js";
+import {
+    clearMenuLocations,
+    setMenuLocationCurrentTitle,
+    setMenuLocations,
+    getMenuLocations,
+} from "../../service/store/slices/MenuLocationSlice.js";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -33,15 +39,11 @@ const TicketsContainer = ({
 }) => {
     const dispatch = useDispatch();
     const menuDate = useSelector(getMenuDates);
+    const menuLocation = useSelector(getMenuLocations);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: false });
     const [isFetching, setIsFetching] = useState(false);
-    // const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
-    const [menuLocation, setMenuLocation] = useState({
-        currentTitle: "",
-        data: [],
-    });
     const [menuStatus, setMenuStatus] = useState({
         currentTitle: "",
         data: [],
@@ -60,28 +62,24 @@ const TicketsContainer = ({
 
     const handleClearFilters = () => {
         dispatch(clearMenuDates());
-        // setMenuDate((prev) => ({ ...prev, data: [] }));
-        setMenuLocation((prev) => ({ ...prev, data: [] }));
+        dispatch(clearMenuLocations());
         setMenuStatus((prev) => ({ ...prev, data: [] }));
         setMenuCustomer((prev) => ({ ...prev, data: [] }));
         setMenuPriority((prev) => ({ ...prev, data: [] }));
     };
 
-    // const handleClickMenuDate = (e) =>
-    //     setMenuDate((prev) => ({
-    //         ...prev,
-    //         currentTitle: e.target.textContent,
-    //     }));
-
     const handleClickMenuDate = (e) => {
-        dispatch(setCurrentTitle({ currentTitle: e.target.textContent }));
+        dispatch(
+            setMenuDateCurrentTitle({ currentTitle: e.target.textContent })
+        );
     };
 
-    const handleClickMenuLocation = (e) =>
-        setMenuLocation((prev) => ({
-            ...prev,
-            currentTitle: e.target.textContent,
-        }));
+    const handleClickMenuLocation = (e) => {
+        dispatch(
+            setMenuLocationCurrentTitle({ currentTitle: e.target.textContent })
+        );
+    };
+
     const handleClickMenuStatus = (e) =>
         setMenuStatus((prev) => ({
             ...prev,
@@ -99,6 +97,10 @@ const TicketsContainer = ({
         }));
     const handleClickMenuID = () =>
         setMenuID((prev) => ({ ...prev, isIncreasing: !prev.isIncreasing }));
+    const handleChangeMenuInputValue = (e) => {
+        setProblemValue((prev) => e.target.value);
+    };
+
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
     const handleFilters = (value) => handleUsingFilters(value);
 
@@ -124,24 +126,15 @@ const TicketsContainer = ({
                                     "ticket_id"
                                 ),
                             }));
-                            // setMenuDate((prev) => ({
-                            //     ...prev,
-                            //     data: getMenuItemsByValue(
-                            //         res.data.tickets,
-                            //         "submission_date"
-                            //     ),
-                            // }));
                             dispatch(
                                 setMenuDates({ ticketsData: res.data.tickets })
                             );
 
-                            setMenuLocation((prev) => ({
-                                ...prev,
-                                data: getMenuItemsByValue(
-                                    res.data.tickets,
-                                    "room_number"
-                                ),
-                            }));
+                            dispatch(
+                                setMenuLocations({
+                                    ticketsData: res.data.tickets,
+                                })
+                            );
                             setMenuStatus((prev) => ({
                                 ...prev,
                                 data: getMenuItemsByValue(
@@ -289,10 +282,8 @@ const TicketsContainer = ({
 
     useEffect(() => {
         if (isFilterClear) {
-            // setMenuDate((prev) => ({ ...prev, currentTitle: "" }));
-            dispatch(setCurrentTitle({ currentTitle: "" }));
-
-            setMenuLocation((prev) => ({ ...prev, currentTitle: "" }));
+            dispatch(setMenuDateCurrentTitle({ currentTitle: "" }));
+            dispatch(setMenuLocationCurrentTitle({ currentTitle: "" }));
             setMenuStatus((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
@@ -323,9 +314,7 @@ const TicketsContainer = ({
                         type="text"
                         placeholder="Название проблемы..."
                         value={problemValue}
-                        onChange={(e) =>
-                            setProblemValue((prev) => e.target.value)
-                        }
+                        onChange={handleChangeMenuInputValue}
                     />
                 </div>
 

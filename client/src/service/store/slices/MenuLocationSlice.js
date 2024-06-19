@@ -6,32 +6,35 @@ const initialState = {
     data: [],
 };
 
-export const menuDateSlice = createSlice({
-    name: "menuDate",
+export const menuLocationSlice = createSlice({
+    name: "menuLocation",
     initialState,
     reducers: {
-        clearMenuDates: (state) => {
+        clearMenuLocations: (state) => {
             state.currentTitle = "";
             state.data = [];
         },
 
-        setMenuDateCurrentTitle: (state, action) => {
+        setMenuLocationCurrentTitle: (state, action) => {
             state.currentTitle = action.payload.currentTitle;
         },
 
-        setMenuDates: (state, action) => {
+        setMenuLocations: (state, action) => {
             state.data = getMenuItemsByValue(
                 action.payload.ticketsData,
-                "submission_date"
+                "room_number"
             );
         },
     },
 });
 
-export const getMenuDates = (state) => state.menuDate;
+export const getMenuLocations = (state) => state.menuLocation;
 
 // Action creators are generated for each case reducer function
-export const { clearMenuDates, setMenuDateCurrentTitle, setMenuDates } =
-    menuDateSlice.actions;
+export const {
+    clearMenuLocations,
+    setMenuLocationCurrentTitle,
+    setMenuLocations,
+} = menuLocationSlice.actions;
 
-export default menuDateSlice.reducer;
+export default menuLocationSlice.reducer;
