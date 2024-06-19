@@ -136,6 +136,7 @@ const TaskAndDescriptionController = (props) => {
                     <textarea
                         value={props.ticketDescription}
                         onChange={props.handleTicketDescription}
+                        autoFocus
                         placeholder="Ваш комментарий..."
                         className="ticket-description"
                     />

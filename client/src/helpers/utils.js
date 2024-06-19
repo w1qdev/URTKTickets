@@ -1,6 +1,12 @@
 import axios from "axios";
 import { SERVER_ORIGIN_URI, API_PATH } from "../api";
 
+export const ticketItemsStatus = {
+    underReview: "Under review",
+    inProgress: "In progress",
+    completed: "Completed",
+};
+
 export const getCurrentDate = () => {
     let date = new Date().toJSON().slice(0, 10);
     let currentDateValues = date.split("-");
@@ -18,11 +24,11 @@ export const getCurrentDate = () => {
 export const getTicketStateNameById = (ticket_id) => {
     switch (ticket_id) {
         case 1:
-            return "Under review";
+            return ticketItemsStatus.underReview;
         case 2:
-            return "In progress";
+            return ticketItemsStatus.inProgress;
         case 3:
-            return "Completed";
+            return ticketItemsStatus.completed;
     }
 };
 
@@ -172,7 +178,6 @@ export const getMenuItemsByValue = (data, value) => {
     return result;
 };
 
-// Вспомогательная функция для добавления нуля перед числом, если оно меньше 10
 function padZero(num) {
     return num < 10 ? "0" + num : num;
 }

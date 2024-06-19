@@ -14,10 +14,11 @@ import {
 import Bookmark from "../Icons/Bookmark";
 import { Tooltip } from "@chakra-ui/react";
 import RelativeTime from "../RelativeTime/RelativeTime";
+import { ticketItemsStatus } from "../../helpers/utils";
 
 const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
     const popupContainers = {
-        "Under review": (
+        [ticketItemsStatus.underReview]: (
             <AcceptTicketPopup
                 sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}
@@ -26,7 +27,7 @@ const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
                 popupStatus="Заявка на рассмотрении"
             />
         ),
-        "In progress": (
+        [ticketItemsStatus.inProgress]: (
             <ConfirmTicketPopup
                 sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}
@@ -35,7 +36,7 @@ const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
                 popupStatus="Подтверждение"
             />
         ),
-        Completed: (
+        [ticketItemsStatus.completed]: (
             <ViewTicketPopup
                 sendJsonMessage={sendJsonMessage}
                 ticketData={ticketData}

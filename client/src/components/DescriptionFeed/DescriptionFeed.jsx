@@ -10,9 +10,12 @@ const DescriptionFeed = ({
     handleRemoveDescription,
     handleEditDescription,
 }) => {
+    const isDescriptionExist =
+        descriptionText && isCreatingDescription === false;
+
     return (
         <>
-            {descriptionText && isCreatingDescription === false ? (
+            {isDescriptionExist && (
                 <div className="description__container">
                     <div className="description-title">Комментарий</div>
 
@@ -41,7 +44,7 @@ const DescriptionFeed = ({
 
                                 <Tooltip
                                     hasArrow
-                                    label="Удалить описание"
+                                    label="Удалить комментарий"
                                     placement="top"
                                     bg="gray.700"
                                 >
@@ -62,7 +65,7 @@ const DescriptionFeed = ({
                         ) : null}
                     </div>
                 </div>
-            ) : null}
+            )}
         </>
     );
 };

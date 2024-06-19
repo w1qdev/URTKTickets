@@ -233,7 +233,10 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             popupHandler={popupHandler}
         >
             <div className="body__title">
-                <div className="body__title-label">Название проблемы *</div>
+                <div className="body__title-label">
+                    Название проблемы{" "}
+                    <span style={{ color: "red", fontWeight: "800" }}>*</span>
+                </div>
                 <input
                     className="body__title-text"
                     value={ticketTitle}
@@ -259,7 +262,12 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
 
             <div className="body__location body__section">
                 <div className="body__location__room">
-                    <div className="title">Аудитория *</div>
+                    <div className="title">
+                        Аудитория{" "}
+                        <span style={{ color: "red", fontWeight: "800" }}>
+                            *
+                        </span>
+                    </div>
                     <MenuGroup
                         menuItems={menuRoomsList}
                         defaultMenuTitle="Аудитория не выбрана"
@@ -291,7 +299,15 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
             </div>
 
             <div className="body__tasks body__section">
-                <div className="body__tasks-title">Список задач *</div>
+                <div className="body__tasks-title">
+                    Список задач{" "}
+                    {tasks.length === 0 && (
+                        <span style={{ opacity: 0.5 }}>
+                            (минимум 1 задача){" "}
+                        </span>
+                    )}
+                    <span style={{ color: "red", fontWeight: "800" }}>*</span>
+                </div>
                 <div className="body__tasks-items">
                     <TasksList
                         handleRemoveTask={handleRemoveTask}

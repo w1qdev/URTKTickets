@@ -8,7 +8,7 @@ const TasksList = ({ tasksData, handleRemoveTask, isRemovable = false }) => {
         <>
             {tasksData.length
                 ? tasksData.map((task) => (
-                      <div key={task.pc_name} className="item">
+                      <div key={task.id} className="item">
                           <div className="item__general">
                               <div className="item__general-pc">
                                   {task.pc_name}
