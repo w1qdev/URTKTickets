@@ -1,6 +1,8 @@
-import "./TicketsContainer.scss";
 import axios from "axios";
 import { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import "./TicketsContainer.scss";
 import TicketsList from "../TicketsList/TicketsList.jsx";
 import Menu from "../Menu/Menu.jsx";
 import MenuFilterButton from "../Menu/MenuFilterButton.jsx";
@@ -12,7 +14,12 @@ import {
     mapPrioritiesAndChangeState,
     getPriorityById,
 } from "../../helpers/utils.js";
-import { motion } from "framer-motion";
+import {
+    clearMenuDates,
+    setCurrentTitle,
+    setMenuDates,
+    getMenuDates,
+} from "../../service/store/slices/MenuDateSlice.js";
 
 const TicketsContainer = ({
     handleUsingFilters,
@@ -24,11 +31,13 @@ const TicketsContainer = ({
     tickets,
     handleTickets,
 }) => {
+    const dispatch = useDispatch();
+    const menuDate = useSelector(getMenuDates);
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
     const [menuID, setMenuID] = useState({ isIncreasing: false });
-    const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
     const [isFetching, setIsFetching] = useState(false);
+    // const [menuDate, setMenuDate] = useState({ currentTitle: "", data: [] });
     const [menuLocation, setMenuLocation] = useState({
         currentTitle: "",
         data: [],
@@ -50,18 +59,24 @@ const TicketsContainer = ({
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
     const handleClearFilters = () => {
-        setMenuDate((prev) => ({ ...prev, data: [] }));
+        dispatch(clearMenuDates());
+        // setMenuDate((prev) => ({ ...prev, data: [] }));
         setMenuLocation((prev) => ({ ...prev, data: [] }));
         setMenuStatus((prev) => ({ ...prev, data: [] }));
         setMenuCustomer((prev) => ({ ...prev, data: [] }));
         setMenuPriority((prev) => ({ ...prev, data: [] }));
     };
 
-    const handleClickMenuDate = (e) =>
-        setMenuDate((prev) => ({
-            ...prev,
-            currentTitle: e.target.textContent,
-        }));
+    // const handleClickMenuDate = (e) =>
+    //     setMenuDate((prev) => ({
+    //         ...prev,
+    //         currentTitle: e.target.textContent,
+    //     }));
+
+    const handleClickMenuDate = (e) => {
+        dispatch(setCurrentTitle({ currentTitle: e.target.textContent }));
+    };
+
     const handleClickMenuLocation = (e) =>
         setMenuLocation((prev) => ({
             ...prev,
@@ -109,13 +124,17 @@ const TicketsContainer = ({
                                     "ticket_id"
                                 ),
                             }));
-                            setMenuDate((prev) => ({
-                                ...prev,
-                                data: getMenuItemsByValue(
-                                    res.data.tickets,
-                                    "submission_date"
-                                ),
-                            }));
+                            // setMenuDate((prev) => ({
+                            //     ...prev,
+                            //     data: getMenuItemsByValue(
+                            //         res.data.tickets,
+                            //         "submission_date"
+                            //     ),
+                            // }));
+                            dispatch(
+                                setMenuDates({ ticketsData: res.data.tickets })
+                            );
+
                             setMenuLocation((prev) => ({
                                 ...prev,
                                 data: getMenuItemsByValue(
@@ -270,7 +289,9 @@ const TicketsContainer = ({
 
     useEffect(() => {
         if (isFilterClear) {
-            setMenuDate((prev) => ({ ...prev, currentTitle: "" }));
+            // setMenuDate((prev) => ({ ...prev, currentTitle: "" }));
+            dispatch(setCurrentTitle({ currentTitle: "" }));
+
             setMenuLocation((prev) => ({ ...prev, currentTitle: "" }));
             setMenuStatus((prev) => ({ ...prev, currentTitle: "" }));
             setMenuCustomer((prev) => ({ ...prev, currentTitle: "" }));
