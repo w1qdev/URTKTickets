@@ -17,8 +17,8 @@ from db.managers.task_manager import TasksManager
 from db.managers.ticket_priority_manager import TicketPriorityManager
 from docx_helpers.docx import generate_report_file, get_report_file_path
 from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
-from middlewares.AddProcessTimeHeader import AddProcessTimeHeader
 from db.cleaners.tickets_cleaner import TicketsCleaner
+from db.cleaners.report_cleaner import ReportCleaner
 from ws.websocket import WebSocketConnectionManager
 from helpers.utils import serialize_sqlalchemy_obj
 
@@ -70,15 +70,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(RemoveReportAfterResponse)
-app.add_middleware(AddProcessTimeHeader)
 
 # Tickets cleaner
 def ticket_cleaner_scheduler():
-    cleaner = TicketsCleaner(SessionLocal)
+    tickets_cleaner = TicketsCleaner(SessionLocal)
     while True:
-        cleaner.clean_old_tickets()
+        tickets_cleaner.clean_old_tickets()
         
-        clean_delay = 2 * 60 * 60 # 2 hours
+        # remove all done tickets every 2 hours
+        clean_delay = 2 * 60 * 60 
+        sleep(clean_delay) 
+
+# Reports cleaner
+def report_cleaner_scheduler():
+    report_cleaner = ReportCleaner(SessionLocal)
+    while True:
+        report_cleaner.clean_old_reports()
+        
+        # remove all reports every 24 hours
+        clean_delay = 24 * 60 * 60 
         sleep(clean_delay) 
 
 
@@ -474,9 +484,14 @@ if __name__ == "__main__":
     uvicorn_thread.start()
 
     # Создание и запуск потока для очистки тикетов
-    cleaner_thread = threading.Thread(target=ticket_cleaner_scheduler)
-    cleaner_thread.start()
+    ticket_cleaner_thread = threading.Thread(target=ticket_cleaner_scheduler)
+    ticket_cleaner_thread.start()
+
+    # Создание и запуск потока для очистки отчетов
+    report_cleaner_thread = threading.Thread(target=report_cleaner_scheduler)
+    report_cleaner_thread.start()
 
     # Ожидание завершения потоков
     uvicorn_thread.join()
-    cleaner_thread.join()
+    ticket_cleaner_thread.join()
+    report_cleaner_thread.join()

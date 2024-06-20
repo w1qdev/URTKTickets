@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-from db.models import Tickets, Tasks
+from db.models import Tickets
+from sqlalchemy import and_
 
 
 class TicketsCleaner:
@@ -10,19 +11,22 @@ class TicketsCleaner:
         # Очистка тикетов, у которых дата завершения более чем 6 месяцев назад
         print(f"Ticket cleaning started at {datetime.now()}")
         try:
-            six_months_ago = datetime.now() - timedelta(days=6*30)  # Примерное значение для 6 месяцев
-            old_tickets = self.session.query(Tickets).filter(Tickets.deadline_date < six_months_ago).all()
+            print(f"Ticket cleaning started at {datetime.now()}")
 
-            for ticket in old_tickets:
-                # Удаление задач, связанных с тикетом
-                self.session.query(Tasks).filter(Tasks.ticket_id == ticket.ticket_id).delete()
-                # Удаление самого тикета
-                self.session.delete(ticket)
+            # удаление выполненных тикетов через 6 месяцев
+            six_months_ago = datetime.now() - timedelta(days=182)  
 
+            # Удалить тикеты и связанные задачи
+            deleted_tickets = self.session.query(Tickets) \
+                .filter(and_(Tickets.created_at < six_months_ago, Tickets.state_id == 3)) \
+                .delete()
+
+            # Подтвердить изменения
             self.session.commit()
-            return len(old_tickets)  # Возвращает количество удаленных тикетов
-        except Exception as e:
-            print(f"An error occurred while cleaning old tickets: {e}")
+
+            return deleted_tickets
+        except Exception as ex:
+            print(f"An error occurred while cleaning old tickets: {ex}")
             self.session.rollback()
             return 0  # Возвращает 0 в случае ошибки
         finally:

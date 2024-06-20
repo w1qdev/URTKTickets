@@ -1,5 +1,4 @@
 
-
 def reverse_date(date: str) -> str:
     parts = date.split(".")
 
@@ -17,3 +16,4 @@ def serialize_sqlalchemy_obj(obj):
         # Исключаем служебные атрибуты SQLAlchemy
         return {key: value for key, value in obj.__dict__.items() if not key.startswith('_')}
     return obj
+
