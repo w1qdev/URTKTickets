@@ -152,7 +152,7 @@ const TicketsContainerMenu = ({
                 <Menu
                     menuItems={menuDate.data}
                     menuSelectedItem={menuDate.currentTitle}
-                    defaultMenuTitle="Дата"
+                    defaultMenuTitle="Дата создания"
                     handleClick={handleClickMenuDate}
                 />
             </div>

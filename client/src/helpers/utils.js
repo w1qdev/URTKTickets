@@ -391,6 +391,11 @@ export const getRelativeTimeString = (date, lang = "ru") => {
     const dateDay = date.getDate();
     const dateMonthString = getMonthStringById(date.getMonth()).toLowerCase();
     const dateYear = date.getFullYear();
+    const currentYear = new Date().getFullYear();
 
-    return `${dateDay} ${dateMonthString} ${dateYear}`;
+    if (dateYear > currentYear) {
+        return `${dateDay} ${dateMonthString} ${dateYear} года`;
+    } else {
+        return `${dateDay} ${dateMonthString}`;
+    }
 };
