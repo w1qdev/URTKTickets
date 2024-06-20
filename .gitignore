@@ -128,4 +128,4 @@ dist
 
 # custom
 .vscode
-*.docx
+./report_*.docx
