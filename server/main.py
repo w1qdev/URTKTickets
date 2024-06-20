@@ -9,6 +9,7 @@ from fastapi.openapi.utils import get_openapi
 from fastapi.responses import FileResponse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+
 from db.models import Base
 from db.managers.teachers_manager import TeachersManager
 from db.managers.ticket_state_manager import TicketStatesManager
@@ -16,7 +17,6 @@ from db.managers.ticket_manager import TicketsManager
 from db.managers.task_manager import TasksManager
 from db.managers.ticket_priority_manager import TicketPriorityManager
 from docx_helpers.docx import generate_report_file, get_report_file_path
-from middlewares.RemoveReportAfterResponse import RemoveReportAfterResponse
 from db.cleaners.tickets_cleaner import TicketsCleaner
 from db.cleaners.report_cleaner import ReportCleaner
 from ws.websocket import WebSocketConnectionManager
@@ -69,7 +69,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
-app.add_middleware(RemoveReportAfterResponse)
 
 # Tickets cleaner
 def ticket_cleaner_scheduler():
