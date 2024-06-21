@@ -19,6 +19,7 @@ import {
     getCountDeadlineDaysByLevelOfImportance,
     getCurrentDate,
     addDaysToCurrentDate,
+    levelsOfTicketPriority,
 } from "../../helpers/utils";
 
 const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
@@ -37,8 +38,9 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
         task_description: "",
     });
     const [menuRoomsList, setMenuRoomsList] = useState([...menuRoomsData]);
-    const [selectedLevelOfImportance, setSelectedLevelOfImportant] =
-        useState(1);
+    const [selectedLevelOfImportance, setSelectedLevelOfImportant] = useState(
+        levelsOfTicketPriority.mid
+    );
     const [selectedDeadlineDate, setSelectedDeadlineDate] = useState({
         date: addDaysToCurrentDate(selectedLevelOfImportance * 3).date,
         difference: addDaysToCurrentDate(selectedLevelOfImportance * 3)
@@ -78,6 +80,12 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     };
 
     const handleSaveTasks = () => {
+        console.log(currentTask.pc_name);
+        if (currentTask.pc_name === "" || currentTask.task_description === "") {
+            // if labels empty
+            return;
+        }
+
         const newTask = {
             id: Date.now(),
             pc_name: currentTask.pc_name,
@@ -103,11 +111,11 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
 
     const handleDeadlineDateChange = (e) => {
         const selectedDate = new Date(e.target.value);
-        const today = new Date();
-        const nextDay = new Date(today);
+        const currentDate = new Date();
+        const nextDay = new Date(currentDate);
         nextDay.setDate(nextDay.getDate());
 
-        if (selectedDate <= nextDay) {
+        if (selectedDate < nextDay) {
             // Дата меньше текущей даты плюс один день
             console.log("Выбранная дата меньше текущей даты плюс один день");
         } else {
@@ -305,7 +313,8 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                     <div className="levels">
                         <button
                             className={`level__button start ${
-                                selectedLevelOfImportance === 1 && "selected"
+                                selectedLevelOfImportance ===
+                                    levelsOfTicketPriority.low && "selected"
                             }`}
                             onClick={() => setSelectedLevelOfImportant(1)}
                         >
@@ -313,7 +322,8 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         </button>
                         <button
                             className={`level__button mid ${
-                                selectedLevelOfImportance === 2 && "selected"
+                                selectedLevelOfImportance ===
+                                    levelsOfTicketPriority.mid && "selected"
                             }`}
                             onClick={() => setSelectedLevelOfImportant(2)}
                         >
@@ -321,7 +331,8 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
                         </button>
                         <button
                             className={`level__button end ${
-                                selectedLevelOfImportance === 3 && "selected"
+                                selectedLevelOfImportance ===
+                                    levelsOfTicketPriority.high && "selected"
                             }`}
                             onClick={() => setSelectedLevelOfImportant(3)}
                         >

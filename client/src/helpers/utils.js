@@ -7,6 +7,12 @@ export const ticketItemsStatus = {
     completed: "Completed",
 };
 
+export const levelsOfTicketPriority = {
+    low: 1,
+    mid: 2,
+    high: 3,
+};
+
 export const menuRoomsData = [
     {
         id: 1,
@@ -402,9 +408,9 @@ export const getRelativeTimeString = (date, lang = "ru") => {
 
 export const getCountDeadlineDaysByLevelOfImportance = (levelOfImportance) => {
     const levels = {
-        1: 14, // low level of ticket importance, return 14 days to deadline
-        2: 7, // mid level of ticket importance, return 7 days to deadline
-        3: 3, // high level of ticket importance, return 3 days to deadline
+        [levelsOfTicketPriority.low]: 14, // low level of ticket importance, return 14 days to deadline
+        [levelsOfTicketPriority.mid]: 7, // mid level of ticket importance, return 7 days to deadline
+        [levelsOfTicketPriority.high]: 3, // high level of ticket importance, return 3 days to deadline
     };
 
     return levels[levelOfImportance];

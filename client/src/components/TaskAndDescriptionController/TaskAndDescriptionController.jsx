@@ -1,11 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-import PlusIcon from "../Icons/PlusIcon";
 import { Tooltip } from "@chakra-ui/react";
+import PlusIcon from "../Icons/PlusIcon";
 import TextDescriptionIcon from "../Icons/TextDescriptionIcon";
 import AngleIcon from "../Icons/AngleIcon";
+// import { useKeyPress } from "../../hooks/useKeyPress";
 
 const TaskAndDescriptionController = (props) => {
     let controllerBody;
+
+    // FIXME: Save task doesn't work when user press Enter button
+    // const isPressedSubmitButton = useKeyPress(["Enter"], () => {
+    //     props.handleSaveTasks();
+    // });
 
     if (!props.isCreatingTask && !props.isCreatingDescription) {
         controllerBody = (
@@ -14,6 +20,7 @@ const TaskAndDescriptionController = (props) => {
                     <motion.button
                         className="create__task-button"
                         onClick={props.handleCreatingTask}
+                        type="submit"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, transition: 0.2 }}
