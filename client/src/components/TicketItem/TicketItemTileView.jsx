@@ -33,16 +33,14 @@ const TicketItemTileView = ({
 
             <div className="ticket-item__problem grid">
                 <div className="problem__title grid">{problem_title}</div>
-
-                <div className="problem__description grid">{customer_name}</div>
             </div>
 
             <Bookmark className="bookmark grid" priority={priority_id} />
 
             <div className="ticket-item__date grid">
                 <div className="date submission grid">
-                    <span>Дата создания заявки:</span>
-                    <b>{submissionDate}</b>
+                    <span>Заказчик: </span>
+                    <b>{customer_name}</b>
                 </div>
 
                 <div className="date deadline">
