@@ -399,3 +399,13 @@ export const getRelativeTimeString = (date, lang = "ru") => {
         return `${dateDay} ${dateMonthString}`;
     }
 };
+
+export const getCountDeadlineDaysByLevelOfImportance = (levelOfImportance) => {
+    const levels = {
+        1: 14, // low level of ticket importance, return 14 days to deadline
+        2: 7, // mid level of ticket importance, return 7 days to deadline
+        3: 3, // high level of ticket importance, return 3 days to deadline
+    };
+
+    return levels[levelOfImportance];
+};

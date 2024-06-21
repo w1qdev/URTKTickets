@@ -1,20 +1,25 @@
-import { getCurrentDate, addDaysToCurrentDate } from "../../helpers/utils";
-import Button from "../Buttons/Button";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { Tooltip, Spinner } from "@chakra-ui/react";
+
+import Button from "../Buttons/Button";
 import SendTicketIcon from "../Icons/SendTicketIcon";
 import TasksList from "../TasksList/TasksList";
 import DescriptionFeed from "../DescriptionFeed/DescriptionFeed";
 import TaskAndDescriptionController from "../TaskAndDescriptionController/TaskAndDescriptionController";
 import EditIcon from "../Icons/EditIcon";
-import axios from "axios";
 import Popup from "./Popup";
 import MenuGroup from "../Menu/MenuGroup";
-import { useEffect, useRef, useState } from "react";
 import { endpoints } from "../../api/index";
-import { reverseDate } from "../../helpers/utils";
 import QuestionIcon from "../Icons/QuestionIcon";
 import { toastSuccess } from "../../helpers/toasts";
-import { menuRoomsData } from "../../helpers/utils";
+import {
+    menuRoomsData,
+    reverseDate,
+    getCountDeadlineDaysByLevelOfImportance,
+    getCurrentDate,
+    addDaysToCurrentDate,
+} from "../../helpers/utils";
 
 const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     const currentDate = getCurrentDate();
@@ -160,19 +165,9 @@ const CreateTicketPopup = ({ popupHandler, sendJsonMessage }) => {
     };
 
     useEffect(() => {
-        let daysToAdd = 0;
-
-        switch (selectedLevelOfImportance) {
-            case 1:
-                daysToAdd = 14;
-                break;
-            case 2:
-                daysToAdd = 7;
-                break;
-            case 3:
-                daysToAdd = 3;
-                break;
-        }
+        let daysToAdd = getCountDeadlineDaysByLevelOfImportance(
+            selectedLevelOfImportance
+        );
 
         setSelectedDeadlineDate((prev) => ({
             date: addDaysToCurrentDate(daysToAdd).date,
