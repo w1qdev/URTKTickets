@@ -1,6 +1,6 @@
 import TicketItem from "../TicketItem/TicketItem";
 import { Skeleton, Stack } from "@chakra-ui/react";
-import { Virtuoso, VirtuosoGrid } from "react-virtuoso";
+// import { Virtuoso, VirtuosoGrid } from "react-virtuoso";
 import NoTicketItems from "../NoTicketItems/NoTicketItems";
 
 const TicketsList = ({

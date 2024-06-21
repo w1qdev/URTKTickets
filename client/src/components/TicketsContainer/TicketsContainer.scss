@@ -99,22 +99,4 @@
             display: block;
         }
     }
-
-    .no-tickets {
-        width: 100%;
-        height: 60vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-
-        &__img {
-            width: 20%;
-            margin-bottom: 10px;
-        }
-
-        &__description {
-            font-weight: 600;
-        }
-    }
 }

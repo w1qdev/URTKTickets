@@ -1,4 +1,5 @@
-import { useState } from "react";
+import "./TicketsContainerHeader.scss";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { Button, Stack } from "@chakra-ui/react";
 

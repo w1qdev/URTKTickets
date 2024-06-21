@@ -14,7 +14,12 @@ import { ticketItemsStatus } from "../../helpers/utils";
 import TicketItemTileView from "./TicketItemTileView";
 import TicketItemTableView from "./TicketItemTableView";
 
-const PopupBody = ({ status, popupHandler, ticketData, sendJsonMessage }) => {
+const PopupContent = ({
+    status,
+    popupHandler,
+    ticketData,
+    sendJsonMessage,
+}) => {
     const popupContainers = {
         [ticketItemsStatus.underReview]: (
             <AcceptTicketPopup
@@ -67,7 +72,7 @@ const TicketItem = (props) => {
         <>
             <AnimatePresence>
                 {isPopupOpen ? (
-                    <PopupBody
+                    <PopupContent
                         ticketData={props}
                         status={ticketStatus}
                         popupHandler={handlePopup}

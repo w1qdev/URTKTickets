@@ -1,4 +1,5 @@
 import NoTicketsImage from "../../assets/other/no-tickets-img.png";
+import "./NoTicketItems.scss";
 
 const NoTicketItems = ({ isGridMode, children }) => {
     return (
