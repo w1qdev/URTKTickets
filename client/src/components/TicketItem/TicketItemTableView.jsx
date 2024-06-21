@@ -68,7 +68,7 @@ const TicketItemTableView = ({
                         hasArrow
                         placement="top"
                     >
-                        <b>{deadlineDate}</b>
+                        <b>до {deadlineDate}</b>
                     </Tooltip>
                 )}
             </div>

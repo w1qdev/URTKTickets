@@ -7,10 +7,28 @@ export const ticketItemsStatus = {
     completed: "Completed",
 };
 
+export const ticketStatusNames = {
+    underReview: "На рассмотрении",
+    inProgress: "Выполняется",
+    completed: "Выполнено",
+};
+
 export const levelsOfTicketPriority = {
     low: 1,
     mid: 2,
     high: 3,
+};
+
+export const ticketPriorityNames = {
+    low: "Низкий",
+    mid: "Средний",
+    high: "Высокий",
+};
+
+export const ticketPriorityColors = {
+    low: "#4ecb71",
+    mid: "#ffc165",
+    high: "#FF0000",
 };
 
 export const menuRoomsData = [
@@ -81,11 +99,11 @@ export const getTicketStateNameById = (ticket_id) => {
 
 export const getTicketIdByStateName = (ticket_name) => {
     switch (ticket_name) {
-        case "На рассмотрении":
+        case ticketStatusNames.underReview:
             return 1;
-        case "Выполняется":
+        case ticketStatusNames.inProgress:
             return 2;
-        case "Выполнено":
+        case ticketStatusNames.completed:
             return 3;
     }
 };
@@ -95,13 +113,13 @@ export const mapPrioritiesAndChangeState = (data) => {
         let newState;
         switch (item.title) {
             case "1":
-                newState = "Низкий";
+                newState = ticketPriorityNames.low;
                 break;
             case "2":
-                newState = "Средний";
+                newState = ticketPriorityNames.mid;
                 break;
             case "3":
-                newState = "Высокий";
+                newState = ticketPriorityNames.high;
                 break;
         }
         return {
@@ -116,11 +134,11 @@ export const mapPrioritiesAndChangeState = (data) => {
 export const getPriorityById = (priority_id) => {
     switch (priority_id) {
         case 1:
-            return "Низкий";
+            return ticketPriorityNames.low;
         case 2:
-            return "Средний";
+            return ticketPriorityNames.mid;
         case 3:
-            return "Высокий";
+            return ticketPriorityNames.high;
     }
 };
 
@@ -129,13 +147,13 @@ export const mapTicketsDataAndChangeState = (data) => {
         let newState;
         switch (item.title) {
             case "1":
-                newState = "На рассмотрении";
+                newState = ticketStatusNames.underReview;
                 break;
             case "2":
-                newState = "Выполняется";
+                newState = ticketStatusNames.inProgress;
                 break;
             case "3":
-                newState = "Выполнено";
+                newState = ticketStatusNames.completed;
                 break;
             default:
                 newState = "Unknown State"; // Обработка для неизвестных значений state_id
@@ -414,4 +432,25 @@ export const getCountDeadlineDaysByLevelOfImportance = (levelOfImportance) => {
     };
 
     return levels[levelOfImportance];
+};
+
+export const getColorOfMenuPriorityItemsByName = (priorityName) => {
+    const ticketPriorityNamesAndColors = {
+        [ticketPriorityNames.low]: ticketPriorityColors.low,
+        [ticketPriorityNames.mid]: ticketPriorityColors.mid,
+        [ticketPriorityNames.high]: ticketPriorityColors.high,
+    };
+
+    return ticketPriorityNamesAndColors[priorityName];
+};
+
+export const addColorPropertyToMenuPriorityItems = (menuItems) => {
+    const updatedMenuItems = menuItems.map((item) => {
+        return {
+            ...item,
+            color: getColorOfMenuPriorityItemsByName(item.title),
+        };
+    });
+
+    return updatedMenuItems;
 };

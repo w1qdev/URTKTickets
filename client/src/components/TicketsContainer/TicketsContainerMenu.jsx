@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { mapTicketsDataAndChangeState } from "../../helpers/utils";
 import Menu from "../Menu/Menu";
+import MenuPriorityFilter from "../Menu/MenuPriorityFilter";
 import MenuFilterButton from "../Menu/MenuFilterButton";
 import {
     setMenuDateCurrentTitle,
@@ -123,7 +124,7 @@ const TicketsContainerMenu = ({
             </div>
 
             <div className="tickets-container__header-item priority">
-                <Menu
+                <MenuPriorityFilter
                     menuItems={menuPriority.data}
                     menuSelectedItem={menuPriority.currentTitle}
                     defaultMenuTitle="Приоритет"
