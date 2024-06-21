@@ -58,3 +58,14 @@
         }
     }
 }
+
+.menu-sorting__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .menu-sorting__subtext {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+}

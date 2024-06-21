@@ -9,6 +9,7 @@ import CreateTicketButton from "../../components/Buttons/CreateTicketButton";
 import URTKLogo from "../../assets/logo/urtkLogo.png";
 import PlusIcon from "../../components/Icons/PlusIcon";
 import { dateFormatter, getCurrentDate } from "../../helpers/utils";
+import MenuSorting from "../Menu/MenuSorting";
 // import Notification from "../Notification/Notification";
 
 const TicketsContainerHeader = ({
@@ -67,15 +68,20 @@ const TicketsContainerHeader = ({
                             </motion.div>
                         </AnimatePresence>
                     ) : null}
-
                     {/* <Notification className="notification__trigger" /> */}
+                    <div className="menu-sorting__container">
+                        <div className="menu-sorting__subtext">
+                            Сортировка по{" "}
+                        </div>
+
+                        <MenuSorting currentSortStatus="Дате создания" />
+                    </div>
 
                     <GridSwitcher
                         isGridMode={isGridMode}
                         handleSwitchToFlexMode={handleSwitchToFlexMode}
                         handleSwitchToGridMode={handleSwitchToGridMode}
                     />
-
                     {isAdministrator === true ? (
                         <div className="current-time">{currentDate}</div>
                     ) : (

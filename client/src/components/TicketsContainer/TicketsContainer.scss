@@ -21,37 +21,41 @@
             font-size: 15px;
 
             &.number {
-                width: 5%;
+                min-width: 5%;
             }
 
             &.problem {
-                width: 28%;
+                min-width: 28%;
             }
 
             &.priority {
-                width: 10%;
+                min-width: 10%;
             }
 
             &.location {
-                width: 15%;
+                min-width: 15%;
             }
 
             &.user {
-                width: 13%;
+                min-width: 13%;
             }
 
             &.date {
-                width: 10%;
+                min-width: 10%;
             }
 
             &.status {
-                width: 17%;
+                min-width: 17%;
             }
 
-            .problem__search {
-                width: 76%;
+            .search {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                width: 87%;
                 height: 40px;
                 padding: 5px 12px;
+                margin-left: 30px;
                 background-color: #edf2f7;
                 border-radius: 6px;
                 border: 2px solid transparent;
@@ -62,11 +66,23 @@
                     outline: none;
                     border-color: #1f7cffbe;
                 }
+
+                &.focused {
+                    outline: none;
+                    border-color: #1f7cffbe;
+                }
+            }
+
+            .problem__search {
+                width: 95%;
+                background-color: #edf2f7;
+                outline: none;
             }
 
             .search__icon {
-                width: 10px;
-                height: 10px;
+                width: 20px;
+                height: 20px;
+                margin-left: 5px;
             }
         }
     }

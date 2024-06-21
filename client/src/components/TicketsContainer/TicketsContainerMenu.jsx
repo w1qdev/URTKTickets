@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { mapTicketsDataAndChangeState } from "../../helpers/utils";
 import Menu from "../Menu/Menu";
-import MenuPriorityFilter from "../Menu/MenuPriorityFilter";
+// import MenuPriorityFilter from "../Menu/MenuPriorityFilter";
 import MenuFilterButton from "../Menu/MenuFilterButton";
 import {
     setMenuDateCurrentTitle,
@@ -24,6 +24,7 @@ import {
     setMenuPriorityCurrentTitle,
     getMenuPriorities,
 } from "../../service/store/slices/MenuPrioritySlice";
+import SearchIcon from "../Icons/SearchIcon.jsx";
 
 const TicketsContainerMenu = ({
     isFilterClear,
@@ -41,6 +42,8 @@ const TicketsContainerMenu = ({
     const menuStatus = useSelector(getMenuStatuses);
     const menuCustomer = useSelector(getMenuCustomers);
     const menuPriority = useSelector(getMenuPriorities);
+    const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
+    const searchInputRef = useRef();
 
     const mappedMenuStatus = mapTicketsDataAndChangeState(menuStatus.data);
 
@@ -80,6 +83,10 @@ const TicketsContainerMenu = ({
         setProblemValue((prev) => e.target.value);
     };
 
+    const handleSearchInputClick = () => {
+        searchInputRef.current.focus();
+    };
+
     const handleFilters = (value) => handleUsingFilters(value);
 
     useEffect(() => {
@@ -114,17 +121,28 @@ const TicketsContainerMenu = ({
                 />
             </div>
             <div className="tickets-container__header-item problem">
-                <input
-                    className="problem__search"
-                    type="text"
-                    placeholder="Название проблемы..."
-                    value={problemValue}
-                    onChange={handleChangeMenuInputValue}
-                />
+                <div
+                    className={`search ${
+                        isSearchInputFocused ? "focused" : ""
+                    }`}
+                    onClick={handleSearchInputClick}
+                >
+                    <input
+                        className="problem__search"
+                        type="text"
+                        placeholder="Название проблемы..."
+                        ref={searchInputRef}
+                        value={problemValue}
+                        onChange={handleChangeMenuInputValue}
+                        onFocus={() => setIsSearchInputFocused((prev) => true)}
+                        onBlur={() => setIsSearchInputFocused((prev) => false)}
+                    />
+                    <SearchIcon className="search__icon" />
+                </div>
             </div>
 
             <div className="tickets-container__header-item priority">
-                <MenuPriorityFilter
+                <Menu
                     menuItems={menuPriority.data}
                     menuSelectedItem={menuPriority.currentTitle}
                     defaultMenuTitle="Приоритет"
