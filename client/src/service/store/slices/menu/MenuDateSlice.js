@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMenuItemsByValue } from "../../../../helpers/utils";
+import { getMenuItemsByValue, datesFormatter } from "../../../../helpers/utils";
 
 const initialState = {
     currentTitle: "",
@@ -20,9 +20,11 @@ export const menuDateSlice = createSlice({
         },
 
         setMenuDates: (state, action) => {
-            state.data = getMenuItemsByValue(
-                action.payload.ticketsData,
-                "submission_date"
+            state.data = datesFormatter(
+                getMenuItemsByValue(
+                    action.payload.ticketsData,
+                    "submission_date"
+                )
             );
         },
     },

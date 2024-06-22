@@ -41,7 +41,7 @@ const Menu = ({
                 overflow="auto"
             >
                 {menuItems.length
-                    ? menuItems.map((menuItem) => (
+                    ? menuItems?.map((menuItem) => (
                           <MenuItem key={menuItem.id} onClick={handleClick}>
                               {menuItem.title}
                           </MenuItem>

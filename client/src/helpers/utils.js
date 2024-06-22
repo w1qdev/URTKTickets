@@ -31,6 +31,21 @@ export const ticketPriorityColors = {
     high: "#FF0000",
 };
 
+export const months = [
+    "января",
+    "февраля",
+    "марта",
+    "апреля",
+    "мая",
+    "июня",
+    "июля",
+    "августа",
+    "сентября",
+    "октября",
+    "ноября",
+    "декабря",
+];
+
 export const menuRoomsData = [
     {
         id: 1,
@@ -168,26 +183,11 @@ export const mapTicketsDataAndChangeState = (data) => {
 };
 
 export const dateFormatter = (date) => {
-    const months = [
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря",
-    ];
-
     // Проверяем формат даты
     if (date.includes(".")) {
         // Если формат даты "день.месяц.год"
         const [day, month, year] = date.split(".");
-        return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
+        return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year} г.`;
     } else {
         // Если формат даты "год-месяц-день"
         // Создание объекта Date из строки
@@ -203,6 +203,19 @@ export const dateFormatter = (date) => {
         // Формирование отформатированной строки
         return `${day} ${month} ${year}`;
     }
+};
+
+export const datesFormatter = (datesArray) => {
+    const formattedDatesArray = datesArray.map((date) => {
+        const [day, month, year] = date.title.split(".");
+        const formattedDate = `${day} ${
+            months[parseInt(month) - 1]
+        } ${year} г.`;
+
+        return { ...date, title: formattedDate };
+    });
+
+    return formattedDatesArray;
 };
 
 export const reverseDate = (date) => {

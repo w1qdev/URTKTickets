@@ -9,6 +9,7 @@ import {
     getMenuItemsByValue,
     getTicketIdByStateName,
     getPriorityById,
+    dateFormatter,
 } from "../../helpers/utils.js";
 import {
     clearMenuDates,
@@ -162,7 +163,8 @@ const TicketsContainer = ({
             );
 
             const isMenuDateMatch = menuDate.currentTitle
-                ? ticket.submission_date === menuDate.currentTitle
+                ? dateFormatter(ticket.submission_date) ===
+                  menuDate.currentTitle
                 : true;
             const isMenuLocationMatch = menuLocation.currentTitle
                 ? ticket.room_number === menuLocation.currentTitle
