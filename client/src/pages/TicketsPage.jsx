@@ -17,11 +17,11 @@ import { SERVER_ORIGIN_DOMAIN } from "../api";
 import { toastInfo, toastSuccess } from "../helpers/toasts.js";
 import { ToastContainer } from "react-toastify";
 import useWebSocketConnectionManager from "../hooks/useWebSocketConnectionManager";
-import { setMenuCustomers } from "../service/store/slices/MenuCustomerSlice.js";
-import { setMenuDates } from "../service/store/slices/MenuDateSlice.js";
-import { setMenuLocations } from "../service/store/slices/MenuLocationSlice.js";
-import { setMenuPriorities } from "../service/store/slices/MenuPrioritySlice.js";
-import { setMenuStatuses } from "../service/store/slices/MenuStatusSlice.js";
+import { setMenuCustomers } from "../service/store/slices/menu/MenuCustomerSlice.js";
+import { setMenuDates } from "../service/store/slices/menu/MenuDateSlice.js";
+import { setMenuLocations } from "../service/store/slices/menu/MenuLocationSlice.js";
+import { setMenuPriorities } from "../service/store/slices/menu/MenuPrioritySlice.js";
+import { setMenuStatuses } from "../service/store/slices/menu/MenuStatusSlice.js";
 import useInitializeUserData from "../hooks/useInitializeUserData.js";
 
 const TicketsPage = () => {

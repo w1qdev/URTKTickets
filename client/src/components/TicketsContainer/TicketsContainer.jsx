@@ -14,27 +14,27 @@ import {
     clearMenuDates,
     setMenuDates,
     getMenuDates,
-} from "../../service/store/slices/MenuDateSlice.js";
+} from "../../service/store/slices/menu/MenuDateSlice.js";
 import {
     clearMenuLocations,
     setMenuLocations,
     getMenuLocations,
-} from "../../service/store/slices/MenuLocationSlice.js";
+} from "../../service/store/slices/menu/MenuLocationSlice.js";
 import {
     clearMenuStatuses,
     setMenuStatuses,
     getMenuStatuses,
-} from "../../service/store/slices/MenuStatusSlice.js";
+} from "../../service/store/slices/menu/MenuStatusSlice.js";
 import {
     clearMenuCustomers,
     setMenuCustomers,
     getMenuCustomers,
-} from "../../service/store/slices/MenuCustomerSlice.js";
+} from "../../service/store/slices/menu/MenuCustomerSlice.js";
 import {
     clearMenuPriorities,
     setMenuPriorities,
     getMenuPriorities,
-} from "../../service/store/slices/MenuPrioritySlice.js";
+} from "../../service/store/slices/menu/MenuPrioritySlice.js";
 import TicketsContainerMenu from "./TicketsContainerMenu.jsx";
 
 const TicketsContainer = ({

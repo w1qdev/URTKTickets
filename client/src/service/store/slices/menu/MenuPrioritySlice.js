@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     getMenuItemsByValue,
     mapPrioritiesAndChangeState,
-} from "../../../helpers/utils";
+} from "../../../../helpers/utils";
 
 const initialState = {
     currentTitle: "",

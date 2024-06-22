@@ -7,23 +7,23 @@ import MenuFilterButton from "../Menu/MenuFilterButton";
 import {
     setMenuDateCurrentTitle,
     getMenuDates,
-} from "../../service/store/slices/MenuDateSlice";
+} from "../../service/store/slices/menu/MenuDateSlice.js";
 import {
     setMenuLocationCurrentTitle,
     getMenuLocations,
-} from "../../service/store/slices/MenuLocationSlice";
+} from "../../service/store/slices/menu/MenuLocationSlice.js";
 import {
     setMenuStatusCurrentTitle,
     getMenuStatuses,
-} from "../../service/store/slices/MenuStatusSlice";
+} from "../../service/store/slices/menu/MenuStatusSlice.js";
 import {
     setMenuCustomerCurrentTitle,
     getMenuCustomers,
-} from "../../service/store/slices/MenuCustomerSlice";
+} from "../../service/store/slices/menu/MenuCustomerSlice.js";
 import {
     setMenuPriorityCurrentTitle,
     getMenuPriorities,
-} from "../../service/store/slices/MenuPrioritySlice";
+} from "../../service/store/slices/menu/MenuPrioritySlice.js";
 import SearchIcon from "../Icons/SearchIcon.jsx";
 
 const TicketsContainerMenu = ({

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMenuItemsByValue } from "../../../helpers/utils";
+import { getMenuItemsByValue } from "../../../../helpers/utils";
 
 const initialState = {
     currentTitle: "",

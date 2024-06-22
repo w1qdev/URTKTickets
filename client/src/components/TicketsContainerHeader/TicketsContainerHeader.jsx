@@ -10,6 +10,7 @@ import URTKLogo from "../../assets/logo/urtkLogo.png";
 import PlusIcon from "../../components/Icons/PlusIcon";
 import { dateFormatter, getCurrentDate } from "../../helpers/utils";
 import MenuSorting from "../Menu/MenuSorting";
+import Switch from "../Switch/Switch";
 // import Notification from "../Notification/Notification";
 
 const TicketsContainerHeader = ({
@@ -69,13 +70,15 @@ const TicketsContainerHeader = ({
                         </AnimatePresence>
                     ) : null}
                     {/* <Notification className="notification__trigger" /> */}
-                    <div className="menu-sorting__container">
+                    {/* <div className="menu-sorting__container">
                         <div className="menu-sorting__subtext">
                             Сортировка по{" "}
                         </div>
 
                         <MenuSorting currentSortStatus="Дате создания" />
-                    </div>
+                    </div> */}
+
+                    <Switch label="Показывать выполненные задачи?" />
 
                     <GridSwitcher
                         isGridMode={isGridMode}
