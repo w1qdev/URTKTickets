@@ -35,6 +35,7 @@ import {
     setMenuPriorities,
     getMenuPriorities,
 } from "../../service/store/slices/menu/MenuPrioritySlice.js";
+import { getIsShowCompletedTickets } from "../../service/store/slices/settings/SettingsTicketsSlice.js";
 import TicketsContainerMenu from "./TicketsContainerMenu.jsx";
 
 const TicketsContainer = ({
@@ -55,6 +56,8 @@ const TicketsContainer = ({
     const menuStatus = useSelector(getMenuStatuses);
     const menuCustomer = useSelector(getMenuCustomers);
     const menuPriority = useSelector(getMenuPriorities);
+
+    const isShowCompletedTickets = useSelector(getIsShowCompletedTickets);
 
     const [filteredTickets, setFilteredTickets] = useState(tickets);
     const [problemValue, setProblemValue] = useState("");
@@ -183,6 +186,9 @@ const TicketsContainer = ({
                 ? getPriorityById(ticket.priority_id) ===
                   menuPriority.currentTitle
                 : true;
+            const isCompletedTicket = isShowCompletedTickets
+                ? true
+                : ticket.state_id !== 3;
 
             return (
                 isMenuDateMatch &&
@@ -190,7 +196,8 @@ const TicketsContainer = ({
                 isMenuStatusMatch &&
                 isMenuCustomerMatch &&
                 isProblemMatch &&
-                isPriorityMatch
+                isPriorityMatch &&
+                isCompletedTicket
             );
         });
 
@@ -206,6 +213,7 @@ const TicketsContainer = ({
         menuPriority.currentTitle,
         problemValue,
         tickets,
+        isShowCompletedTickets,
     ]);
 
     useEffect(() => {
