@@ -14,6 +14,7 @@ const Menu = ({
     menuSelectedItem,
     maxWidth,
     prefix,
+    itemPerfix,
 }) => {
     return (
         <ChakraMenu>
@@ -43,6 +44,7 @@ const Menu = ({
                 {menuItems.length
                     ? menuItems?.map((menuItem) => (
                           <MenuItem key={menuItem.id} onClick={handleClick}>
+                              {itemPerfix}
                               {menuItem.title}
                           </MenuItem>
                       ))

@@ -7,6 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { addColorPropertyToMenuPriorityItems } from "../../helpers/utils";
+import Bookmark from "../Icons/Bookmark";
 
 const MenuPriorityFilter = ({
     menuItems,
@@ -46,11 +47,19 @@ const MenuPriorityFilter = ({
                 {updatedMenuItems.length
                     ? updatedMenuItems.map((menuItem) => (
                           <MenuItem
-                              style={{ color: menuItem.color }}
+                              //   style={{ color: menuItem.color }}
                               key={menuItem.id}
                               onClick={handleClick}
                           >
-                              {menuItem.title}
+                              <Bookmark
+                                  width="20px"
+                                  height="20px"
+                                  isUseTooltip={false}
+                                  priorityColor={menuItem.color}
+                              />
+                              <span style={{ marginLeft: "5px" }}>
+                                  {menuItem.title}
+                              </span>
                           </MenuItem>
                       ))
                     : null}
