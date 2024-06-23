@@ -38,10 +38,17 @@ const TicketItemTileView = ({
             <Bookmark className="bookmark grid" priority={priority_id} />
 
             <div className="ticket-item__date grid">
-                <div className="date submission grid">
-                    <span>Заказчик: </span>
-                    <b>{customer_name}</b>
-                </div>
+                {isAdministrator ? (
+                    <div className="date submission grid">
+                        <span>Заказчик:</span>
+                        <b>{customer_name}</b>
+                    </div>
+                ) : (
+                    <div className="date submission grid">
+                        <span>Дата создания:</span>
+                        <b>{submissionDate}</b>
+                    </div>
+                )}
 
                 <div className="date deadline">
                     <span>Выполнение до:</span>

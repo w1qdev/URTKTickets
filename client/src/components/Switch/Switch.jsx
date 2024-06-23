@@ -15,7 +15,7 @@ const Switch = ({ label }) => {
     };
 
     return (
-        <div className="switch-root">
+        <div className="switch-root" onClick={handleSwitchMode}>
             <label className="switch-root__label" htmlFor="shown-done-tickets">
                 {label}
             </label>

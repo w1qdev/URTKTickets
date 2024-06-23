@@ -54,6 +54,7 @@ const PopupContent = ({
 };
 
 const TicketItem = (props) => {
+    console.log(props);
     const { submission_date, deadline_date, state_id, sendJsonMessage } = props;
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const ticketStatus = getTicketStateNameById(state_id);

@@ -4,9 +4,11 @@
     align-items: center;
     justify-content: space-around;
     margin-right: 10px;
+    cursor: pointer;
 
     &__label {
         font-size: 14px;
+        cursor: pointer;
     }
 
     &__switch {

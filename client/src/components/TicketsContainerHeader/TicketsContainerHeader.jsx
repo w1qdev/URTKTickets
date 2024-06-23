@@ -78,7 +78,7 @@ const TicketsContainerHeader = ({
                         <MenuSorting currentSortStatus="Дате создания" />
                     </div> */}
 
-                    <Switch label="Показывать выполненные задачи?" />
+                    <Switch label="Показывать выполненные заявки?" />
 
                     <GridSwitcher
                         isGridMode={isGridMode}
