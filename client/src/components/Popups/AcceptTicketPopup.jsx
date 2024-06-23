@@ -96,7 +96,7 @@ const AcceptTicketPopup = ({
                         <b>Выполнить задачи до</b>
                     </div>
                     {/* <DatePicker className="date-picker" /> */}
-                    <div className="deadline__date">{deadlineDate} г.</div>
+                    <div className="deadline__date">{deadlineDate}</div>
                 </div>
             </div>
 
