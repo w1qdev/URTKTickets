@@ -12,7 +12,7 @@ class TicketsCleaner:
         print(f"Ticket cleaning started at {datetime.now()}")
         try:
             print(f"Ticket cleaning started at {datetime.now()}")
-
+            
             # удаление выполненных тикетов через 6 месяцев
             six_months_ago = datetime.now() - timedelta(days=182)  
 

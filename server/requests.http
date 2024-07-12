@@ -84,7 +84,7 @@ POST http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 {
-    "teacher_name": "Валерий Викторович",
+    "teacher_name": "Бушмелева",
     "department": "Информатика",
     "role": "administrator"
 }
@@ -94,12 +94,12 @@ GET http://localhost:8001/api/teachers/ HTTP/1.1
 content-type: application/json
 
 ### get teacher by id
-GET http://localhost:8001/api/teachers/2 HTTP/1.1
+GET http://localhost:8001/api/teachers/4 HTTP/1.1
 content-type: application/json
 
 
 ### remove teacher by id
-DELETE http://localhost:8001/api/teachers/1 HTTP/1.1
+DELETE http://localhost:8001/api/teachers/4 HTTP/1.1
 content-type: application/json
 
 
