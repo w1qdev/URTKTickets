@@ -23,6 +23,8 @@ from helpers.utils import serialize_sqlalchemy_obj
 from routes.teachers_router import teachers_router
 from routes.ticket_states_router import ticket_states_router 
 from routes.ticket_router import tickets_router
+from routes.task_router import tasks_router
+from routes.ticket_priorities_router import ticket_priorities_router
 
 # Настройка документации OpenAPI
 def custom_openapi():
@@ -85,86 +87,20 @@ def report_cleaner_scheduler():
         sleep(clean_delay) 
 
 
-# TEACHERS API
+# teachers API routers
 app.include_router(teachers_router)
 
-# TICKET STATES API
+# ticket states API routers
 app.include_router(ticket_states_router)
 
-# TICKETS API
+# tickets API routers
 app.include_router(tickets_router)
 
-
-# API эндпоинт для получения задач по ID тикета
-@app.get("/api/tasks/{ticket_id}")
-async def get_tasks_by_ticket_id(ticket_id: int):
-    try:
-        tasks = tasks_manager.get_tasks_by_ticket_id(ticket_id)
-        return tasks
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
-
-# API эндпоинт для удаления задачи по ID
-@app.delete("/api/tasks/{task_id}")
-async def delete_task(task_id: int):
-    try:
-        result = tasks_manager.delete_task(task_id)
-        return {"success": result}
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
-
-# API эндпоинт для удаления всех задач
-@app.delete("/api/tasks/")
-async def delete_all_task():
-    try:
-        tasks_manager.delete_all_tasks()
-        return {"message": "Все задачи удалены"}
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
-
-@app.get("/api/tasks/")
-async def get_all_tasks():
-    try:
-        all_tasks = tasks_manager.get_all_tasks()
-        return all_tasks
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
+# tasks API routers
+app.include_router(tasks_router)
 
 # Ticket Priorities API
-# TODO: Проверить работу API
-@app.get("/api/ticket_prorities/")
-async def get_all_ticket_priorities():
-    try:
-        all_ticket_priorities = ticket_priority_manager.get_all_ticket_priorities()
-        return all_ticket_priorities
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
-
-@app.post("/api/ticket_prorities/")
-async def create_ticket_priority(ticket_priority_data: dict):
-    try:
-        new_ticket_priority = ticket_priority_manager.create_ticket_priority(ticket_priority_data)
-        return new_ticket_priority
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
-
-@app.delete("/api/ticket_prorities/{ticket_priority_id}")
-async def remove_ticket_priority_by_id(ticket_priority_id: int):
-    try:
-        deleted_ticket_priority = ticket_priority_manager.remove_ticket_priority_by_id(ticket_priority_id)
-        if deleted_ticket_priority:
-            return {"message": "Ticket priority deleted successfully"}
-        else:
-            return {"message": "Ticket priority not found"}
-    except Exception as ex:
-        print(ex)
-        return {"error": "Server Internal Error"}, 500
+app.include_router(ticket_priorities_router)
 
 # Generate and download report
 @app.post("/generate-report/")
