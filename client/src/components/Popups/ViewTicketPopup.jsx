@@ -39,13 +39,13 @@ const ViewTicketPopup = ({
         setIsFetching((prev) => true);
         try {
             // Отправка данных на сервер для генерации файла
-            await axios.post(`${SERVER_ORIGIN_URI}/generate-report/`, {
+            await axios.post(`${SERVER_ORIGIN_URI}/report/generate/`, {
                 ticketData,
             });
 
             // Загрузка сгенерированного файла
             const response = await axios.get(
-                `${SERVER_ORIGIN_URI}/download-report/report_${ticket_id}.docx`,
+                `${SERVER_ORIGIN_URI}/report/download/report_${ticket_id}.docx`,
                 { responseType: "blob" }
             );
             const url = URL.createObjectURL(new Blob([response.data]));

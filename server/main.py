@@ -3,7 +3,7 @@ import os
 import threading
 import json
 from time import sleep
-from fastapi import FastAPI, Query, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import FileResponse
@@ -103,7 +103,7 @@ app.include_router(tasks_router)
 app.include_router(ticket_priorities_router)
 
 # Generate and download report
-@app.post("/generate-report/")
+@app.post("/report/generate/")
 async def generate_report(data: dict):
     try:    
         filename = f"report_{data['ticketData']['ticket_id']}.docx"
@@ -116,10 +116,10 @@ async def generate_report(data: dict):
         report_filename = generate_report_file(data)
         # Возвращаем имя файла
         return {"filename": report_filename}
-    except Exception as e:
+    except Exception:
         return {"error": "Internal Server Error"}, 500
 
-@app.get("/download-report/{filename}")
+@app.get("/report/download/{filename}")
 async def download_report(filename: str):
     try:
         report_path = os.path.join(os.path.dirname(__file__), "reports", filename)
