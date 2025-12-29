@@ -1,15 +1,14 @@
 import "./TicketsContainerHeader.scss";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { Button, Stack } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
 
-import GridSwitcher from "../../components/GridSwitcher/GridSwitcher";
-import RepeatIcon from "../../components/Icons/RepeatIcon";
-import CreateTicketButton from "../../components/Buttons/CreateTicketButton";
 import URTKLogo from "../../assets/logo/urtkLogo.png";
+import CreateTicketButton from "../../components/Buttons/CreateTicketButton";
+import GridSwitcher from "../../components/GridSwitcher/GridSwitcher";
 import PlusIcon from "../../components/Icons/PlusIcon";
+import RepeatIcon from "../../components/Icons/RepeatIcon";
 import { dateFormatter, getCurrentDate } from "../../helpers/utils";
-import MenuSorting from "../Menu/MenuSorting";
 import Switch from "../Switch/Switch";
 // import Notification from "../Notification/Notification";
 
@@ -30,7 +29,7 @@ const TicketsContainerHeader = ({
 
     return (
         <div className="tickets-page__header">
-            <div className="tickets-page__header-title">УрТК НИЯУ МИФИ</div>
+            <div className="tickets-page__header-title"></div>
             <div className="tickets-page__header-other">
                 <div className="logo">
                     <img src={URTKLogo} />
